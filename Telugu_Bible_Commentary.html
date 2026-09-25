@@ -1,0 +1,2224 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Telugu Bible">
+<meta name="application-name" content="Telugu Bible">
+<meta name="theme-color" content="#4a6fa5">
+<title>తెలుగు బైబిల్ వ్యాఖ్యానము | Telugu Bible Commentary</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700&family=Noto+Serif+Telugu:wght@400;500;600;700&family=Tenali+Ramakrishna&family=Mandali&family=Peddana&family=Suravaram&family=Ramabhadra&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg: #f5f3f0; --card: #ffffff; --text: #1a1a2e; --muted: #5a5a6e;
+  --accent: #4a6fa5; --accent-light: #6b8fc5; --accent-dark: #2d5081;
+  --border: #e0ddd7; --highlight-yellow: #fff3cd; --highlight-green: #d4edda;
+  --highlight-blue: #cce5ff; --highlight-pink: #f8d7da; --highlight-orange: #ffe0b2;
+  --commentary-bg: #f8f6f2; --sidebar-bg: #2c3e50; --sidebar-text: #ecf0f1;
+  --shadow: 0 2px 8px rgba(0,0,0,0.08); --shadow-lg: 0 8px 30px rgba(0,0,0,0.15);
+  --radius: 12px; --radius-sm: 8px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --topbar-h: 56px; --bottomnav-h: 0px;
+  --telugu-font: 'Noto Sans Telugu', sans-serif;
+}
+[data-theme="dark"] {
+  --bg: #0f1419; --card: #1a2332; --text: #e8e8e0; --muted: #9a9ab0;
+  --accent: #64b5f6; --accent-light: #90caf9; --accent-dark: #42a5f5;
+  --border: #2a3548; --commentary-bg: #1e2a3a; --sidebar-bg: #0a0f15;
+  --sidebar-text: #b0b0c0; --shadow: 0 2px 8px rgba(0,0,0,0.4);
+  --highlight-yellow: #4a3e1a; --highlight-green: #1a3320; --highlight-blue: #1a2d42;
+  --highlight-pink: #3d1a22; --highlight-orange: #3d2a10;
+}
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--telugu-font), 'Inter', sans-serif;
+  background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s;
+  display: flex; height: 100vh; height: 100dvh; overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+/* Sidebar */
+.sidebar { width: 300px; background: var(--sidebar-bg); color: var(--sidebar-text);
+  display: flex; flex-direction: column; flex-shrink: 0; transition: transform 0.3s; z-index: 100;
+  padding-top: var(--safe-top); }
+.sidebar-header { padding: 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-header h1 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.sidebar-header p { font-size: 12px; opacity: 0.7; }
+.book-list { flex: 1; overflow-y: auto; padding: 8px; -webkit-overflow-scrolling: touch; }
+.book-item { padding: 12px 14px; border-radius: var(--radius-sm); cursor: pointer;
+  transition: background 0.2s; display: flex; justify-content: space-between; align-items: center;
+  min-height: 48px; }
+.book-item:hover { background: rgba(255,255,255,0.1); }
+.book-item.active { background: var(--accent); color: #fff; }
+.book-item .book-te { font-size: 15px; font-weight: 500; }
+.book-item .book-en { font-size: 10px; opacity: 0.6; margin-top: 2px; }
+.sidebar-footer { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex; gap: 8px; flex-wrap: wrap; padding-bottom: calc(12px + var(--safe-bottom)); }
+.sidebar-footer button { flex: 1; min-width: 70px; padding: 10px; border: none;
+  border-radius: var(--radius-sm); background: rgba(255,255,255,0.1); color: var(--sidebar-text);
+  cursor: pointer; font-size: 12px; font-family: inherit; transition: background 0.2s; min-height: 40px; }
+.sidebar-footer button:hover { background: rgba(255,255,255,0.2); }
+.sidebar-tabs { display: flex; padding: 0 8px; }
+.sidebar-tab { flex: 1; padding: 12px; text-align: center; cursor: pointer;
+  font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.sidebar-tab.active { border-bottom-color: var(--accent); color: #fff; }
+.sidebar-tab:hover { color: #fff; }
+/* Main content */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.topbar { display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  background: var(--card); border-bottom: 1px solid var(--border); box-shadow: var(--shadow); z-index: 10;
+  min-height: var(--topbar-h); padding-top: calc(8px + var(--safe-top)); }
+.menu-btn { display: none; background: none; border: none; font-size: 24px; cursor: pointer;
+  color: var(--text); padding: 8px; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
+.breadcrumb { font-size: 16px; font-weight: 600; flex: 1; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.breadcrumb .te { color: var(--text); }
+.breadcrumb .en { color: var(--muted); font-size: 13px; font-weight: 400; margin-left: 8px; }
+.search-box { position: relative; flex-shrink: 0; }
+.search-box input { padding: 8px 36px 8px 14px; border: 1px solid var(--border);
+  border-radius: 20px; font-size: 16px; width: 220px; background: var(--bg); color: var(--text);
+  font-family: inherit; outline: none; transition: width 0.3s, border-color 0.2s; min-height: 40px; }
+.search-box input:focus { border-color: var(--accent); width: 280px; }
+.search-box .icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); font-size: 14px; pointer-events: none; }
+.icon-btn { background: none; border: none; cursor: pointer; color: var(--muted);
+  font-size: 18px; padding: 8px; border-radius: var(--radius-sm); transition: all 0.2s;
+  min-width: 40px; min-height: 40px; display: flex; align-items: center; justify-content: center; }
+.icon-btn:hover { background: var(--bg); color: var(--accent); }
+.icon-btn:active { transform: scale(0.92); }
+.nav-btns { display: flex; gap: 4px; flex-shrink: 0; }
+.nav-btn { padding: 8px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--card); color: var(--text); cursor: pointer; font-size: 13px;
+  font-family: inherit; transition: all 0.2s; min-height: 40px; min-width: 44px;
+  display: flex; align-items: center; justify-content: center; }
+.nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+.nav-btn:active { transform: scale(0.95); }
+.nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+/* Content area */
+.content { flex: 1; overflow-y: auto; padding: 24px 20px calc(60px + var(--safe-bottom));
+  -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; }
+.loading-screen { display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 100%; gap: 20px; padding: 20px; }
+.spinner { width: 50px; height: 50px; border: 4px solid var(--border);
+  border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 16px; color: var(--muted); text-align: center; }
+.progress-bar { width: 100%; max-width: 300px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s; }
+/* Chapter header */
+.chapter-header { text-align: center; margin-bottom: 24px; padding: 20px 8px; }
+.chapter-header h2 { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.chapter-header .en { font-size: 14px; color: var(--muted); margin-top: 4px; }
+/* Verses */
+.verse-container { max-width: 800px; margin: 0 auto; }
+.verse-row { display: flex; gap: 0; margin-bottom: 2px; border-radius: var(--radius-sm);
+  overflow: visible; transition: background 0.2s; flex-wrap: wrap; align-items: flex-start; }
+.verse-row:hover { background: var(--card); box-shadow: var(--shadow); }
+.verse-text { flex: 1; padding: 6px 12px; position: relative; cursor: pointer; line-height: 1.6; }
+.verse-num { display: inline-block; min-width: 28px; font-weight: 700; color: var(--accent);
+  font-size: 12px; vertical-align: top; margin-right: 6px; }
+.verse-content { display: inline; font-size: 17px; letter-spacing: 0.01em; }
+/* Verse 3-dot dropdown menu */
+.verse-menu-wrap { position: relative; flex-shrink: 0; }
+.verse-menu-btn { background: none; border: none; cursor: pointer; font-size: 18px;
+  padding: 4px 8px; color: var(--muted); opacity: 0; transition: opacity 0.2s;
+  min-width: 32px; min-height: 32px; display: flex; align-items: center; justify-content: center;
+  border-radius: 4px; }
+.verse-row:hover .verse-menu-btn { opacity: 1; }
+.verse-menu-btn:hover { background: var(--bg); }
+.verse-menu-btn.active { opacity: 1; background: var(--bg); }
+.verse-dropdown { display: none; position: fixed; z-index: 2000;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg); min-width: 180px; max-height: 70vh; overflow-y: auto; }
+.verse-dropdown.show { display: block; animation: ddFade 0.15s ease; }
+@keyframes ddFade { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.verse-dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  cursor: pointer; font-size: 14px; color: var(--text); transition: background 0.15s; white-space: nowrap; }
+.verse-dropdown-item:hover { background: var(--bg); }
+.verse-dropdown-item .dd-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.verse-dropdown-sep { height: 1px; background: var(--border); margin: 0; }
+.verse-dropdown-label { font-size: 11px; color: var(--muted); padding: 6px 14px 2px; text-transform: uppercase; letter-spacing: 0.3px; }
+.commentary-indicator { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px;
+  border-radius: 50%; background: var(--accent); }
+.bookmark-indicator { position: absolute; top: 8px; right: 20px; font-size: 14px; color: var(--accent); }
+.verse-row.highlighted-yellow .verse-text { background: var(--highlight-yellow); }
+.verse-row.highlighted-green .verse-text { background: var(--highlight-green); }
+.verse-row.highlighted-blue .verse-text { background: var(--highlight-blue); }
+.verse-row.highlighted-pink .verse-text { background: var(--highlight-pink); }
+.verse-row.highlighted-orange .verse-text { background: var(--highlight-orange); }
+.verse-commentary { flex-basis: 100%; margin: 0 8px 2px; padding: 6px 10px;
+  background: var(--commentary-bg); border-radius: var(--radius-sm); border-left: 3px solid var(--accent);
+  font-size: 14px; line-height: 1.7; color: var(--text); white-space: pre-wrap;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  animation: commentarySlide 0.2s ease; }
+@keyframes commentarySlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+.commentary-toggle { background: var(--accent); color: #fff; border: none; border-radius: 50%;
+  width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0; padding: 0; line-height: 1; }
+.commentary-toggle:hover { opacity: 0.85; }
+.verse-commentary .commentary-body { font-size: 14px; line-height: 1.4; color: var(--text);
+  word-wrap: break-word; }
+/* Commentary editor modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none;
+  align-items: flex-end; justify-content: center; z-index: 1000; padding: 0; }
+.modal-overlay.active { display: flex; }
+.modal { background: var(--card); border-radius: var(--radius) var(--radius) 0 0;
+  width: 100%; max-width: 600px; max-height: 92vh; display: flex; flex-direction: column;
+  box-shadow: var(--shadow-lg); animation: slideUp 0.3s ease; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex;
+  justify-content: space-between; align-items: center; padding-top: calc(16px + var(--safe-top)); }
+.modal-header h3 { font-size: 16px; font-weight: 600; }
+.modal-header .verse-ref { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.modal-close { background: none; border: none; font-size: 28px; cursor: pointer;
+  color: var(--muted); padding: 4px 12px; min-width: 44px; min-height: 44px;
+  display: flex; align-items: center; justify-content: center; }
+.modal-body { padding: 16px 20px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+.modal-body .verse-preview { background: var(--bg); padding: 14px 16px; border-radius: var(--radius-sm);
+  margin-bottom: 12px; font-size: 15px; line-height: 1.7; border-left: 3px solid var(--accent);
+  position: relative; }
+.modal-body .verse-preview .preview-label { font-size: 10px; font-weight: 700; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; opacity: 0.8; }
+/* Rich text toolbar */
+.editor-toolbar { display: flex; flex-wrap: wrap; gap: 2px; padding: 6px 8px; background: var(--bg);
+  border: 1px solid var(--border); border-bottom: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  align-items: center; }
+.tb-btn { background: none; border: 1px solid transparent; border-radius: 4px; cursor: pointer;
+  padding: 6px 8px; font-size: 14px; font-family: inherit; color: var(--text); transition: all 0.15s;
+  min-width: 32px; min-height: 32px; display: flex; align-items: center; justify-content: center; }
+.tb-btn:hover { background: var(--card); border-color: var(--border); }
+.tb-btn:active { transform: scale(0.92); }
+.tb-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tb-divider { width: 1px; height: 24px; background: var(--border); margin: 0 4px; }
+.tb-color-wrap { position: relative; display: flex; align-items: center; }
+.tb-color-input { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 4px;
+  cursor: pointer; background: none; padding: 0; overflow: hidden; }
+.tb-color-input::-webkit-color-swatch { border: none; border-radius: 3px; }
+.tb-color-input::-moz-color-swatch { border: none; border-radius: 3px; }
+/* Rich text editor */
+.editor-area { width: 100%; min-height: 180px; max-height: 400px; overflow-y: auto;
+  padding: 14px; border: 1px solid var(--border); border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  font-size: 16px; font-family: inherit; background: var(--card); color: var(--text);
+  outline: none; line-height: 1.7; -webkit-overflow-scrolling: touch; }
+.editor-area:focus { border-color: var(--accent); }
+.editor-area:empty::before { content: attr(data-placeholder); color: var(--muted); opacity: 0.6; }
+.editor-area h1, .editor-area h2, .editor-area h3 { margin: 8px 0 4px; line-height: 1.4; }
+.editor-area h1 { font-size: 20px; } .editor-area h2 { font-size: 18px; } .editor-area h3 { font-size: 16px; }
+.editor-area ul, .editor-area ol { margin: 6px 0 6px 24px; }
+.editor-area li { margin: 2px 0; }
+.editor-area a { color: var(--accent); text-decoration: underline; cursor: pointer; }
+.editor-area blockquote { border-left: 3px solid var(--accent); padding-left: 12px; margin: 8px 0; color: var(--muted); }
+/* Commentary display with rich text */
+.verse-commentary .commentary-body { font-size: 14px; line-height: 1.7; color: var(--text);
+  word-wrap: break-word; }
+.verse-commentary .commentary-body h1 { font-size: 18px; margin: 6px 0 4px; }
+.verse-commentary .commentary-body h2 { font-size: 16px; margin: 6px 0 4px; }
+.verse-commentary .commentary-body h3 { font-size: 15px; margin: 6px 0 4px; }
+.verse-commentary .commentary-body ul, .verse-commentary .commentary-body ol { margin: 4px 0 4px 20px; }
+.verse-commentary .commentary-body li { margin: 2px 0; }
+.verse-commentary .commentary-body a { color: var(--accent); text-decoration: underline; cursor: pointer; }
+.verse-commentary .commentary-body a:hover { text-decoration: none; opacity: 0.8; }
+
+/* Verse edit indicator */
+.verse-edit-indicator { position: absolute; top: 8px; right: 36px; font-size: 11px;
+  color: #e67e22; font-weight: 600; }
+/* Cross-reference popup */
+.xref-popup { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none;
+  align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+.xref-popup.active { display: flex; }
+.xref-card { background: var(--card); border-radius: var(--radius); max-width: 500px; width: 100%;
+  box-shadow: var(--shadow-lg); animation: fadeIn 0.2s ease; max-height: 80vh; display: flex; flex-direction: column; }
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+.xref-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex;
+  justify-content: space-between; align-items: center; }
+.xref-header .xref-ref { font-size: 15px; font-weight: 600; color: var(--accent); }
+.xref-header .xref-ref-te { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.xref-body { padding: 18px; overflow-y: auto; flex: 1; }
+.xref-verse { font-size: 16px; line-height: 1.8; color: var(--text); margin-bottom: 12px; }
+.xref-verse .vnum { font-weight: 700; color: var(--accent); margin-right: 6px; }
+.xref-footer { padding: 10px 18px; border-top: 1px solid var(--border); display: flex; gap: 8px;
+  justify-content: flex-end; padding-bottom: calc(10px + var(--safe-bottom)); }
+.xref-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted);
+  min-width: 36px; min-height: 36px; display: flex; align-items: center; justify-content: center; }
+.highlight-options { display: flex; gap: 8px; margin-top: 12px; align-items: center; flex-wrap: wrap; }
+.highlight-options label { font-size: 13px; color: var(--muted); }
+.highlight-color { width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+  border: 2px solid var(--border); transition: transform 0.2s; }
+.highlight-color:hover { transform: scale(1.15); }
+.highlight-color.selected { border-color: var(--text); transform: scale(1.1); }
+.modal-footer { padding: 12px 20px; border-top: 1px solid var(--border); display: flex;
+  justify-content: flex-end; gap: 8px; padding-bottom: calc(12px + var(--safe-bottom)); }
+.btn { padding: 10px 20px; border: none; border-radius: var(--radius-sm); cursor: pointer;
+  font-size: 14px; font-family: inherit; font-weight: 500; transition: all 0.2s; min-height: 44px;
+  display: inline-flex; align-items: center; justify-content: center; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-dark); }
+.btn-primary:active { transform: scale(0.97); }
+.btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--accent); }
+.btn-secondary:active { transform: scale(0.97); }
+.btn-danger { background: #e74c3c; color: #fff; }
+.btn-danger:hover { background: #c0392b; }
+.btn-danger:active { transform: scale(0.97); }
+/* Search results */
+.search-results { max-width: 800px; margin: 0 auto; }
+.search-result-item { padding: 14px 16px; border-radius: var(--radius-sm); background: var(--card);
+  margin-bottom: 8px; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow); }
+.search-result-item:hover { transform: translateX(4px); border-left: 3px solid var(--accent); }
+.search-result-item:active { transform: scale(0.98); }
+.search-result-ref { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+.search-result-text { font-size: 15px; color: var(--text); line-height: 1.6; }
+.search-result-text mark { background: var(--highlight-yellow); padding: 1px 3px; border-radius: 2px; }
+.search-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.search-tab { padding: 8px 16px; border-radius: 20px; background: var(--card); border: 1px solid var(--border);
+  cursor: pointer; font-size: 13px; font-family: inherit; color: var(--text); transition: all 0.2s;
+  min-height: 40px; display: flex; align-items: center; }
+.search-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+/* Bookmarks panel */
+.bookmark-item { padding: 12px 16px; border-radius: var(--radius-sm); background: var(--card);
+  margin-bottom: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  box-shadow: var(--shadow); transition: all 0.2s; }
+.bookmark-item:hover { transform: translateX(4px); }
+.bookmark-item:active { transform: scale(0.98); }
+.bookmark-ref { font-weight: 600; color: var(--accent); }
+.bookmark-preview { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.bookmark-delete { background: none; border: none; cursor: pointer; color: #e74c3c; font-size: 16px;
+  min-width: 40px; min-height: 40px; display: flex; align-items: center; justify-content: center; }
+/* Toast */
+.toast { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%;
+  transform: translateX(-50%) translateY(100px); background: var(--sidebar-bg); color: #fff;
+  padding: 12px 24px; border-radius: var(--radius-sm); font-size: 14px; box-shadow: var(--shadow-lg);
+  z-index: 3000; transition: transform 0.3s; font-family: inherit; max-width: 90%; text-align: center;
+  pointer-events: none; opacity: 0; }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+/* Settings panel */
+.settings-panel { max-width: 600px; margin: 0 auto; }
+.setting-item { padding: 16px; background: var(--card); border-radius: var(--radius-sm);
+  margin-bottom: 12px; box-shadow: var(--shadow); }
+.setting-item label { display: flex; justify-content: space-between; align-items: center;
+  font-size: 15px; font-weight: 500; }
+.setting-item .desc { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.toggle { position: relative; width: 44px; height: 24px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 12px;
+  cursor: pointer; transition: 0.3s; }
+.toggle-slider:before { content: ""; position: absolute; width: 18px; height: 18px;
+  left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: 0.3s; }
+.toggle input:checked + .toggle-slider { background: var(--accent); }
+.toggle input:checked + .toggle-slider:before { transform: translateX(20px); }
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+.stat-card { text-align: center; padding: 16px; background: var(--bg); border-radius: var(--radius-sm); }
+.stat-card .num { font-size: 28px; font-weight: 700; color: var(--accent); }
+.stat-card .label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+/* Bottom nav (mobile only) */
+.bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+  background: var(--card); border-top: 1px solid var(--border); box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+  padding-bottom: var(--safe-bottom); }
+.bottom-nav-items { display: flex; }
+.bottom-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 8px 4px; cursor: pointer; color: var(--muted); transition: color 0.2s; min-height: 52px;
+  font-size: 10px; gap: 2px; }
+.bottom-nav-item.active { color: var(--accent); }
+.bottom-nav-item:active { transform: scale(0.95); }
+.bottom-nav-item .nav-icon { font-size: 20px; }
+.sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; display: none; }
+.sidebar-overlay.show { display: block; }
+
+/* ===== MOBILE STYLES ===== */
+@media (max-width: 768px) {
+  :root { --bottomnav-h: 52px; }
+  .sidebar { position: fixed; left: 0; top: 0; height: 100%; transform: translateX(-100%);
+    width: 85vw; max-width: 320px; box-shadow: var(--shadow-lg); }
+  .sidebar.open { transform: translateX(0); }
+  .menu-btn { display: flex; }
+  .topbar { padding: 6px 8px; gap: 4px; flex-wrap: wrap; }
+  .breadcrumb { font-size: 14px; flex: 1; min-width: 0; }
+  .breadcrumb .en { display: none; }
+  .search-box { order: 10; flex: 1 1 100%; }
+  .search-box input { width: 100% !important; font-size: 16px; }
+  .search-box input:focus { width: 100% !important; }
+  .nav-btn { padding: 8px 10px; font-size: 12px; min-width: 40px; }
+  .icon-btn { padding: 6px; font-size: 16px; min-width: 40px; }
+  .content { padding: 16px 10px calc(70px + var(--safe-bottom)); }
+  .verse-container { max-width: 100%; }
+  .verse-text { padding: 5px 8px; font-size: 16px; line-height: 1.6; }
+  .verse-content { font-size: 16px; letter-spacing: 0.01em; }
+  .verse-num { font-size: 11px; min-width: 24px; }
+  /* Always show verse menu on touch devices */
+  .verse-menu-btn { opacity: 1; font-size: 20px; min-width: 40px; min-height: 40px; }
+  .verse-dropdown { min-width: 200px; }
+  .verse-dropdown-item { padding: 14px 16px; font-size: 15px; }
+  .verse-dropdown-label { padding: 8px 16px 4px; }
+  .chapter-header h2 { font-size: 18px; }
+  .chapter-header .en { font-size: 12px; }
+  .verse-commentary { margin: 2px 4px 4px; padding: 8px 12px; font-size: 14px; }
+  .verse-commentary .commentary-body { font-size: 14px; }
+  .modal-overlay { padding: 0; }
+  .modal { max-height: 100vh; border-radius: 0; max-width: 100%; height: 100vh; height: 100dvh; }
+  .modal-body { padding: 12px 16px; }
+  .modal-body .editor-area { font-size: 16px; min-height: 200px; }
+  .editor-toolbar { padding: 4px 6px; }
+  .tb-btn { padding: 6px; min-width: 36px; min-height: 36px; font-size: 13px; }
+  .modal-body .verse-preview { font-size: 14px; padding: 10px 12px; }
+  .highlight-color { width: 36px; height: 36px; }
+  .highlight-options label { font-size: 14px; }
+  .modal-footer { padding: 10px 16px; }
+  .btn { padding: 12px 20px; font-size: 15px; }
+  .progress-bar { max-width: 100%; }
+  .stats-grid { gap: 8px; }
+  .stat-card { padding: 12px 8px; }
+  .stat-card .num { font-size: 22px; }
+  .stat-card .label { font-size: 10px; }
+  .search-results { max-width: 100%; }
+  .search-result-item { padding: 12px; }
+  .search-result-text { font-size: 14px; }
+  .bottom-nav { display: block; }
+  .toast { bottom: calc(70px + var(--safe-bottom)); }
+
+  /* Find panel mobile */
+  .sidebar-tabs { padding: 0 4px; }
+  .sidebar-tab { font-size: 11px; padding: 10px 4px; }
+  .find-panel { padding: 10px 8px; }
+  .find-panel select { font-size: 16px; padding: 12px 36px 12px 12px; min-height: 48px; }
+  .find-panel .go-btn { font-size: 16px; padding: 16px; min-height: 52px; }
+  .find-panel label { font-size: 12px; margin-top: 12px; }
+  .find-panel .find-hint { font-size: 11px; }
+}
+
+/* ===== SMALL MOBILE (<=380px) ===== */
+@media (max-width: 380px) {
+  .verse-text { padding: 10px 8px; font-size: 15px; }
+  .verse-content { font-size: 15px; }
+  .chapter-header h2 { font-size: 16px; }
+  .topbar { padding: 4px 6px; }
+  .nav-btn { padding: 6px 8px; min-width: 36px; }
+  .content { padding: 12px 8px calc(70px + var(--safe-bottom)); }
+
+  .sidebar-tab { font-size: 10px; padding: 8px 2px; }
+  .find-panel { padding: 8px 6px; }
+  .find-panel select { font-size: 16px; padding: 12px 32px 12px 10px; }
+  .find-panel .go-btn { font-size: 15px; padding: 14px; }
+}
+
+/* ===== TABLET ===== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar { width: 260px; }
+  .search-box input { width: 180px; }
+  .search-box input:focus { width: 220px; }
+}
+
+/* ===== LANDSCAPE MOBILE ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .modal { max-height: 100vh; }
+  .modal-body .editor-area { min-height: 120px; }
+  .chapter-header { margin-bottom: 12px; padding: 10px; }
+  .chapter-header h2 { font-size: 16px; }
+}
+
+/* Find Panel (Chapter & Verse) */
+.find-panel { padding: 12px; }
+.find-panel label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; margin-top: 14px; color: var(--sidebar-text); }
+.find-panel label:first-child { margin-top: 0; }
+.find-panel select {
+  width: 100%; padding: 10px 32px 10px 12px; font-size: 16px;
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
+  background: rgba(255,255,255,0.1); color: #ecf0f1;
+  font-family: var(--telugu-font); outline: none; -webkit-appearance: none;
+  appearance: none; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23ecf0f1'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; min-height: 44px;
+}
+.find-panel select:focus { border-color: var(--accent-light); }
+.find-panel select option { background: var(--sidebar-bg); color: #ecf0f1; }
+.find-panel select:disabled { opacity: 0.4; cursor: not-allowed; }
+.find-panel .go-btn {
+  width: 100%; margin-top: 20px; padding: 14px; font-size: 16px; font-weight: 600;
+  border: none; border-radius: 8px; background: var(--accent); color: #fff;
+  cursor: pointer; font-family: inherit; transition: background 0.2s; min-height: 48px;
+}
+.find-panel .go-btn:hover { background: var(--accent-dark); }
+.find-panel .go-btn:active { transform: scale(0.98); -webkit-tap-highlight-color: transparent; }
+.find-panel select, .find-panel .go-btn { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.find-panel .find-hint { font-size: 11px; opacity: 0.6; margin-top: 12px; line-height: 1.5; }
+.find-panel { padding-bottom: calc(20px + var(--safe-bottom)); }
+</style>
+</head>
+<body>
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h1>పరిశుద్ధ బైబిల్ వ్యాఖ్యానము</h1>
+    <p>Telugu Bible Commentary</p>
+  </div>
+  <div class="sidebar-tabs">
+    <div class="sidebar-tab active" data-tab="books">పుస్తకములు</div>
+    <div class="sidebar-tab" data-tab="find">అధ్యాయం</div>
+    <div class="sidebar-tab" data-tab="bookmarks">గుర్తులు</div>
+    <div class="sidebar-tab" data-tab="settings">సెట్టింగులు</div>
+  </div>
+  <div class="book-list" id="bookList"></div>
+  <div class="sidebar-footer">
+    <button onclick="exportData()">Export</button>
+    <button onclick="document.getElementById('importFile').click()">Import</button>
+    <button onclick="goSearch()">Search</button>
+    <button id="installBtnSidebar" onclick="promptInstall()" style="display:none;background:var(--accent);color:#fff">Install</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<!-- Main -->
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" onclick="toggleSidebar()">&#9776;</button>
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search verse or reference..." onkeydown="handleSearchKey(event)">
+      <span class="icon">&#128269;</span>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" id="prevBtn" onclick="navigateChapter(-1)">&#8592;</button>
+      <button class="nav-btn" id="nextBtn" onclick="navigateChapter(1)">&#8594;</button>
+    </div>
+    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">&#9790;</button>
+    <button class="icon-btn" id="installBtnTop" onclick="promptInstall()" title="Install App" style="display:none">&#128229;</button>
+  </div>
+  <div class="content" id="content">
+    <div class="loading-screen" id="loadingScreen">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loadingText">బైబిల్ లోడ్ అవుతోంది... Loading Bible...</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </div>
+</div>
+<!-- Bottom Nav (mobile) -->
+<nav class="bottom-nav" id="bottomNav">
+  <div class="bottom-nav-items">
+    <div class="bottom-nav-item active" onclick="toggleSidebar()">
+      <span class="nav-icon">&#9776;</span>Books
+    </div>
+    <div class="bottom-nav-item" onclick="goSearch()">
+      <span class="nav-icon">&#128269;</span>Search
+    </div>
+    <div class="bottom-nav-item" onclick="showFindPanelMobile()">
+      <span class="nav-icon">&#128194;</span>Chapter
+    </div>
+    <div class="bottom-nav-item" onclick="navigateChapter(-1)">
+      <span class="nav-icon">&#8592;</span>Prev
+    </div>
+    <div class="bottom-nav-item" onclick="navigateChapter(1)">
+      <span class="nav-icon">&#8594;</span>Next
+    </div>
+    <div class="bottom-nav-item" id="installBtnBottom" onclick="promptInstall()" style="display:none">
+      <span class="nav-icon">&#128229;</span>Install
+    </div>
+    <div class="bottom-nav-item" id="themeNavItem" onclick="toggleTheme()">
+      <span class="nav-icon" id="themeBtnBottom">&#9790;</span>Theme
+    </div>
+  </div>
+</nav>
+<!-- Install banner (mobile) -->
+<div id="installBanner" style="display:none;position:fixed;bottom:calc(60px + var(--safe-bottom));left:12px;right:12px;z-index:60;background:var(--accent);color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--shadow-lg);align-items:center;gap:12px;font-size:14px;font-family:inherit">
+  <div style="flex:1">హోమ్ స్క్రీన్‌కు జోడించండి<br><span style="opacity:0.85;font-size:12px">Install for offline use</span></div>
+  <button onclick="promptInstall()" style="background:#fff;color:var(--accent-dark);border:none;padding:8px 14px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap">Install</button>
+  <button onclick="dismissInstallBanner()" style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px;line-height:1">&times;</button>
+</div>
+<!-- Commentary Editor Modal -->
+<div class="modal-overlay" id="commentaryModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h3 id="modalTitle">వ్యాఖ్యానము Edit Commentary</h3>
+        <div class="verse-ref" id="modalVerseRef"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="verse-preview" id="modalVersePreview"></div>
+      <div class="editor-toolbar">
+        <button class="tb-btn" onclick="execEdit('bold')" title="Bold"><b>B</b></button>
+        <button class="tb-btn" onclick="execEdit('underline')" title="Underline"><u>U</u></button>
+        <button class="tb-btn" onclick="execEdit('italic')" title="Italic"><i>I</i></button>
+        <span class="tb-divider"></span>
+        <button class="tb-btn" onclick="execEdit('formatBlock',false,'h1')" title="Heading 1"><b>H1</b></button>
+        <button class="tb-btn" onclick="execEdit('formatBlock',false,'h2')" title="Heading 2"><b>H2</b></button>
+        <button class="tb-btn" onclick="execEdit('formatBlock',false,'h3')" title="Heading 3"><b>H3</b></button>
+        <button class="tb-btn" onclick="execEdit('formatBlock',false,'p')" title="Normal text"><b>P</b></button>
+        <span class="tb-divider"></span>
+        <button class="tb-btn" onclick="execEdit('insertUnorderedList')" title="Bullet list">&#8226;</button>
+        <button class="tb-btn" onclick="execEdit('insertOrderedList')" title="Number list">1.</button>
+        <span class="tb-divider"></span>
+        <span class="tb-color-wrap"><input type="color" class="tb-color-input" onchange="execEdit('foreColor',false,this.value)" title="Text color"></span>
+        <span class="tb-color-wrap"><input type="color" class="tb-color-input" onchange="execEdit('hiliteColor',false,this.value)" title="Highlight color"></span>
+        <span class="tb-divider"></span>
+        <button class="tb-btn" onclick="insertXrefLink()" title="Insert cross-reference">&#128279;</button>
+        <button class="tb-btn" onclick="execEdit('removeFormat')" title="Clear formatting">&#10005;</button>
+      </div>
+      <div class="editor-area" id="commentaryEditor" contenteditable="true" data-placeholder="మీ వ్యాఖ్యానము ఇక్కడ రాయండి... Write your commentary here..."></div>
+      <div class="highlight-options">
+        <label>Highlight:</label>
+        <div class="highlight-color" style="background:#fff3cd" data-color="yellow" onclick="selectHighlight('yellow')"></div>
+        <div class="highlight-color" style="background:#d4edda" data-color="green" onclick="selectHighlight('green')"></div>
+        <div class="highlight-color" style="background:#cce5ff" data-color="blue" onclick="selectHighlight('blue')"></div>
+        <div class="highlight-color" style="background:#f8d7da" data-color="pink" onclick="selectHighlight('pink')"></div>
+        <div class="highlight-color" style="background:#ffe0b2" data-color="orange" onclick="selectHighlight('orange')"></div>
+        <button class="btn btn-secondary" style="margin-left:auto;padding:4px 12px;font-size:12px;min-height:36px" onclick="removeHighlight()">Remove</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" id="deleteCommentaryBtn" onclick="deleteCommentary()" style="margin-right:auto;display:none">Delete</button>
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveCommentary()">Save</button>
+    </div>
+  </div>
+</div>
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+<!-- Cross-reference Popup -->
+<div class="xref-popup" id="xrefPopup">
+  <div class="xref-card">
+    <div class="xref-header">
+      <div>
+        <div class="xref-ref" id="xrefRef"></div>
+        <div class="xref-ref-te" id="xrefRefTe"></div>
+      </div>
+      <button class="xref-close" onclick="closeXrefPopup()">&times;</button>
+    </div>
+    <div class="xref-body" id="xrefBody"></div>
+    <div class="xref-footer">
+      <button class="btn btn-secondary" onclick="closeXrefPopup()">Close</button>
+      <button class="btn btn-primary" id="xrefGoBtn" onclick="xrefGoToVerse()">Go to verse</button>
+    </div>
+  </div>
+</div>
+<script>
+// ===== DATA =====
+const BOOKS = [
+  {en:"Genesis",te:"ఆదికాండము"},{en:"Exodus",te:"నిర్గమకాండము"},{en:"Leviticus",te:"లేవీయకాండము"},
+  {en:"Numbers",te:"సంఖ్యాకాండము"},{en:"Deuteronomy",te:"ద్వితీయోపదేశకాండము"},{en:"Joshua",te:"యెహొషువ"},
+  {en:"Judges",te:"న్యాయాధిపతులు"},{en:"Ruth",te:"రూతు"},{en:"1 Samuel",te:"సమూయేలు మొదటి గ్రంథము"},
+  {en:"2 Samuel",te:"సమూయేలు రెండవ గ్రంథము"},{en:"1 Kings",te:"రాజులు మొదటి గ్రంథము"},{en:"2 Kings",te:"రాజులు రెండవ గ్రంథము"},
+  {en:"1 Chronicles",te:"దినవృత్తాంతములు మొదటి గ్రంథము"},{en:"2 Chronicles",te:"దినవృత్తాంతములు రెండవ గ్రంథము"},
+  {en:"Ezra",te:"ఎజ్రా"},{en:"Nehemiah",te:"నెహెమ్యా"},{en:"Esther",te:"ఎస్తేరు"},{en:"Job",te:"యోబు గ్రంథము"},
+  {en:"Psalms",te:"కీర్తనల గ్రంథము"},{en:"Proverbs",te:"సామెతలు"},{en:"Ecclesiastes",te:"ప్రసంగి"},
+  {en:"Song of Songs",te:"పరమగీతము"},{en:"Isaiah",te:"యెషయా గ్రంథము"},{en:"Jeremiah",te:"యిర్మీయా"},
+  {en:"Lamentations",te:"విలాపవాక్యములు"},{en:"Ezekiel",te:"యెహెజ్కేలు"},{en:"Daniel",te:"దానియేలు"},
+  {en:"Hosea",te:"హొషేయ"},{en:"Joel",te:"యోవేలు"},{en:"Amos",te:"ఆమోసు"},{en:"Obadiah",te:"ఓబద్యా"},
+  {en:"Jonah",te:"యోనా"},{en:"Micah",te:"మీకా"},{en:"Nahum",te:"నహూము"},{en:"Habakkuk",te:"హబక్కూకు"},
+  {en:"Zephaniah",te:"జెఫన్యా"},{en:"Haggai",te:"హగ్గయి"},{en:"Zechariah",te:"జెకర్యా"},
+  {en:"Malachi",te:"మలాకీ"},{en:"Matthew",te:"మత్తయి సువార్త"},{en:"Mark",te:"మార్కు సువార్త"},
+  {en:"Luke",te:"లూకా సువార్త"},{en:"John",te:"యోహాను సువార్త"},{en:"Acts",te:"అపొస్తలుల కార్యములు"},
+  {en:"Romans",te:"రోమీయులకు"},{en:"1 Corinthians",te:"1 కొరింథీయులకు"},{en:"2 Corinthians",te:"2 కొరింథీయులకు"},
+  {en:"Galatians",te:"గలతీయులకు"},{en:"Ephesians",te:"ఎఫెసీయులకు"},{en:"Philippians",te:"ఫిలిప్పీయులకు"},
+  {en:"Colossians",te:"కొలొస్సయులకు"},{en:"1 Thessalonians",te:"1 థెస్సలొనీకయులకు"},
+  {en:"2 Thessalonians",te:"2 థెస్సలొనీకయులకు"},{en:"1 Timothy",te:"1 తిమోతికి"},
+  {en:"2 Timothy",te:"2 తిమోతికి"},{en:"Titus",te:"తీతుకు"},{en:"Philemon",te:"ఫిలేమోనుకు"},
+  {en:"Hebrews",te:"హెబ్రీయులకు"},{en:"James",te:"యాకోబు"},{en:"1 Peter",te:"1 పేతురు"},
+  {en:"2 Peter",te:"2 పేతురు"},{en:"1 John",te:"1 యోహాను"},{en:"2 John",te:"2 యోహాను"},
+  {en:"3 John",te:"3 యోహాను"},{en:"Jude",te:"యూదా"},{en:"Revelation",te:"ప్రకటన గ్రంథము"}
+];
+const ABBREV = {
+  gen:0,ex:1,lev:2,num:3,deut:4,josh:5,judg:6,ruth:7,"1sam":8,"2sam":9,"1kg":10,"2kg":11,
+  "1chr":12,"2chr":13,ezra:14,neh:15,est:16,job:17,ps:18,psa:18,prov:19,eccl:20,song:21,
+  isa:22,jer:23,lam:24,ezek:25,dan:26,hos:27,joel:28,amos:29,obad:30,jon:31,mic:32,nah:33,
+  hab:34,zep:35,hag:36,zec:37,mal:38,matt:39,mark:40,luke:41,john:42,acts:43,rom:44,
+  "1cor":45,"2cor":46,gal:47,eph:48,phil:49,col:50,"1thes":51,"2thes":52,"1tim":53,"2tim":54,
+  titus:55,phlm:56,heb:57,jas:58,"1pet":59,"2pet":60,"1john":61,"2john":62,"3john":63,jude:64,rev:65
+};
+const BIBLE_CDN_URL = "https://cdn.jsdelivr.net/gh/godlytalias/Bible-Database@master/Telugu/bible.json";
+// ===== STATE =====
+let bibleData = null;
+let currentBook = 0, currentChapter = 0;
+let currentVerseForCommentary = null;
+let selectedHighlight = null;
+let searchMode = false;
+// ===== STORAGE =====
+function getCommentary(book, chapter, verse) {
+  const key = `c_${book}_${chapter}_${verse}`;
+  return localStorage.getItem(key);
+}
+function setCommentary(book, chapter, verse, text) {
+  const key = `c_${book}_${chapter}_${verse}`;
+  if (text && text.trim()) { localStorage.setItem(key, text); }
+  else { localStorage.removeItem(key); }
+}
+function deleteCommentaryData(book, chapter, verse) {
+  localStorage.removeItem(`c_${book}_${chapter}_${verse}`);
+}
+function getHighlight(book, chapter, verse) {
+  return localStorage.getItem(`h_${book}_${chapter}_${verse}`) || '';
+}
+function setHighlight(book, chapter, verse, color) {
+  const key = `h_${book}_${chapter}_${verse}`;
+  if (color) localStorage.setItem(key, color);
+  else localStorage.removeItem(key);
+}
+function setVerseHighlight(verseIdx, color) {
+  setHighlight(currentBook, currentChapter, verseIdx, color);
+  showChapter();
+}
+function getVerseEdit(book, chapter, verse) {
+  return localStorage.getItem(`v_${book}_${chapter}_${verse}`);
+}
+function setVerseEdit(book, chapter, verse, text) {
+  const key = `v_${book}_${chapter}_${verse}`;
+  if (text && text.trim() && text.trim() !== (bibleData?.Book[book]?.Chapter[chapter]?.Verse[verse]?.Verse || '').trim())
+    localStorage.setItem(key, text);
+  else localStorage.removeItem(key);
+}
+function getDisplayVerseText(book, chapter, verse) {
+  const edited = getVerseEdit(book, chapter, verse);
+  if (edited !== null) return edited;
+  return bibleData?.Book[book]?.Chapter[chapter]?.Verse[verse]?.Verse || '';
+}
+function getBookmarks() {
+  try { return JSON.parse(localStorage.getItem('bookmarks') || '[]'); }
+  catch(e) { return []; }
+}
+function toggleBookmark(book, chapter, verse) {
+  const id = `${book}_${chapter}_${verse}`;
+  let marks = getBookmarks();
+  const idx = marks.indexOf(id);
+  if (idx >= 0) { marks.splice(idx, 1); showToast('గుర్తు తీసివేయబడింది Bookmark removed'); }
+  else { marks.push(id); showToast('గుర్తు చేయబడింది Bookmarked!'); }
+  localStorage.setItem('bookmarks', JSON.stringify(marks));
+}
+function isBookmarked(book, chapter, verse) {
+  return getBookmarks().includes(`${book}_${chapter}_${verse}`);
+}
+// ===== BIBLE CACHING (IndexedDB + Cache API + memory fallback) =====
+let bibleCacheOK = false; // true once we confirm a cache method works
+
+// Try to request persistent storage so mobile browsers don't evict
+if (navigator.storage && navigator.storage.persist) {
+  navigator.storage.persist().catch(() => {});
+}
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    if (typeof indexedDB === 'undefined') { reject(new Error('IndexedDB unavailable')); return; }
+    let req;
+    try {
+      req = indexedDB.open('TeluguBibleDB');
+    } catch (e) { reject(e); return; }
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains('bible')) db.createObjectStore('bible');
+    };
+    req.onsuccess = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains('bible')) {
+        const currentVersion = db.version;
+        db.close();
+        const upgradeReq = indexedDB.open('TeluguBibleDB', currentVersion + 1);
+        upgradeReq.onupgradeneeded = (ue) => {
+          const udb = ue.target.result;
+          if (!udb.objectStoreNames.contains('bible')) udb.createObjectStore('bible');
+        };
+        upgradeReq.onsuccess = (ue) => resolve(ue.target.result);
+        upgradeReq.onerror = (ue) => reject(ue.target.error);
+      } else { resolve(db); }
+    };
+    req.onerror = (e) => reject(e.target.error);
+    req.onblocked = () => reject(new Error('Database blocked. Close other tabs.'));
+  });
+}
+
+// --- Strategy 1: IndexedDB ---
+async function cacheBible_IDB(data) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('bible', 'readwrite');
+    tx.objectStore('bible').put(data, 'fullBible');
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = () => reject(tx.error);
+  });
+}
+async function getCachedBible_IDB() {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('bible', 'readonly');
+    const req = tx.objectStore('bible').get('fullBible');
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+// --- Strategy 2: Cache API (Service Worker cache, works on mobile) ---
+async function cacheBible_CacheAPI(data) {
+  if (!('caches' in window)) throw new Error('Cache API unavailable');
+  const cache = await caches.open('telugu-bible-cache');
+  const jsonStr = JSON.stringify(data);
+  const response = new Response(jsonStr, { headers: { 'Content-Type': 'application/json' } });
+  await cache.put('bible-data', response);
+  return true;
+}
+async function getCachedBible_CacheAPI() {
+  if (!('caches' in window)) return null;
+  const cache = await caches.open('telugu-bible-cache');
+  const response = await cache.match('bible-data');
+  if (!response) return null;
+  const text = await response.text();
+  return JSON.parse(text);
+}
+
+// --- Unified cache functions with automatic fallback ---
+async function cacheBible(data) {
+  // Try IndexedDB first
+  try {
+    await cacheBible_IDB(data);
+    bibleCacheOK = true;
+    return;
+  } catch (e) {
+    console.warn('IndexedDB cache failed, trying Cache API:', e.message);
+  }
+  // Try Cache API
+  try {
+    await cacheBible_CacheAPI(data);
+    bibleCacheOK = true;
+    return;
+  } catch (e2) {
+    console.warn('Cache API failed, Bible will re-fetch on next load:', e2.message);
+  }
+  // No cache available — app still works, just re-fetches each time
+}
+
+async function getCachedBible() {
+  // Try IndexedDB first
+  try {
+    const data = await getCachedBible_IDB();
+    if (data) { bibleCacheOK = true; return data; }
+  } catch (e) {
+    console.warn('IndexedDB read failed, trying Cache API:', e.message);
+  }
+  // Try Cache API
+  try {
+    const data = await getCachedBible_CacheAPI();
+    if (data) { bibleCacheOK = true; return data; }
+  } catch (e2) {
+    console.warn('Cache API read failed:', e2.message);
+  }
+  // No cached data — will fetch from CDN
+  return null;
+}
+// ===== PWA INSTALL + ICON SYSTEM =====
+const APP_ICONS = {
+  book: { name: 'Holy Book', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#4a6fa5"/><path d="M160 120 C130 120 110 130 110 150 L110 392 C110 412 130 412 160 402 C200 388 256 388 352 402 L352 150 C256 136 200 136 160 120 Z" fill="none" stroke="#fff" stroke-width="20" stroke-linejoin="round"/><line x1="256" y1="150" x2="256" y2="392" stroke="#fff" stroke-width="16"/></svg>' },
+  cross: { name: 'Cross', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#4a6fa5"/><rect x="232" y="100" width="48" height="312" fill="#fff" rx="8"/><rect x="140" y="180" width="232" height="48" fill="#fff" rx="8"/></svg>' },
+  dove: { name: 'Dove', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#4a6fa5"/><path d="M140 300 C140 220 200 160 290 160 C360 160 400 200 400 260 C400 280 390 300 370 310 C350 320 320 320 300 310 L280 360 L260 310 C220 330 180 330 140 300 Z" fill="#fff"/><circle cx="380" cy="260" r="12" fill="#4a6fa5"/></svg>' },
+  candle: { name: 'Candle', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#4a6fa5"/><path d="M256 80 C240 110 230 130 230 150 C230 170 242 185 256 185 C270 185 282 170 282 150 C282 130 272 110 256 80 Z" fill="#ffd700"/><rect x="232" y="185" width="48" height="200" fill="#fff" rx="8"/><rect x="200" y="385" width="112" height="24" fill="#fff" rx="8"/><rect x="190" y="409" width="132" height="16" fill="#fff" rx="6"/></svg>' },
+  scroll: { name: 'Scroll', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#4a6fa5"/><path d="M130 130 L340 130 C360 130 380 150 380 170 L380 342 C380 362 400 372 400 372 L170 372 C150 372 130 352 130 332 Z" fill="none" stroke="#fff" stroke-width="20" stroke-linejoin="round"/><path d="M130 130 C110 130 90 150 90 170 C90 190 110 200 130 200" fill="none" stroke="#fff" stroke-width="20" stroke-linejoin="round"/><line x1="170" y1="190" x2="330" y2="190" stroke="#fff" stroke-width="12" stroke-linecap="round"/><line x1="170" y1="230" x2="330" y2="230" stroke="#fff" stroke-width="12" stroke-linecap="round"/><line x1="170" y1="270" x2="290" y2="270" stroke="#fff" stroke-width="12" stroke-linecap="round"/></svg>' },
+  fish: { name: 'Fish (ICHTHYS)', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#4a6fa5"/><path d="M120 256 C160 190 250 170 330 190 L400 140 L380 256 L400 372 L330 322 C250 342 160 322 120 256 Z" fill="#fff"/><circle cx="340" cy="246" r="12" fill="#4a6fa5"/></svg>' },
+  sun: { name: 'Sun', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#4a6fa5"/><circle cx="256" cy="256" r="90" fill="#fff"/><g stroke="#fff" stroke-width="24" stroke-linecap="round"><line x1="256" y1="100" x2="256" y2="130"/><line x1="256" y1="382" x2="256" y2="412"/><line x1="100" y1="256" x2="130" y2="256"/><line x1="382" y1="256" x2="412" y2="256"/><line x1="145" y1="145" x2="166" y2="166"/><line x1="346" y1="346" x2="367" y2="367"/><line x1="367" y1="145" x2="346" y2="166"/><line x1="166" y1="346" x2="145" y2="367"/></g></svg>' }
+};
+function getCurrentIconSVG() {
+  const key = localStorage.getItem('appIcon') || 'book';
+  return APP_ICONS[key] ? APP_ICONS[key].svg : APP_ICONS.book.svg;
+}
+function svgToDataURL(svg) {
+  return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+}
+// Generate PNG icon from SVG using canvas (required for Android PWA)
+function svgToPNGDataURL(svg, size) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, size, size);
+      resolve(canvas.toDataURL('image/png'));
+    };
+    img.onerror = () => resolve(svgToDataURL(svg));
+    img.src = svgToDataURL(svg);
+  });
+}
+let _iconPNG192 = null, _iconPNG512 = null;
+async function applyAppIcon() {
+  const svg = getCurrentIconSVG();
+  const svgURL = svgToDataURL(svg);
+  // Apple touch icon (iOS uses SVG data URL, works fine)
+  let appleLink = document.getElementById('appleTouchIcon');
+  if (!appleLink) { appleLink = document.createElement('link'); appleLink.id = 'appleTouchIcon'; appleLink.rel = 'apple-touch-icon'; document.head.appendChild(appleLink); }
+  appleLink.href = svgURL;
+  // Favicon
+  let favLink = document.getElementById('favicon');
+  if (!favLink) { favLink = document.createElement('link'); favLink.id = 'favicon'; favLink.rel = 'icon'; document.head.appendChild(favLink); }
+  favLink.href = svgURL;
+  // Generate PNG icons for manifest (Android requires PNG)
+  try {
+    _iconPNG192 = await svgToPNGDataURL(svg, 192);
+    _iconPNG512 = await svgToPNGDataURL(svg, 512);
+  } catch(e) { console.warn('PNG icon generation failed:', e); }
+  updateManifest(svgURL, _iconPNG192, _iconPNG512);
+}
+function updateManifest(svgURL, png192, png512) {
+  const icons = [];
+  if (png192) icons.push({ src: png192, sizes: '192x192', type: 'image/png', purpose: 'any' });
+  if (png512) icons.push({ src: png512, sizes: '512x512', type: 'image/png', purpose: 'any' });
+  if (png512) icons.push({ src: png512, sizes: '512x512', type: 'image/png', purpose: 'maskable' });
+  icons.push({ src: svgURL, sizes: 'any', type: 'image/svg+xml', purpose: 'any' });
+  const start = location.href.split('#')[0].split('?')[0];
+  const manifest = {
+    id: start,
+    name: '\u0c24\u0c46\u0c32\u0c41\u0c17\u0c41 \u0c2c\u0c48\u0c2c\u0c3f\u0c32\u0c4d \u0c35\u0c4d\u0c2f\u0c3e\u0c16\u0c4d\u0c2f\u0c3e\u0c28\u0c2e\u0c41 | Telugu Bible Commentary',
+    short_name: 'Telugu Bible',
+    description: 'Read Telugu Bible with personal commentary, bookmarks, highlights',
+    start_url: start,
+    scope: './',
+    display: 'standalone',
+    display_override: ['standalone', 'minimal-ui'],
+    orientation: 'any',
+    background_color: '#f5f3f0',
+    theme_color: '#4a6fa5',
+    categories: ['books', 'education', 'lifestyle'],
+    lang: 'te',
+    dir: 'ltr',
+    icons: icons
+  };
+  // Use data URL for manifest (more reliable than blob URL)
+  const manifestStr = JSON.stringify(manifest);
+  const dataURL = 'data:application/manifest+json,' + encodeURIComponent(manifestStr);
+  let link = document.getElementById('manifestLink');
+  if (!link) { link = document.createElement('link'); link.id = 'manifestLink'; link.rel = 'manifest'; document.head.appendChild(link); }
+  link.href = dataURL;
+}
+// Register service worker for PWA installability
+function registerSW() {
+  if (!('serviceWorker' in navigator)) return;
+  // Service workers require https: or http://localhost — not file://
+  if (location.protocol === 'file:') {
+    console.warn('Service Worker not available on file://. Host this file on HTTPS (or localhost) to enable Install.');
+    return;
+  }
+  // Pre-cache this HTML page + shell so the app is offline-capable and installable
+  const pageURL = location.href.split('#')[0].split('?')[0];
+  const swCode = `
+    const CACHE = 'telugu-bible-shell-v3';
+    const SHELL = ${JSON.stringify(pageURL)};
+    self.addEventListener('install', (e) => {
+      e.waitUntil(
+        caches.open(CACHE).then((c) => c.addAll([SHELL, './']).catch(() => c.add(SHELL).catch(() => {})))
+          .then(() => self.skipWaiting())
+      );
+    });
+    self.addEventListener('activate', (e) => {
+      e.waitUntil(
+        caches.keys().then((keys) =>
+          Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+        ).then(() => self.clients.claim())
+      );
+    });
+    self.addEventListener('fetch', (e) => {
+      if (e.request.method !== 'GET') return;
+      const url = new URL(e.request.url);
+      // Navigation requests → network first, fallback to cached shell
+      if (e.request.mode === 'navigate') {
+        e.respondWith(
+          fetch(e.request).then((resp) => {
+            const clone = resp.clone();
+            caches.open(CACHE).then((c) => c.put(SHELL, clone));
+            return resp;
+          }).catch(() => caches.match(SHELL).then((r) => r || caches.match(e.request)))
+        );
+        return;
+      }
+      // Other GETs: cache-first, then network
+      e.respondWith(
+        caches.match(e.request).then((cached) => {
+          if (cached) return cached;
+          return fetch(e.request).then((resp) => {
+            if (resp && resp.ok && (url.origin === location.origin || url.hostname.includes('jsdelivr') || url.hostname.includes('googleapis'))) {
+              const clone = resp.clone();
+              caches.open(CACHE).then((c) => c.put(e.request, clone));
+            }
+            return resp;
+          }).catch(() => caches.match(SHELL));
+        })
+      );
+    });
+  `;
+  try {
+    const blob = new Blob([swCode], { type: 'application/javascript' });
+    const swURL = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(swURL, { scope: './' })
+      .then((reg) => {
+        console.log('Service Worker registered for installability');
+        // Ensure controlling client so Chrome considers the app installable
+        if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      })
+      .catch((err) => console.warn('SW registration failed:', err.message));
+  } catch (e) {
+    console.warn('SW setup error:', e.message);
+  }
+}
+
+// PWA install prompt
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallButton();
+});
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  hideInstallButton();
+  showToast('యాప్ ఇన్‌స్టాల్ అయింది App installed!');
+});
+
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true ||
+    document.referrer.includes('android-app://');
+}
+
+function showInstallButton() {
+  if (isStandalone()) return;
+  const ids = ['installBtn', 'installBtnTop', 'installBtnSidebar', 'installBtnBottom'];
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = (id === 'installBtnBottom' || id === 'installBtnSidebar') ? 'flex' : 'flex';
+  });
+  // Hide theme slot slightly less critical on very small screens when install is shown
+  const banner = document.getElementById('installBanner');
+  if (banner && !localStorage.getItem('installBannerDismissed')) {
+    banner.style.display = 'flex';
+  }
+}
+
+function hideInstallButton() {
+  ['installBtn', 'installBtnTop', 'installBtnSidebar', 'installBtnBottom'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const banner = document.getElementById('installBanner');
+  if (banner) banner.style.display = 'none';
+}
+
+function dismissInstallBanner() {
+  const banner = document.getElementById('installBanner');
+  if (banner) banner.style.display = 'none';
+  localStorage.setItem('installBannerDismissed', '1');
+}
+
+async function promptInstall() {
+  // Already installed?
+  if (isStandalone()) {
+    showToast('యాప్ ఇప్పటికే ఇన్‌స్టాల్ అయింది Already installed');
+    return;
+  }
+  // Chrome/Edge/Android: native install prompt
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') hideInstallButton();
+    deferredPrompt = null;
+    return;
+  }
+  // iOS Safari — no beforeinstallprompt; guide the user
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (isIOS) {
+    showToast('Share బటన్ (□↑) నొక్కి → “Add to Home Screen” ఎంచుకోండి');
+    return;
+  }
+  // file:// or non-HTTPS
+  if (location.protocol === 'file:') {
+    showToast('Install కోసం ఈ ఫైల్‌ను HTTPS సర్వర్‌లో హోస్ట్ చేయండి (GitHub Pages / Netlify)');
+    return;
+  }
+  // Generic fallback
+  showToast('బ్రౌజర్ మెను → Install App / Add to Home Screen');
+}
+
+function changeAppIcon(iconKey) {
+  localStorage.setItem('appIcon', iconKey);
+  applyAppIcon();
+  showToast('ఐకాన్ మార్చబడింది Icon changed! Re-add to home screen to see new icon.');
+}
+
+// Initialize PWA on load
+applyAppIcon();
+registerSW();
+if (isStandalone()) {
+  hideInstallButton();
+} else {
+  // Some browsers fire beforeinstallprompt late; also show manual install entry points after load
+  setTimeout(() => {
+    if (!isStandalone() && location.protocol !== 'file:') {
+      // Keep settings Install button visible so user can always try
+      const btn = document.getElementById('installBtn');
+      if (btn) btn.style.display = 'flex';
+      const side = document.getElementById('installBtnSidebar');
+      if (side) side.style.display = 'flex';
+    }
+  }, 2500);
+}
+// ===== LOAD BIBLE =====
+async function loadBible() {
+  try {
+    // Try cache first (IndexedDB -> Cache API -> null)
+    const cached = await getCachedBible();
+    if (cached) {
+      bibleData = cached;
+      document.getElementById('loadingText').textContent = 'క్యాచ్ నుండి లోడ్ అయింది Loaded from cache';
+      setTimeout(() => initApp(), 300);
+      return;
+    }
+    // No cache — fetch from CDN
+    document.getElementById('loadingText').textContent = 'డౌన్‌లోడ్ అవుతోంది Downloading Bible...';
+    const response = await fetch(BIBLE_CDN_URL);
+    if (!response.ok) throw new Error('Download failed');
+    const reader = response.body.getReader();
+    const contentLength = +response.headers.get('Content-Length') || 12000000;
+    let received = 0, chunks = [];
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      chunks.push(value);
+      received += value.length;
+      const pct = Math.min(100, Math.round(received / contentLength * 100));
+      document.getElementById('progressFill').style.width = pct + '%';
+    }
+    const totalLen = chunks.reduce((s, c) => s + c.length, 0);
+    const merged = new Uint8Array(totalLen);
+    let offset = 0;
+    for (const c of chunks) { merged.set(c, offset); offset += c.length; }
+    const text = new TextDecoder('utf-8').decode(merged);
+    bibleData = JSON.parse(text);
+    // Try to cache (non-blocking — app works even if caching fails)
+    document.getElementById('loadingText').textContent = 'సేవ్ అవుతోంది Caching for offline...';
+    try {
+      await cacheBible(bibleData);
+    } catch (cacheErr) {
+      console.warn('Caching failed, app will re-fetch next time:', cacheErr.message);
+    }
+    initApp();
+  } catch (err) {
+    document.getElementById('loadingText').innerHTML =
+      'లోడ్ విఫలమైంది. దయచేసి మళ్లీ ప్రయత్నించండి.<br>Error: ' + err.message +
+      '<br><button class="btn btn-primary" style="margin-top:12px" onclick="location.reload()">Retry</button>';
+  }
+}
+// ===== INIT =====
+function initApp() {
+  renderBookList();
+  const saved = localStorage.getItem('lastPos');
+  if (saved) {
+    const [b, c] = saved.split('_').map(Number);
+    currentBook = b; currentChapter = c;
+  } else { currentBook = 42; currentChapter = 2; }
+  showChapter();
+  loadTheme();
+  loadFont();
+  setupSwipe();
+}
+function renderBookList() {
+  const html = BOOKS.map((b, i) =>
+    `<div class="book-item ${i === currentBook ? 'active' : ''}" onclick="selectBook(${i})">
+      <div><div class="book-te">${b.te}</div><div class="book-en">${b.en}</div></div>
+    </div>`).join('');
+  document.getElementById('bookList').innerHTML = html;
+}
+function selectBook(idx) {
+  currentBook = idx; currentChapter = 0;
+  document.querySelectorAll('.book-item').forEach((el, i) =>
+    el.classList.toggle('active', i === idx));
+  showChapter();
+  if (window.innerWidth <= 768) closeSidebar();
+}
+function showChapter() {
+  if (!bibleData) return;
+  const book = bibleData.Book[currentBook];
+  if (!book || !book.Chapter || currentChapter >= book.Chapter.length) return;
+  const chapter = book.Chapter[currentChapter];
+  const verses = chapter.Verse || [];
+  const bookInfo = BOOKS[currentBook];
+  document.getElementById('breadcrumb').innerHTML =
+    `<span class="te">${bookInfo.te}</span> <span class="en">${bookInfo.en} ${currentChapter + 1}</span>`;
+  searchMode = false;
+  let html = `<div class="chapter-header">
+    <h2>${bookInfo.te} ${currentChapter + 1}</h2>
+    <div class="en">${bookInfo.en} Chapter ${currentChapter + 1}</div>
+  </div><div class="verse-container">`;
+  verses.forEach((v, vi) => {
+    const verseText = getDisplayVerseText(currentBook, currentChapter, vi);
+    const originalText = v.Verse || '';
+    const isEdited = getVerseEdit(currentBook, currentChapter, vi) !== null;
+    const commentary = getCommentary(currentBook, currentChapter, vi);
+    const highlight = getHighlight(currentBook, currentChapter, vi);
+    const bookmarked = isBookmarked(currentBook, currentChapter, vi);
+    const hlClass = highlight ? `highlighted-${highlight}` : '';
+    html += `<div class="verse-row ${hlClass}" id="verse_${vi}">
+      <div class="verse-text" onclick="openCommentary(${vi})">
+        ${commentary ? '<div class="commentary-indicator"></div>' : ''}
+        ${bookmarked ? '<div class="bookmark-indicator">&#128278;</div>' : ''}
+        ${isEdited ? '<div class="verse-edit-indicator">&#9999;</div>' : ''}
+        <span class="verse-num">${vi + 1}</span>
+        <span class="verse-content">${escapeHtml(fixTeluguText(verseText))}</span>
+      </div>
+      <div class="verse-menu-wrap">
+        <button class="verse-menu-btn" onclick="event.stopPropagation();toggleVerseMenu(${vi})" title="Menu">&#8943;</button>
+        <div class="verse-dropdown" id="dd_${vi}">
+          <div class="verse-dropdown-item" onclick="event.stopPropagation();closeVerseMenu(${vi});openCommentary(${vi})">
+            <span class="dd-icon">&#128221;</span> Commentary
+          </div>
+          ${commentary ? `<div class="verse-dropdown-item" onclick="event.stopPropagation();closeVerseMenu(${vi});toggleCommentary(${vi})"><span class="dd-icon">${document.getElementById('commentary_' + vi) && document.getElementById('commentary_' + vi).style.display !== 'none' ? '&#9650;' : '&#9660;'}</span> ${document.getElementById('commentary_' + vi) && document.getElementById('commentary_' + vi).style.display !== 'none' ? 'Hide' : 'Show'} Commentary</div>` : ''}
+          <div class="verse-dropdown-item" onclick="event.stopPropagation();closeVerseMenu(${vi});openVerseEditor(${vi})">
+            <span class="dd-icon">&#9998;</span> Edit Verse
+          </div>
+          <div class="verse-dropdown-item" onclick="event.stopPropagation();closeVerseMenu(${vi});toggleBookmark(${vi})">
+            <span class="dd-icon">&#128278;</span> ${bookmarked ? 'Remove Bookmark' : 'Bookmark'}
+          </div>
+          <div class="verse-dropdown-sep"></div>
+          <div class="verse-dropdown-label">Highlight</div>
+          <div class="verse-dropdown-item" onclick="event.stopPropagation();closeVerseMenu(${vi});setVerseHighlight(${vi},'yellow')">
+            <span class="dd-icon" style="color:#daa520">&#9679;</span> Yellow
+          </div>
+          <div class="verse-dropdown-item" onclick="event.stopPropagation();closeVerseMenu(${vi});setVerseHighlight(${vi},'green')">
+            <span class="dd-icon" style="color:#22863a">&#9679;</span> Green
+          </div>
+          <div class="verse-dropdown-item" onclick="event.stopPropagation();closeVerseMenu(${vi});setVerseHighlight(${vi},'blue')">
+            <span class="dd-icon" style="color:#0366d6">&#9679;</span> Blue
+          </div>
+          <div class="verse-dropdown-item" onclick="event.stopPropagation();closeVerseMenu(${vi});setVerseHighlight(${vi},'pink')">
+            <span class="dd-icon" style="color:#d73a49">&#9679;</span> Pink
+          </div>
+          <div class="verse-dropdown-item" onclick="event.stopPropagation();closeVerseMenu(${vi});setVerseHighlight(${vi},'orange')">
+            <span class="dd-icon" style="color:#e67e22">&#9679;</span> Orange
+          </div>
+          ${highlight ? `<div class="verse-dropdown-item" onclick="event.stopPropagation();closeVerseMenu(${vi});setVerseHighlight(${vi},'')"><span class="dd-icon">&#10005;</span> Remove Highlight</div>` : ''}
+        </div>
+      </div>`;
+    if (commentary) {
+      html += `<div class="verse-commentary" id="commentary_${vi}" style="display:none">
+        <div class="commentary-body">${processCommentaryForDisplay(commentary)}</div>
+      </div>`;
+    }
+    html += `</div>`;
+  });
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
+  document.getElementById('content').scrollTop = 0;
+  document.getElementById('prevBtn').disabled = (currentBook === 0 && currentChapter === 0);
+  const totalChapters = bibleData.Book[currentBook].Chapter.length;
+  const isLastChapter = (currentBook === 65 && currentChapter === totalChapters - 1);
+  document.getElementById('nextBtn').disabled = isLastChapter;
+  localStorage.setItem('lastPos', `${currentBook}_${currentChapter}`);
+}
+function navigateChapter(dir) {
+  if (!bibleData) return;
+  const book = bibleData.Book[currentBook];
+  const newChapter = currentChapter + dir;
+  if (newChapter < 0) {
+    if (currentBook > 0) {
+      currentBook--; currentChapter = bibleData.Book[currentBook].Chapter.length - 1;
+      document.querySelectorAll('.book-item').forEach((el, i) =>
+        el.classList.toggle('active', i === currentBook));
+      showChapter();
+    }
+  } else if (newChapter >= book.Chapter.length) {
+    if (currentBook < 65) {
+      currentBook++; currentChapter = 0;
+      document.querySelectorAll('.book-item').forEach((el, i) =>
+        el.classList.toggle('active', i === currentBook));
+      showChapter();
+    }
+  } else { currentChapter = newChapter; showChapter(); }
+}
+// ===== SWIPE GESTURES =====
+function setupSwipe() {
+  const content = document.getElementById('content');
+  let startX = 0, startY = 0, isSwiping = false;
+  content.addEventListener('touchstart', (e) => {
+    if (e.target.closest('button') || e.target.closest('.verse-text') ||
+        e.target.closest('.search-result-item') || e.target.closest('.bookmark-item') ||
+        e.target.closest('input') || e.target.closest('textarea')) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isSwiping = false;
+  }, { passive: true });
+  content.addEventListener('touchmove', (e) => {
+    if (!startX) return;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) isSwiping = true;
+  }, { passive: true });
+  content.addEventListener('touchend', (e) => {
+    if (!isSwiping || !startX) { startX = 0; return; }
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 80) {
+      if (dx > 0) navigateChapter(-1);
+      else navigateChapter(1);
+    }
+    startX = 0; isSwiping = false;
+  }, { passive: true });
+}
+// ===== COMMENTARY MODAL =====
+function openCommentary(verseIdx) {
+  currentVerseForCommentary = verseIdx;
+  const book = bibleData.Book[currentBook];
+  const verse = book.Chapter[currentChapter].Verse[verseIdx];
+  const verseText = verse.Verse || '';
+  const commentary = getCommentary(currentBook, currentChapter, verseIdx) || '';
+  const existingHl = getHighlight(currentBook, currentChapter, verseIdx);
+  document.getElementById('modalVerseRef').textContent =
+    `${BOOKS[currentBook].en} ${currentChapter + 1}:${verseIdx + 1}`;
+  document.getElementById('modalVersePreview').innerHTML =
+    `<div class="preview-label">వచనము | Verse</div><strong>${verseIdx + 1}.</strong> ${escapeHtml(fixTeluguText(verseText))}`;
+  // Set editor content - backward compat: plain text gets wrapped in <p>
+  const editor = document.getElementById('commentaryEditor');
+  if (commentary && commentary.includes('<')) {
+    editor.innerHTML = commentary;
+  } else if (commentary) {
+    editor.innerHTML = '<p>' + escapeHtml(commentary).replace(/\n/g, '</p><p>') + '</p>';
+  } else {
+    editor.innerHTML = '';
+  }
+  document.getElementById('deleteCommentaryBtn').style.display = commentary ? 'flex' : 'none';
+  selectedHighlight = existingHl || null;
+  document.querySelectorAll('.highlight-color').forEach(el => {
+    el.classList.toggle('selected', el.dataset.color === existingHl);
+  });
+  document.getElementById('commentaryModal').classList.add('active');
+  setTimeout(() => document.getElementById('commentaryEditor').focus(), 300);
+}
+function closeModal() {
+  // If we were in verse edit mode, restore
+  if (currentVerseEditText !== null) closeVerseEditor();
+  document.getElementById('commentaryModal').classList.remove('active');
+  currentVerseForCommentary = null; selectedHighlight = null;
+}
+function selectHighlight(color) {
+  selectedHighlight = color;
+  document.querySelectorAll('.highlight-color').forEach(el =>
+    el.classList.toggle('selected', el.dataset.color === color));
+}
+function removeHighlight() {
+  selectedHighlight = null;
+  document.querySelectorAll('.highlight-color').forEach(el => el.classList.remove('selected'));
+}
+function saveCommentary() {
+  if (currentVerseForCommentary === null) return;
+  const editor = document.getElementById('commentaryEditor');
+  let html = editor.innerHTML.trim();
+  // Don't save if empty or just whitespace/<br>
+  if (!html || html === '<br>' || html === '<p><br></p>') html = '';
+  setCommentary(currentBook, currentChapter, currentVerseForCommentary, html);
+  setHighlight(currentBook, currentChapter, currentVerseForCommentary, selectedHighlight);
+  closeModal(); showChapter();
+  showToast('భద్రపరచబడింది Saved!');
+}
+function deleteCommentary() {
+  if (currentVerseForCommentary === null) return;
+  deleteCommentaryData(currentBook, currentChapter, currentVerseForCommentary);
+  setHighlight(currentBook, currentChapter, currentVerseForCommentary, null);
+  closeModal(); showChapter();
+  showToast('తొలగించబడింది Deleted');
+}
+// ===== SEARCH =====
+function handleSearchKey(e) {
+  if (e.key === 'Enter') { doSearch(document.getElementById('searchInput').value);
+    if (window.innerWidth <= 768) document.getElementById('searchInput').blur(); }
+}
+function goSearch() {
+  document.getElementById('searchInput').focus();
+  closeSidebar();
+}
+function showFindPanelMobile() {
+  if (!bibleData) { showToast('బైబిల్ లోడ్ అవుతోంది... Loading...'); return; }
+  // Open sidebar
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('show');
+  // Switch to find tab
+  document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+  const findTab = document.querySelector('.sidebar-tab[data-tab="find"]');
+  if (findTab) findTab.classList.add('active');
+  showFindPanel();
+}
+function doSearch(query) {
+  if (!query || !query.trim() || !bibleData) return;
+  query = query.trim();
+  const refMatch = query.toLowerCase().match(/^(.+?)\s+(\d+)(?::(\d+))?$/);
+  if (refMatch) {
+    const bookName = refMatch[1].replace(/\s+/g, '').replace(/\./g, '');
+    const bookIdx = ABBREV[bookName] !== undefined ? ABBREV[bookName] :
+      BOOKS.findIndex(b => b.en.toLowerCase().replace(/\s+/g, '').includes(bookName) ||
+                           b.te.includes(query.split(/\s+\d/)[0]));
+    if (bookIdx >= 0) {
+      const ch = parseInt(refMatch[2]) - 1;
+      const vs = refMatch[3] ? parseInt(refMatch[3]) - 1 : null;
+      currentBook = bookIdx; currentChapter = ch;
+      if (ch >= 0 && ch < bibleData.Book[bookIdx].Chapter.length) {
+        showChapter();
+        if (vs !== null && vs >= 0) {
+          setTimeout(() => {
+            const el = document.getElementById(`verse_${vs}`);
+            if (el) { el.scrollIntoView({behavior:'smooth', block:'center'});
+              el.style.transition='background 0.5s'; el.style.background='var(--highlight-yellow)';
+              setTimeout(() => el.style.background='', 2000); }
+          }, 200);
+        }
+        document.getElementById('searchInput').value = '';
+        return;
+      }
+    }
+  }
+  showSearchResults(query);
+}
+function showSearchResults(query) {
+  searchMode = true;
+  const results = [];
+  const lowerQ = query.toLowerCase();
+  for (let bi = 0; bi < bibleData.Book.length; bi++) {
+    const book = bibleData.Book[bi];
+    if (!book.Chapter) continue;
+    for (let ci = 0; ci < book.Chapter.length; ci++) {
+      const chapter = book.Chapter[ci];
+      if (!chapter.Verse) continue;
+      for (let vi = 0; vi < chapter.Verse.length; vi++) {
+        const text = getDisplayVerseText(bi, ci, vi);
+        if (text.toLowerCase().includes(lowerQ)) {
+          results.push({ book: bi, chapter: ci, verse: vi, text });
+          if (results.length >= 200) break;
+        }
+      }
+      if (results.length >= 200) break;
+    }
+    if (results.length >= 200) break;
+  }
+  const commentaryResults = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('c_')) {
+      const val = localStorage.getItem(key);
+      if (val && val.toLowerCase().includes(lowerQ)) {
+        const parts = key.split('_');
+        commentaryResults.push({ book: +parts[1], chapter: +parts[2], verse: +parts[3], commentary: val });
+        if (commentaryResults.length >= 100) break;
+      }
+    }
+  }
+  let html = `<div class="search-results">
+    <h2 style="margin-bottom:16px">శోధన ఫలితాలు Search Results</h2>
+    <div class="search-tabs">
+      <button class="search-tab active" onclick="showSearchTab('bible')">బైబిల్ (${results.length})</button>
+      <button class="search-tab" onclick="showSearchTab('commentary')">వ్యాఖ్యాన (${commentaryResults.length})</button>
+    </div>
+    <div id="bibleSearchResults">`;
+  if (results.length === 0) {
+    html += '<p style="color:var(--muted);padding:20px">ఫలితాలు లేవు No results found</p>';
+  } else {
+    html += results.map(r => {
+      const ref = `${BOOKS[r.book].en} ${r.chapter + 1}:${r.verse + 1}`;
+      const highlighted = escapeHtml(fixTeluguText(r.text)).replace(new RegExp(escapeRegex(query), 'gi'),
+        m => `<mark>${m}</mark>`);
+      return `<div class="search-result-item" onclick="goToVerse(${r.book},${r.chapter},${r.verse})">
+        <div class="search-result-ref">${BOOKS[r.book].te} ${r.chapter + 1}:${r.verse + 1} (${ref})</div>
+        <div class="search-result-text">${highlighted}</div>
+      </div>`;
+    }).join('');
+  }
+  html += `</div><div id="commentarySearchResults" style="display:none">`;
+  if (commentaryResults.length === 0) {
+    html += '<p style="color:var(--muted);padding:20px">వ్యాఖ్యాన ఫలితాలు లేవు No commentary results</p>';
+  } else {
+    html += commentaryResults.map(r => {
+      const ref = `${BOOKS[r.book].en} ${r.chapter + 1}:${r.verse + 1}`;
+      // Strip HTML tags for search preview, then highlight
+      const plainText = r.commentary.replace(/<[^>]+>/g, '');
+      const highlighted = escapeHtml(plainText).replace(new RegExp(escapeRegex(query), 'gi'),
+        m => `<mark>${m}</mark>`);
+      return `<div class="search-result-item" onclick="goToVerse(${r.book},${r.chapter},${r.verse})">
+        <div class="search-result-ref">${BOOKS[r.book].te} ${r.chapter + 1}:${r.verse + 1} (${ref})</div>
+        <div class="search-result-text">${highlighted}</div>
+      </div>`;
+    }).join('');
+  }
+  html += '</div></div>';
+  document.getElementById('content').innerHTML = html;
+  document.getElementById('breadcrumb').textContent = `Search: "${query}"`;
+}
+function showSearchTab(tab) {
+  document.querySelectorAll('.search-tab').forEach((el, i) =>
+    el.classList.toggle('active', (tab === 'bible' && i === 0) || (tab === 'commentary' && i === 1)));
+  document.getElementById('bibleSearchResults').style.display = tab === 'bible' ? 'block' : 'none';
+  document.getElementById('commentarySearchResults').style.display = tab === 'commentary' ? 'block' : 'none';
+}
+function goToVerse(book, chapter, verse) {
+  currentBook = book; currentChapter = chapter;
+  document.querySelectorAll('.book-item').forEach((el, i) =>
+    el.classList.toggle('active', i === book));
+  showChapter();
+  setTimeout(() => {
+    const el = document.getElementById(`verse_${verse}`);
+    if (el) { el.scrollIntoView({behavior:'smooth', block:'center'});
+      el.style.transition='background 0.5s'; el.style.background='var(--highlight-yellow)';
+      setTimeout(() => el.style.background='', 2000); }
+  }, 200);
+  document.getElementById('searchInput').value = '';
+}
+// ===== BOOKMARKS PANEL =====
+function showBookmarks() {
+  const marks = getBookmarks();
+  let html = '<div class="search-results"><h2 style="margin-bottom:16px">గుర్తులు Bookmarks</h2>';
+  if (marks.length === 0) {
+    html += '<p style="color:var(--muted);padding:20px">గుర్తులు లేవు No bookmarks yet</p>';
+  } else {
+    marks.sort();
+    html += marks.map(id => {
+      const [b, c, v] = id.split('_').map(Number);
+      const verseText = getDisplayVerseText(b, c, v);
+      const preview = verseText.substring(0, 80) + (verseText.length > 80 ? '...' : '');
+      return `<div class="bookmark-item">
+        <div onclick="goToVerse(${b},${c},${v})">
+          <div class="bookmark-ref">${BOOKS[b].te} ${c+1}:${v+1}</div>
+          <div class="bookmark-preview">${escapeHtml(fixTeluguText(preview))}</div>
+        </div>
+        <button class="bookmark-delete" onclick="removeBookmark('${id}')">&times;</button>
+      </div>`;
+    }).join('');
+  }
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
+  document.getElementById('breadcrumb').textContent = 'Bookmarks';
+}
+function removeBookmark(id) {
+  let marks = getBookmarks();
+  marks = marks.filter(m => m !== id);
+  localStorage.setItem('bookmarks', JSON.stringify(marks));
+  showBookmarks();
+  showToast('గుర్తు తీసివేయబడింది Removed');
+}
+// ===== SETTINGS =====
+function showSettings() {
+  let commentaryCount = 0, highlightCount = 0, verseEditCount = 0;
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith('c_')) commentaryCount++;
+    if (key.startsWith('h_')) highlightCount++;
+    if (key.startsWith('v_')) verseEditCount++;
+  }
+  const bookmarkCount = getBookmarks().length;
+  const savedFont = localStorage.getItem('teluguFont') || 'Noto Sans Telugu';
+  let html = `<div class="settings-panel">
+    <div class="setting-item">
+      <label>కళ్లు Dark Mode
+        <div class="toggle"><input type="checkbox" id="darkToggle" ${document.documentElement.dataset.theme === 'dark' ? 'checked' : ''} onchange="toggleTheme()"><span class="toggle-slider"></span></div>
+      </label>
+      <div class="desc">చీకటి థీమ్ Toggle dark/light theme</div>
+    </div>
+    <div class="setting-item">
+      <div style="font-size:15px;font-weight:500;margin-bottom:8px">ఫాంట్ Telugu Font</div>
+      <select id="fontSelect" onchange="changeFont(this.value)" style="width:100%;padding:10px 12px;font-size:15px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--card);color:var(--text);font-family:var(--telugu-font);outline:none">
+        <option value="Noto Sans Telugu" ${savedFont==='Noto Sans Telugu'?'selected':''}>Noto Sans Telugu (నోటో)</option>
+        <option value="Noto Serif Telugu" ${savedFont==='Noto Serif Telugu'?'selected':''}>Noto Serif Telugu (నోటో సెరిఫ్)</option>
+        <option value="Tenali Ramakrishna" ${savedFont==='Tenali Ramakrishna'?'selected':''}>Tenali Ramakrishna (తెనాలి)</option>
+        <option value="Mandali" ${savedFont==='Mandali'?'selected':''}>Mandali (మండలి)</option>
+        <option value="Peddana" ${savedFont==='Peddana'?'selected':''}>Peddana (పెద్దన)</option>
+        <option value="Suravaram" ${savedFont==='Suravaram'?'selected':''}>Suravaram (సురవరం)</option>
+        <option value="Ramabhadra" ${savedFont==='Ramabhadra'?'selected':''}>Ramabhadra (రామభద్ర)</option>
+      </select>
+      <div class="desc" style="margin-top:6px">తెలుగు ఫాంట్ ఎంచుకోండి Choose your preferred Telugu font</div>
+    </div>
+    <div class="setting-item">
+      <div style="font-size:15px;font-weight:500;margin-bottom:8px">గణాంకాలు Statistics</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="num">${commentaryCount}</div><div class="label">Commentaries</div></div>
+        <div class="stat-card"><div class="num">${bookmarkCount}</div><div class="label">Bookmarks</div></div>
+        <div class="stat-card"><div class="num">${highlightCount}</div><div class="label">Highlights</div></div>
+      </div>
+      <div class="stats-grid" style="margin-top:8px">
+        <div class="stat-card"><div class="num">${verseEditCount}</div><div class="label">Verse Edits</div></div>
+    </div>
+    <div class="setting-item">
+      <div style="font-size:15px;font-weight:500;margin-bottom:8px">బ్యాకప్ & రిస్టోర్ Backup & Restore</div>
+      <div class="desc">Export saves all your commentaries, bookmarks, and highlights as a JSON file. Import restores from a backup file.</div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="exportData()">Export Data</button>
+        <button class="btn btn-secondary" onclick="importDataClick()">Import Data</button>
+        <button class="btn btn-danger" onclick="clearAllData()">Clear All</button>
+      </div>
+    </div>
+    <div class="setting-item">
+      <div style="font-size:15px;font-weight:500;margin-bottom:8px">ఐకాన్ App Icon</div>
+      <div class="desc">యాప్ ఐకాన్ ఎంచుకోండి Choose your app icon (re-install to apply on home screen)</div>
+      <div id="iconGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px">
+        ${Object.entries(APP_ICONS).map(([key, ic]) => {
+          const sel = (localStorage.getItem('appIcon') || 'book') === key;
+          return `<div onclick="changeAppIcon('${key}');showSettings()" style="cursor:pointer;padding:8px;border:2px solid ${sel?'var(--accent)':'var(--border)'};border-radius:var(--radius-sm);text-align:center;background:var(--bg);transition:border 0.2s">
+            <img src="${svgToDataURL(ic.svg)}" style="width:40px;height:40px;border-radius:8px"/>
+            <div style="font-size:10px;margin-top:4px;color:var(--muted)">${ic.name}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    <div class="setting-item">
+      <div style="font-size:15px;font-weight:500;margin-bottom:8px">యాప్ ఇన్‌స్టాల్ Install App</div>
+      <div class="desc">హోమ్ స్క్రీన్‌కు జోడించి ఆఫ్‌లైన్‌లో ఉపయోగించండి. Install for offline use like a native app.</div>
+      <button id="installBtn" class="btn btn-primary" style="margin-top:12px" onclick="promptInstall()">&#128229; Install App</button>
+      <div id="installNote" style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.5">
+        <b>Android (Chrome):</b> Tap Install above, or browser menu → Install app<br>
+        <b>iPhone/iPad (Safari):</b> Share button (□↑) → Add to Home Screen<br>
+        <b>Note:</b> File must be opened from <b>https://</b> (not file://). Host free on GitHub Pages or Netlify.
+      </div>
+    </div>
+    <div class="setting-item">
+      <div style="font-size:15px;font-weight:500;margin-bottom:8px">మేఘ సింక్ Cloud Sync</div>
+      <div class="desc">Export your data to a JSON file and store it on Google Drive or Dropbox. On another device, use Import to load it.</div>
+    </div>
+    <div class="setting-item">
+      <div style="font-size:15px;font-weight:500;margin-bottom:8px">గురించి About</div>
+      <div class="desc">తెలుగు బైబిల్ వ్యాఖ్యానము యాప్<br>Telugu Bible Commentary App</div>
+      <div class="desc" style="margin-top:8px">Bible text: godlytalias/Bible-Database (GNU GPL v3)<br>Book names: aruljohn/Bible-telugu (MIT)</div>
+      <div class="desc" style="margin-top:8px">All your data is stored locally in your browser. Use Export regularly for backup.</div>
+    </div>
+  </div>`;
+  document.getElementById('content').innerHTML = html;
+  document.getElementById('breadcrumb').textContent = 'Settings';
+}
+// ===== EXPORT / IMPORT =====
+async function exportData() {
+  const data = { commentaries: {}, highlights: {}, verseEdits: {}, bookmarks: getBookmarks(), exported: new Date().toISOString() };
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith('c_')) data.commentaries[key] = localStorage.getItem(key);
+    if (key.startsWith('h_')) data.highlights[key] = localStorage.getItem(key);
+    if (key.startsWith('v_')) data.verseEdits[key] = localStorage.getItem(key);
+  }
+  const json = JSON.stringify(data, null, 2);
+  const filename = `bible_commentary_${new Date().toISOString().split('T')[0]}.json`;
+  // Try File System Access API (asks user for save location)
+  if (window.showSaveFilePicker) {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: filename,
+        types: [{ description: 'JSON Backup File', accept: { 'application/json': ['.json'] } }]
+      });
+      const writable = await handle.createWritable();
+      await writable.write(json);
+      await writable.close();
+      showToast('ఎక్స్‌పోర్ట్ అయింది Exported!');
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return; // user cancelled
+      // fall through to fallback
+    }
+  }
+  // Fallback: download
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  a.click(); URL.revokeObjectURL(url);
+  showToast('ఎక్స్‌పోర్ట్ అయింది Exported!');
+}
+async function importDataClick() {
+  // Try File System Access API (asks user to pick a file)
+  if (window.showOpenFilePicker) {
+    try {
+      const [handle] = await window.showOpenFilePicker({
+        types: [{ description: 'JSON Backup File', accept: { 'application/json': ['.json'] } }]
+      });
+      const file = await handle.getFile();
+      const text = await file.text();
+      doImport(text);
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return; // user cancelled
+      // fall through to fallback
+    }
+  }
+  // Fallback: hidden file input
+  document.getElementById('importFile').click();
+}
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => doImport(e.target.result);
+  reader.readAsText(file);
+  event.target.value = '';
+}
+function doImport(jsonStr) {
+  try {
+    const data = JSON.parse(jsonStr);
+    if (data.commentaries) Object.entries(data.commentaries).forEach(([k, v]) => localStorage.setItem(k, v));
+    if (data.highlights) Object.entries(data.highlights).forEach(([k, v]) => localStorage.setItem(k, v));
+    if (data.verseEdits) Object.entries(data.verseEdits).forEach(([k, v]) => localStorage.setItem(k, v));
+    if (data.bookmarks) localStorage.setItem('bookmarks', JSON.stringify(data.bookmarks));
+    showToast('ఇంపోర్ట్ అయింది Imported! ' +
+      (data.commentaries ? Object.keys(data.commentaries).length + ' commentaries' : ''));
+    showChapter();
+  } catch (err) { showToast('ఇంపోర్ట్ విఫలమైంది Import failed'); }
+}
+function clearAllData() {
+  if (!confirm('అన్ని వ్యాఖ్యానాలు, గుర్తులు, హైలైట్‌లు తొలగించబడతాయి. ఖచ్చితంగా?\nDelete ALL commentaries, bookmarks, and highlights?')) return;
+  const keys = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith('c_') || key.startsWith('h_') || key.startsWith('v_') || key === 'bookmarks') keys.push(key);
+  }
+  keys.forEach(k => localStorage.removeItem(k));
+  showToast('అన్నీ తొలగించబడ్డాయి All data cleared');
+  showSettings();
+}
+// ===== THEME =====
+function changeFont(font) {
+  localStorage.setItem('teluguFont', font);
+  document.documentElement.style.setProperty('--telugu-font', `'${font}', sans-serif`);
+  showToast('ఫాంట్ మార్చబడింది Font changed!');
+}
+function loadFont() {
+  const font = localStorage.getItem('teluguFont') || 'Noto Sans Telugu';
+  document.documentElement.style.setProperty('--telugu-font', `'${font}', sans-serif`);
+}
+function toggleTheme() {
+  const current = document.documentElement.dataset.theme || 'light';
+  const newTheme = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = newTheme;
+  localStorage.setItem('theme', newTheme);
+  const icon = newTheme === 'dark' ? '&#9788;' : '&#9790;';
+  document.getElementById('themeBtn').innerHTML = icon;
+  document.getElementById('themeBtnBottom').innerHTML = icon;
+  if (document.getElementById('breadcrumb').textContent === 'Settings') showSettings();
+}
+function loadTheme() {
+  const saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.dataset.theme = saved;
+  const icon = saved === 'dark' ? '&#9788;' : '&#9790;';
+  document.getElementById('themeBtn').innerHTML = icon;
+  document.getElementById('themeBtnBottom').innerHTML = icon;
+}
+// ===== SIDEBAR TABS =====
+document.querySelectorAll('.sidebar-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const tabName = tab.dataset.tab;
+    if (tabName === 'books') { renderBookList(); }
+    else if (tabName === 'find') { showFindPanel(); }
+    else if (tabName === 'bookmarks') { showBookmarksPanel(); }
+    else if (tabName === 'settings') { showSettingsPanel(); }
+  });
+});
+
+function showFindPanel() {
+  if (!bibleData) {
+    document.getElementById('bookList').innerHTML = '<p style="color:var(--sidebar-text);opacity:0.6;padding:20px;text-align:center">బైబిల్ లోడ్ అవుతోంది...<br>Loading Bible...</p>';
+    return;
+  }
+  const bookOpts = BOOKS.map((b, i) =>
+    `<option value="${i}" ${i === currentBook ? 'selected' : ''}>${b.te} · ${b.en}</option>`).join('');
+  const chCount = bibleData.Book[currentBook] ? (bibleData.Book[currentBook].Chapter || []).length : 0;
+  let chOpts = '';
+  for (let i = 0; i < chCount; i++)
+    chOpts += `<option value="${i}" ${i === currentChapter ? 'selected' : ''}>${i + 1}</option>`;
+  const curCh = bibleData.Book[currentBook] && bibleData.Book[currentBook].Chapter ? bibleData.Book[currentBook].Chapter[currentChapter] : null;
+  const vCount = curCh ? (curCh.Verse || []).length : 0;
+  let vOpts = '';
+  for (let i = 0; i < vCount; i++)
+    vOpts += `<option value="${i}">${i + 1}</option>`;
+  document.getElementById('bookList').innerHTML = `<div class="find-panel">
+    <label>పుస్తకము · Book</label>
+    <select id="findBook" onchange="updateFindChapters()">${bookOpts}</select>
+    <label>అధ్యాయం · Chapter</label>
+    <select id="findChapter" onchange="updateFindVerses()" ${chCount === 0 ? 'disabled' : ''}>${chOpts}</select>
+    <label>వచనం · Verse</label>
+    <select id="findVerse" ${vCount === 0 ? 'disabled' : ''}>${vOpts}</select>
+    <button class="go-btn" onclick="goFindVerse()">వెళ్ళు · Go</button>
+    <p class="find-hint">పుస్తకము, అధ్యాయం, వచనం ఎంచుకుని Go నొక్కండి.<br>Select book, chapter & verse, then tap Go.</p>
+  </div>`;
+}
+function updateFindChapters() {
+  const bookIdx = parseInt(document.getElementById('findBook').value);
+  const chCount = bibleData.Book[bookIdx] ? (bibleData.Book[bookIdx].Chapter || []).length : 0;
+  let opts = '';
+  for (let i = 0; i < chCount; i++) opts += `<option value="${i}">${i + 1}</option>`;
+  const chSel = document.getElementById('findChapter');
+  chSel.innerHTML = opts;
+  chSel.disabled = chCount === 0;
+  updateFindVerses();
+}
+function updateFindVerses() {
+  const bookIdx = parseInt(document.getElementById('findBook').value);
+  const chIdx = parseInt(document.getElementById('findChapter').value) || 0;
+  const ch = bibleData.Book[bookIdx] && bibleData.Book[bookIdx].Chapter ? bibleData.Book[bookIdx].Chapter[chIdx] : null;
+  const vCount = ch ? (ch.Verse || []).length : 0;
+  let opts = '';
+  for (let i = 0; i < vCount; i++) opts += `<option value="${i}">${i + 1}</option>`;
+  const vSel = document.getElementById('findVerse');
+  vSel.innerHTML = opts;
+  vSel.disabled = vCount === 0;
+}
+function goFindVerse() {
+  const bookIdx = parseInt(document.getElementById('findBook').value);
+  const chIdx = parseInt(document.getElementById('findChapter').value);
+  const vSel = document.getElementById('findVerse');
+  const vIdx = (vSel && vSel.value !== '' && !vSel.disabled) ? parseInt(vSel.value) : 0;
+  if (isNaN(bookIdx) || isNaN(chIdx)) { showToast('పుస్తకము మరియు అధ్యాయం ఎంచుకోండి'); return; }
+  goToVerse(bookIdx, chIdx, vIdx);
+  if (window.innerWidth <= 768) closeSidebar();
+}
+function showBookmarksPanel() {
+  const marks = getBookmarks();
+  let html = '<div style="padding:8px">';
+  if (marks.length === 0) {
+    html += '<p style="color:var(--sidebar-text);opacity:0.6;padding:20px;text-align:center">గుర్తులు లేవు<br>No bookmarks yet</p>';
+  } else {
+    marks.sort();
+    html += marks.map(id => {
+      const [b, c, v] = id.split('_').map(Number);
+      return `<div class="book-item" onclick="goToVerse(${b},${c},${v})">
+        <div><div class="book-te">${BOOKS[b].te} ${c+1}:${v+1}</div>
+        <div class="book-en">${BOOKS[b].en} ${c+1}:${v+1}</div></div>
+        <button class="bookmark-delete" onclick="event.stopPropagation();removeBookmark('${id}')">&times;</button>
+      </div>`;
+    }).join('');
+  }
+  html += '</div>';
+  document.getElementById('bookList').innerHTML = html;
+}
+function showSettingsPanel() {
+  let commentaryCount = 0, highlightCount = 0, verseEditCount = 0;
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith('c_')) commentaryCount++;
+    if (key.startsWith('h_')) highlightCount++;
+    if (key.startsWith('v_')) verseEditCount++;
+  }
+  const bookmarkCount = getBookmarks().length;
+  document.getElementById('bookList').innerHTML = `<div style="padding:12px">
+    <div class="book-item" onclick="exportData()">
+      <div><div class="book-te">Export Data</div><div class="book-en">Save backup file</div></div>
+    </div>
+    <div class="book-item" onclick="importDataClick()">
+      <div><div class="book-te">Import Data</div><div class="book-en">Restore from file</div></div>
+    </div>
+    <div class="book-item" onclick="toggleTheme()">
+      <div><div class="book-te">Dark/Light Mode</div><div class="book-en">Toggle theme</div></div>
+    </div>
+    <div class="book-item" onclick="showSettings()">
+      <div><div class="book-te">App Icon & Install</div><div class="book-en">Change icon, install app</div></div>
+    </div>
+    <div style="padding:12px">
+      <div style="font-size:13px;font-weight:500;margin-bottom:6px">Telugu Font</div>
+      <select onchange="changeFont(this.value)" style="width:100%;padding:8px;font-size:14px;border:1px solid rgba(255,255,255,0.2);border-radius:8px;background:rgba(255,255,255,0.1);color:#ecf0f1;font-family:var(--telugu-font);outline:none">
+        <option value="Noto Sans Telugu" ${(localStorage.getItem('teluguFont')||'Noto Sans Telugu')==='Noto Sans Telugu'?'selected':''}>Noto Sans Telugu</option>
+        <option value="Noto Serif Telugu" ${localStorage.getItem('teluguFont')==='Noto Serif Telugu'?'selected':''}>Noto Serif Telugu</option>
+        <option value="Tenali Ramakrishna" ${localStorage.getItem('teluguFont')==='Tenali Ramakrishna'?'selected':''}>Tenali Ramakrishna</option>
+        <option value="Mandali" ${localStorage.getItem('teluguFont')==='Mandali'?'selected':''}>Mandali</option>
+        <option value="Peddana" ${localStorage.getItem('teluguFont')==='Peddana'?'selected':''}>Peddana</option>
+        <option value="Suravaram" ${localStorage.getItem('teluguFont')==='Suravaram'?'selected':''}>Suravaram</option>
+        <option value="Ramabhadra" ${localStorage.getItem('teluguFont')==='Ramabhadra'?'selected':''}>Ramabhadra</option>
+      </select>
+    </div>
+    <div style="margin-top:16px;padding:12px;opacity:0.7">
+      <div style="font-size:12px;margin-bottom:4px">Statistics</div>
+      <div style="font-size:13px">Commentaries: ${commentaryCount}</div>
+      <div style="font-size:13px">Bookmarks: ${bookmarkCount}</div>
+      <div style="font-size:13px">Highlights: ${highlightCount}</div>
+      <div style="font-size:13px">Verse Edits: ${verseEditCount}</div>
+    </div>
+    <div style="margin-top:16px;padding:12px;opacity:0.5;font-size:11px">
+      Telugu Bible Commentary App<br>
+      Bible: godlytalias/Bible-Database<br>
+      All data stored locally in browser
+    </div>
+  </div>`;
+}
+// ===== TELUGU TEXT FIX =====
+const SPLIT_BEFORE = [
+  'తోను','చేతను','వలనను','కొరకు','కొఱకు',
+  'నందును','యందును','లోనికి','యొద్దకు',
+  'కంటెను','పైనను','మీదను',
+  'ఇశ్రాయేలీ','యెహోవా','అబ్రాహాము','ఐగుప్తు',
+  'చూచిన','చూచెను','చూచుచు','అనెనుగా','అనగా',
+  'యుండెను','యున్నాడు','యున్నాను','యున్నారు','యున్నావు',
+  'యుండిన','యుండియు',
+  'యొద్ద','మీద'
+];
+function fixTeluguText(text) {
+  if (!text) return text;
+  // 1. Fix double spaces
+  text = text.replace(/  +/g, ' ');
+  // 2. Fix space before punctuation
+  text = text.replace(/\s+([;,:.!?])/g, '$1');
+  // 3. Split joined words
+  const words = text.split(' ');
+  const newWords = [];
+  for (let word of words) {
+    // Extract trailing non-Telugu chars
+    const m = word.match(/^([\u0c00-\u0c7f]+)(.*)$/);
+    if (!m) { newWords.push(word); continue; }
+    const clean = m[1];
+    const trailing = m[2] || '';
+    // Count Telugu chars
+    const teluguLen = clean.length;
+    if (teluguLen <= 14) { newWords.push(word); continue; }
+    // Try to split
+    const parts = trySplitWord(clean, 0);
+    if (parts.length > 1) {
+      parts[parts.length - 1] = parts[parts.length - 1] + trailing;
+      newWords.push(...parts);
+    } else {
+      newWords.push(word);
+    }
+  }
+  return newWords.join(' ');
+}
+function trySplitWord(word, depth) {
+  if (depth > 3) return [word];
+  let best = [word];
+  for (const sw of SPLIT_BEFORE) {
+    if (sw.length < 3) continue;
+    let idx = word.indexOf(sw);
+    while (idx !== -1) {
+      if (idx >= 4 && idx < word.length - sw.length + 1) {
+        const part1 = word.substring(0, idx);
+        const part2 = word.substring(idx);
+        const sub1 = trySplitWord(part1, depth + 1);
+        const sub2 = trySplitWord(part2, depth + 1);
+        const result = [...sub1, ...sub2];
+        if (result.length > best.length) best = result;
+      }
+      idx = word.indexOf(sw, idx + 1);
+    }
+  }
+  return best;
+}
+// ===== VERSE DROPDOWN MENU =====
+let openMenuVerse = null;
+function toggleVerseMenu(verseIdx) {
+  const dd = document.getElementById(`dd_${verseIdx}`);
+  const btn = dd?.parentElement.querySelector('.verse-menu-btn');
+  // Close any other open menu
+  if (openMenuVerse !== null && openMenuVerse !== verseIdx) {
+    const other = document.getElementById(`dd_${openMenuVerse}`);
+    if (other) { other.classList.remove('show'); other.parentElement.querySelector('.verse-menu-btn')?.classList.remove('active'); }
+  }
+  if (dd.classList.contains('show')) {
+    dd.classList.remove('show'); btn?.classList.remove('active');
+    openMenuVerse = null;
+  } else {
+    // Position dropdown smartly using fixed coordinates
+    if (btn) {
+      const rect = btn.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      const dropdownHeight = Math.min(dd.scrollHeight, window.innerHeight * 0.7);
+      // If not enough space below but more above, open upward
+      if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
+        dd.style.top = Math.max(8, rect.top - dropdownHeight - 4) + 'px';
+      } else {
+        dd.style.top = (rect.bottom + 4) + 'px';
+      }
+      dd.style.right = (window.innerWidth - rect.right) + 'px';
+      dd.style.left = '';
+    }
+    dd.classList.add('show'); btn?.classList.add('active');
+    openMenuVerse = verseIdx;
+  }
+}
+function closeVerseMenu(verseIdx) {
+  const dd = document.getElementById(`dd_${verseIdx}`);
+  if (dd) { dd.classList.remove('show'); dd.parentElement.querySelector('.verse-menu-btn')?.classList.remove('active'); }
+  openMenuVerse = null;
+}
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (openMenuVerse !== null && !e.target.closest('.verse-menu-wrap')) {
+    closeVerseMenu(openMenuVerse);
+  }
+});
+// ===== COMMENTARY EXPAND/COLLAPSE =====
+function toggleCommentary(verseIdx) {
+  const el = document.getElementById(`commentary_${verseIdx}`);
+  if (!el) return;
+  const btn = el.parentElement.querySelector('.commentary-toggle');
+  if (el.style.display === 'none' || !el.style.display) {
+    el.style.display = 'block';
+    if (btn) { btn.innerHTML = '&#9650;'; btn.title = 'Hide commentary'; }
+  } else {
+    el.style.display = 'none';
+    if (btn) { btn.innerHTML = '&#9660;'; btn.title = 'Show commentary'; }
+  }
+}
+// ===== VERSE TEXT EDITOR =====
+let currentVerseEditText = null;
+function openVerseEditor(verseIdx) {
+  currentVerseEditText = verseIdx;
+  const originalText = bibleData.Book[currentBook].Chapter[currentChapter].Verse[verseIdx].Verse || '';
+  const editedText = getVerseEdit(currentBook, currentChapter, verseIdx);
+  const displayText = editedText !== null ? editedText : originalText;
+  const bookInfo = BOOKS[currentBook];
+  const ref = `${bookInfo.en} ${currentChapter + 1}:${verseIdx + 1}`;
+  const refTe = `${bookInfo.te} ${currentChapter + 1}:${verseIdx + 1}`;
+  // Build modal content
+  const modal = document.getElementById('commentaryModal');
+  document.getElementById('modalTitle').textContent = 'వచనము సవరణ | Edit Verse Text';
+  document.getElementById('modalVerseRef').textContent = ref + ' (' + refTe + ')';
+  document.getElementById('modalVersePreview').innerHTML =
+    `<div class="preview-label">వచనము | Verse ${verseIdx + 1}</div>${escapeHtml(fixTeluguText(originalText))}`;
+  // Hide toolbar, show textarea for verse editing
+  document.querySelector('.editor-toolbar').style.display = 'none';
+  const editor = document.getElementById('commentaryEditor');
+  editor.setAttribute('contenteditable', 'false');
+  editor.innerHTML = `<textarea id="verseEditArea" style="width:100%;min-height:120px;padding:14px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:16px;font-family:inherit;background:var(--bg);color:var(--text);outline:none;line-height:1.7;resize:vertical;">${escapeHtml(displayText)}</textarea>`;
+  document.getElementById('deleteCommentaryBtn').style.display = 'none';
+  document.getElementById('commentaryModal').classList.add('active');
+  // Change save button to save verse edit
+  const saveBtn = document.querySelector('.modal-footer .btn-primary');
+  saveBtn.setAttribute('onclick', 'saveVerseEdit()');
+  saveBtn.textContent = 'Save Verse';
+  setTimeout(() => {
+    const ta = document.getElementById('verseEditArea');
+    if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+  }, 300);
+}
+function saveVerseEdit() {
+  if (currentVerseEditText === null) return;
+  const ta = document.getElementById('verseEditArea');
+  if (!ta) return;
+  setVerseEdit(currentBook, currentChapter, currentVerseEditText, ta.value);
+  closeVerseEditor();
+  showChapter();
+  showToast('వచనము భద్రపరచబడింది Verse saved!');
+}
+function closeVerseEditor() {
+  // Restore modal to commentary mode
+  document.querySelector('.editor-toolbar').style.display = '';
+  const editor = document.getElementById('commentaryEditor');
+  editor.setAttribute('contenteditable', 'true');
+  editor.innerHTML = '';
+  const saveBtn = document.querySelector('.modal-footer .btn-primary');
+  saveBtn.setAttribute('onclick', 'saveCommentary()');
+  saveBtn.textContent = 'Save';
+  document.getElementById('modalTitle').textContent = 'వ్యాఖ్యానము Edit Commentary';
+  currentVerseEditText = null;
+}
+// ===== RICH TEXT EDITOR =====
+function execEdit(cmd, ui, val) {
+  document.execCommand(cmd, ui || false, val || null);
+  document.getElementById('commentaryEditor').focus();
+}
+function insertXrefLink() {
+  const ref = prompt('Enter verse reference (e.g., John 3:16 or యోహాను 3:16):');
+  if (!ref || !ref.trim()) return;
+  const display = prompt('Display text (leave empty to use reference):', ref.trim()) || ref.trim();
+  const parsed = parseVerseRef(ref.trim());
+  if (parsed) {
+    const href = `xref:${parsed.book}:${parsed.chapter}:${parsed.verse}`;
+    execEdit('createLink', false, href);
+    // Fix the link text after createLink
+    const editor = document.getElementById('commentaryEditor');
+    const links = editor.querySelectorAll('a');
+    links.forEach(a => {
+      if (a.getAttribute('href') === href && a.textContent === ref.trim()) {
+        a.textContent = display;
+      }
+      a.setAttribute('data-xref', '1');
+      a.removeAttribute('target');
+    });
+  } else {
+    // Not a verse reference, insert as regular link
+    execEdit('createLink', false, ref.trim());
+  }
+}
+// ===== VERSE REFERENCE PARSER =====
+function parseVerseRef(ref) {
+  if (!ref) return null;
+  ref = ref.trim();
+  // Try English book name match: "John 3:16" or "1 John 3:16" or "john 3:16"
+  const m = ref.toLowerCase().match(/^(.+?)\s+(\d+)(?::(\d+))?$/);
+  if (m) {
+    const bookName = m[1].replace(/\s+/g, '').replace(/\./g, '');
+    let bookIdx = ABBREV[bookName] !== undefined ? ABBREV[bookName] :
+      BOOKS.findIndex(b => b.en.toLowerCase().replace(/\s+/g, '').startsWith(bookName) ||
+                           b.en.toLowerCase().replace(/\s+/g, '').includes(bookName));
+    if (bookIdx >= 0) {
+      const chapter = parseInt(m[2]) - 1;
+      const verse = m[3] ? parseInt(m[3]) - 1 : null;
+      if (chapter >= 0) return { book: bookIdx, chapter, verse, ref: `${BOOKS[bookIdx].en} ${chapter+1}${verse!==null?':'+(verse+1):''}` };
+    }
+  }
+  // Try Telugu book name match: "యోహాను 3:16"
+  const teMatch = ref.match(/^(.+?)\s+(\d+)(?::(\d+))?$/);
+  if (teMatch) {
+    const teName = teMatch[1].trim();
+    const bookIdx = BOOKS.findIndex(b => b.te.includes(teName) || teName.includes(b.te));
+    if (bookIdx >= 0) {
+      const chapter = parseInt(teMatch[2]) - 1;
+      const verse = teMatch[3] ? parseInt(teMatch[3]) - 1 : null;
+      if (chapter >= 0) return { book: bookIdx, chapter, verse, ref: `${BOOKS[bookIdx].en} ${chapter+1}${verse!==null?':'+(verse+1):''}` };
+    }
+  }
+  return null;
+}
+// ===== PROCESS COMMENTARY FOR DISPLAY =====
+function processCommentaryForDisplay(html) {
+  // The commentary is stored as HTML. We need to:
+  // 1. Make xref links clickable with onclick
+  // 2. Auto-detect plain text verse references and convert them to links
+  // Parse the HTML and process links
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  // Process existing xref links
+  wrapper.querySelectorAll('a[href^="xref:"]').forEach(a => {
+    const parts = a.getAttribute('href').substring(5).split(':');
+    const b = parseInt(parts[0]), c = parseInt(parts[1]), v = parseInt(parts[2]);
+    a.setAttribute('href', '#');
+    a.setAttribute('onclick', `event.preventDefault();showXrefPopup(${b},${c},${v})`);
+    a.removeAttribute('target');
+    a.classList.add('xref-link');
+  });
+  // Also process regular links that look like xref
+  wrapper.querySelectorAll('a').forEach(a => {
+    if (a.getAttribute('href') && a.getAttribute('href').startsWith('xref:')) {
+      const parts = a.getAttribute('href').substring(5).split(':');
+      const b = parseInt(parts[0]), c = parseInt(parts[1]), v = parseInt(parts[2]);
+      a.setAttribute('href', '#');
+      a.setAttribute('onclick', `event.preventDefault();showXrefPopup(${b},${c},${v})`);
+      a.removeAttribute('target');
+    }
+  });
+  // Auto-detect verse references in text nodes
+  autoLinkXrefs(wrapper);
+  return wrapper.innerHTML;
+}
+function autoLinkXrefs(element) {
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+  const textNodes = [];
+  let node;
+  while (node = walker.nextNode()) {
+    // Skip if parent is already a link
+    if (node.parentElement && node.parentElement.tagName === 'A') continue;
+    textNodes.push(node);
+  }
+  textNodes.forEach(textNode => {
+    const text = textNode.textContent;
+    if (!text || text.length < 4) return;
+    // Find verse references in the text
+    const refPattern = /((?:[1-3]\s+)?(?:[A-Za-z]+|[\u0c00-\u0c7f]+))\s+(\d+):(\d+)/g;
+    let match;
+    let lastIndex = 0;
+    const frag = document.createDocumentFragment();
+    let hasMatch = false;
+    while ((match = refPattern.exec(text)) !== null) {
+      hasMatch = true;
+      const before = text.substring(lastIndex, match.index);
+      if (before) frag.appendChild(document.createTextNode(before));
+      const refStr = match[0];
+      const parsed = parseVerseRef(refStr);
+      if (parsed && bibleData && parsed.book < bibleData.Book.length &&
+          parsed.chapter < bibleData.Book[parsed.book].Chapter.length &&
+          parsed.verse !== null && parsed.verse < bibleData.Book[parsed.book].Chapter[parsed.chapter].Verse.length) {
+        const a = document.createElement('a');
+        a.setAttribute('href', '#');
+        a.setAttribute('onclick', `event.preventDefault();showXrefPopup(${parsed.book},${parsed.chapter},${parsed.verse})`);
+        a.classList.add('xref-link');
+        a.textContent = refStr;
+        frag.appendChild(a);
+      } else {
+        frag.appendChild(document.createTextNode(refStr));
+      }
+      lastIndex = match.index + refStr.length;
+    }
+    if (hasMatch) {
+      const after = text.substring(lastIndex);
+      if (after) frag.appendChild(document.createTextNode(after));
+      textNode.parentElement.replaceChild(frag, textNode);
+    }
+  });
+}
+// ===== CROSS-REFERENCE POPUP =====
+let currentXref = null;
+function showXrefPopup(book, chapter, verse) {
+  if (!bibleData) return;
+  const b = bibleData.Book[book];
+  if (!b || !b.Chapter || chapter >= b.Chapter.length) return;
+  const ch = b.Chapter[chapter];
+  if (!ch || !ch.Verse || verse >= ch.Verse.length) return;
+  const verseText = getDisplayVerseText(book, chapter, verse);
+  const bookInfo = BOOKS[book];
+  currentXref = { book, chapter, verse };
+  document.getElementById('xrefRef').textContent = `${bookInfo.en} ${chapter+1}:${verse+1}`;
+  document.getElementById('xrefRefTe').textContent = `${bookInfo.te} ${chapter+1}:${verse+1}`;
+  document.getElementById('xrefBody').innerHTML = `<div class="xref-verse"><span class="vnum">${verse+1}.</span>${escapeHtml(fixTeluguText(verseText))}</div>`;
+  document.getElementById('xrefPopup').classList.add('active');
+}
+function closeXrefPopup() {
+  document.getElementById('xrefPopup').classList.remove('active');
+  currentXref = null;
+}
+function xrefGoToVerse() {
+  if (!currentXref) return;
+  const { book, chapter, verse } = currentXref;
+  closeXrefPopup();
+  closeModal();
+  goToVerse(book, chapter, verse);
+}
+// Close xref popup on overlay click
+document.getElementById('xrefPopup').addEventListener('click', function(e) {
+  if (e.target === this) closeXrefPopup();
+});
+// ===== UTILS =====
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text || '';
+  return div.innerHTML;
+}
+function escapeRegex(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+// Modal close on overlay tap
+document.getElementById('commentaryModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+// Prevent body scroll when sidebar open on mobile
+document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { closeModal(); closeXrefPopup(); }
+  if (e.ctrlKey && e.key === 's' && currentVerseForCommentary !== null) {
+    e.preventDefault(); saveCommentary();
+  }
+  if (!e.target.matches('input, textarea')) {
+    if (e.key === 'ArrowLeft') navigateChapter(-1);
+    if (e.key === 'ArrowRight') navigateChapter(1);
+  }
+});
+// Prevent double-tap zoom on buttons
+document.querySelectorAll('button, .book-item, .verse-text, .nav-btn, .icon-btn, .bottom-nav-item').forEach(el => {
+  let lastTouch = 0;
+  el.addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTouch < 300) e.preventDefault();
+    lastTouch = now;
+  }, { passive: false });
+});
+// ===== START =====
+loadBible();
+</script>
+</body>
+</html>

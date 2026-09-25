@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>తెలుగు బైబిల్ నిఘంటువు | Telugu Bible Dictionary</title>
+  <meta name="description" content="Telugu Bible Dictionary – Search, add, edit and save Bible terms with audio pronunciation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f7f4ef;
+      --surface: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #7c2d12;
+      --primary-soft: #fef3e8;
+      --accent: #b45309;
+      --border: #e7e0d5;
+      --card-shadow: 0 4px 20px rgba(124, 45, 18, 0.06);
+      --radius: 14px;
+      --success: #15803d;
+      --danger: #b91c1c;
+      --audio: #0369a1;
+      --edit: #7c3aed;
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1612;
+      --surface: #241f1a;
+      --text: #f5f0e8;
+      --muted: #a89f94;
+      --primary: #f59e0b;
+      --primary-soft: #2d2418;
+      --accent: #fbbf24;
+      --border: #3a3228;
+      --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+      --success: #4ade80;
+      --danger: #f87171;
+      --audio: #38bdf8;
+      --edit: #a78bfa;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Inter", "Noto Sans Telugu", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    header {
+      background: linear-gradient(135deg, #7c2d12 0%, #9a3412 50%, #b45309 100%);
+      color: #fff;
+      padding: 1.75rem 1.25rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    [data-theme="dark"] header {
+      background: linear-gradient(135deg, #1c1917 0%, #292524 60%, #3f2e1e 100%);
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08), transparent 50%);
+      pointer-events: none;
+    }
+
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .cross { font-size: 1.6rem; opacity: 0.9; }
+
+    h1 {
+      font-family: "Noto Sans Telugu", sans-serif;
+      font-size: clamp(1.55rem, 4vw, 2.1rem);
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 0.92rem;
+      opacity: 0.92;
+      margin-top: 0.35rem;
+    }
+
+    .header-actions {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.45rem;
+      z-index: 2;
+    }
+
+    .icon-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: background 0.2s;
+    }
+
+    .icon-btn:hover { background: rgba(255,255,255,0.28); }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .top-bar {
+      margin-top: -1.75rem;
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      align-items: stretch;
+      position: relative;
+      z-index: 5;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0.3rem 0.7rem 0.3rem 0.9rem;
+      gap: 0.45rem;
+    }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      padding: 0.8rem 0.2rem;
+      color: var(--text);
+      font-family: inherit;
+      outline: none;
+    }
+
+    .search-box input::placeholder { color: var(--muted); }
+    .search-icon { color: var(--muted); font-size: 1.15rem; }
+
+    .clear-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1.05rem;
+      padding: 0.35rem;
+      display: none;
+    }
+    .clear-btn.visible { display: block; }
+
+    .action-btns {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: var(--radius);
+      padding: 0 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: opacity 0.2s, transform 0.15s;
+      white-space: nowrap;
+      box-shadow: var(--card-shadow);
+      height: 100%;
+      min-height: 48px;
+    }
+
+    .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-add { background: var(--primary); color: #fff; }
+    [data-theme="dark"] .btn-add { color: #1a1612; }
+
+    .btn-save { background: var(--success); color: #fff; }
+    [data-theme="dark"] .btn-save { color: #1a1612; }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 1.1rem;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-right: 0.2rem;
+    }
+
+    .chip {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 0.38rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .chip:hover { border-color: var(--accent); }
+    .chip.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    [data-theme="dark"] .chip.active { color: #1a1612; }
+
+    .alpha-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-bottom: 1.35rem;
+      padding: 0.7rem;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      justify-content: center;
+    }
+
+    .alpha-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text);
+      font-family: "Noto Sans Telugu", sans-serif;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .alpha-btn:hover,
+    .alpha-btn.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .alpha-btn.all {
+      width: auto;
+      padding: 0 0.65rem;
+      font-size: 0.78rem;
+      font-family: Inter, sans-serif;
+    }
+
+    .stats {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .custom-badge {
+      font-size: 0.72rem;
+      background: var(--primary-soft);
+      color: var(--primary);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .entries {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .entry {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .entry:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(124, 45, 18, 0.1);
+    }
+
+    .entry.custom { border-left: 4px solid var(--accent); }
+    .entry.edited { border-left: 4px solid var(--edit); }
+
+    .entry-header {
+      padding: 1rem 1.15rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .entry-main { flex: 1; min-width: 0; }
+
+    .word-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 0.85rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .te-word {
+      font-family: "Noto Sans Telugu", sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .en-word {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .category {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.18rem 0.5rem;
+      border-radius: 6px;
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .short-meaning {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    .entry-actions {
+      display: flex;
+      gap: 0.2rem;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .icon-action {
+      background: var(--primary-soft);
+      border: 1px solid transparent;
+      color: var(--primary);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.15s, color 0.2s;
+    }
+
+    .icon-action:hover {
+      transform: scale(1.08);
+    }
+
+    .speak-btn:hover {
+      background: var(--audio);
+      color: #fff;
+    }
+
+    .edit-btn:hover {
+      background: var(--edit);
+      color: #fff;
+    }
+
+    .del-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 0.3rem;
+      border-radius: 6px;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .del-btn:hover {
+      color: var(--danger);
+      background: rgba(185, 28, 28, 0.1);
+    }
+
+    .speak-btn.speaking {
+      animation: pulse 0.9s ease infinite;
+      background: var(--audio);
+      color: #fff;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    .chevron {
+      font-size: 1.05rem;
+      color: var(--muted);
+      transition: transform 0.25s;
+      padding: 0.3rem;
+    }
+
+    .entry.open .chevron { transform: rotate(180deg); }
+
+    .entry-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .entry.open .entry-body { max-height: 650px; }
+
+    .entry-content {
+      padding: 0 1.15rem 1.15rem;
+      border-top: 1px solid var(--border);
+      padding-top: 0.95rem;
+    }
+
+    .full-meaning {
+      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.65;
+    }
+
+    .refs strong {
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.82rem;
+    }
+
+    .ref-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .ref-tag {
+      background: var(--primary-soft);
+      color: var(--primary);
+      padding: 0.22rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted);
+    }
+
+    .empty-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      opacity: 0.6;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s, visibility 0.25s;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      transform: translateY(20px);
+      transition: transform 0.25s;
+    }
+
+    .modal-overlay.show .modal { transform: translateY(0); }
+
+    .modal-header {
+      padding: 1.15rem 1.35rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      z-index: 1;
+    }
+
+    .modal-header h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0.2rem;
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: var(--text);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .form-group textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+    }
+
+    @media (max-width: 500px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    .modal-footer {
+      padding: 0.9rem 1.35rem 1.35rem;
+      display: flex;
+      gap: 0.65rem;
+      justify-content: flex-end;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: var(--bg);
+      padding: 0.8rem 1.3rem;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 500;
+      z-index: 200;
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .entry-header { padding: 0.9rem; }
+      .te-word { font-size: 1.15rem; }
+      .alpha-btn { width: 30px; height: 30px; font-size: 0.85rem; }
+      .action-btns { width: 100%; }
+      .btn { flex: 1; justify-content: center; padding: 0.75rem 0.5rem; min-height: 44px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-actions">
+      <button class="icon-btn" id="themeToggle" title="Toggle dark/light mode" aria-label="Toggle theme">🌙</button>
+    </div>
+    <div class="header-inner">
+      <div class="logo-row">
+        <span class="cross">✝</span>
+        <h1>తెలుగు బైబిల్ నిఘంటువు</h1>
+      </div>
+      <p class="subtitle">Telugu Bible Dictionary · Add · Edit · Save</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="top-bar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="పదం వెతకండి... (Search Telugu / English)"
+          autocomplete="off"
+          aria-label="Search dictionary"
+        />
+        <button class="clear-btn" id="clearBtn" title="Clear search">✕</button>
+      </div>
+      <div class="action-btns">
+        <button class="btn btn-add" id="addBtn" title="Add new entry">➕ Add</button>
+        <button class="btn btn-save" id="saveBtn" title="Save all changes">💾 Save</button>
+      </div>
+    </div>
+
+    <div class="filters">
+      <span class="filter-label">Filter:</span>
+      <button class="chip active" data-cat="all">All</button>
+      <button class="chip" data-cat="name">Names</button>
+      <button class="chip" data-cat="place">Places</button>
+      <button class="chip" data-cat="term">Terms</button>
+      <button class="chip" data-cat="concept">Concepts</button>
+      <button class="chip" data-cat="custom">My Entries</button>
+    </div>
+
+    <div class="alpha-nav" id="alphaNav"></div>
+
+    <div class="stats">
+      <span id="resultCount">Loading…</span>
+      <span id="customCount" class="custom-badge" style="display:none"></span>
+    </div>
+
+    <div class="entries" id="entries"></div>
+    <div class="empty" id="emptyState" style="display:none">
+      <div class="empty-icon">📖</div>
+      <p>No matching entries found.<br />Try a different word or clear the search.</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>తెలుగు బైబిల్ నిఘంటువు · Click 🔊 to hear · ✎ to edit · 💾 to save</p>
+  </footer>
+
+  <!-- Add / Edit Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" role="dialog" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h2 id="modalTitle">➕ Add New Entry</h2>
+        <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inputTe">Telugu Word *</label>
+            <input type="text" id="inputTe" placeholder="ఉదా: యేసు" required />
+          </div>
+          <div class="form-group">
+            <label for="inputEn">English *</label>
+            <input type="text" id="inputEn" placeholder="e.g. Jesus" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputShort">Short Meaning *</label>
+          <input type="text" id="inputShort" placeholder="Brief description" required />
+        </div>
+        <div class="form-group">
+          <label for="inputFull">Full Meaning</label>
+          <textarea id="inputFull" placeholder="Detailed explanation"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inputCat">Category</label>
+            <select id="inputCat">
+              <option value="name">Name</option>
+              <option value="place">Place</option>
+              <option value="term">Term</option>
+              <option value="concept">Concept</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inputLetter">Telugu Letter</label>
+            <input type="text" id="inputLetter" placeholder="ఉదా: య" maxlength="2" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputRefs">Bible References (comma separated)</label>
+          <input type="text" id="inputRefs" placeholder="మత్తయి 1:21, యోహాను 3:16" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+        <button class="btn btn-add" id="submitBtn">Add Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ============ BUILT-IN DICTIONARY ============
+    const builtInDictionary = [
+      { te: "దేవుడు", en: "God", short: "The one true God, Creator of heaven and earth", full: "దేవుడు అనేది బైబిలులో ఏకైక సత్య దేవునికి ఉపయోగించబడే పదం. ఆయన సృష్టికర్త, రక్షకుడు మరియు న్యాయాధిపతి.", category: "concept", refs: ["ఆది 1:1", "నిర్గమ 3:14", "యోహాను 1:1"], letter: "ద" },
+      { te: "యేసు", en: "Jesus", short: "The Son of God, Saviour of the world", full: "యేసు క్రీస్తు అనేది దేవుని కుమారుడు. ఆయన మానవునిగా జన్మించి, మన పాపాల కోసం సిలువపై మరణించి, మూడవ రోజు లేచాడు.", category: "name", refs: ["మత్తయి 1:21", "యోహాను 3:16", "అపొ.కా. 4:12"], letter: "య" },
+      { te: "క్రీస్తు", en: "Christ", short: "The Anointed One / Messiah", full: "క్రీస్తు అనేది గ్రీకు పదం; హీబ్రూ 'మెస్సీయా'కు సమానం. అభిషిక్తుడు అని అర్థం.", category: "name", refs: ["మత్తయి 16:16", "యోహాను 1:41"], letter: "క" },
+      { te: "పరిశుద్ధాత్మ", en: "Holy Spirit", short: "The third Person of the Trinity", full: "పరిశుద్ధాత్మ దేవుని ఆత్మ. ఆయన విశ్వాసులలో నివసిస్తాడు, బోధిస్తాడు, ఓదార్చుతాడు.", category: "concept", refs: ["యోహాను 14:26", "అపొ.కా. 2:1-4"], letter: "ప" },
+      { te: "యెరూషలేము", en: "Jerusalem", short: "The holy city of God", full: "యెరూషలేము ఇశ్రాయేలు రాజధాని మరియు దేవాలయం ఉన్న పట్టణం.", category: "place", refs: ["2 సమూ 5:6-7", "కీర్తన 122"], letter: "య" },
+      { te: "బెత్లెహేము", en: "Bethlehem", short: "City of David, birthplace of Jesus", full: "బెత్లెహేము అనే పేరు 'రొట్టె ఇల్లు' అని అర్థం. యేసు క్రీస్తు ఇక్కడే జన్మించాడు.", category: "place", refs: ["మీకా 5:2", "మత్తయి 2:1"], letter: "బ" },
+      { te: "నజరేతు", en: "Nazareth", short: "Hometown of Jesus", full: "నజరేతు గలిలయలోని ఒక చిన్న పట్టణం. యేసు ఇక్కడ పెరిగాడు.", category: "place", refs: ["మత్తయి 2:23", "లూకా 4:16"], letter: "న" },
+      { te: "అబ్రాహాము", en: "Abraham", short: "Father of the faithful", full: "అబ్రాహాము దేవుని పిలుపు అందుకుని తన దేశాన్ని విడిచి వెళ్ళాడు. విశ్వాసానికి తండ్రి.", category: "name", refs: ["ఆది 12:1-3", "రోమా 4:3"], letter: "అ" },
+      { te: "మోషే", en: "Moses", short: "Leader and lawgiver of Israel", full: "మోషే ఇశ్రాయేలీయులను ఐగుప్తు దాస్యం నుండి విడిపించిన నాయకుడు.", category: "name", refs: ["నిర్గమ 3:1-10", "నిర్గమ 20"], letter: "మ" },
+      { te: "దావీదు", en: "David", short: "King of Israel, man after God's heart", full: "దావీదు ఇశ్రాయేలు రెండవ రాజు. కీర్తనలు రాసిన వాడు.", category: "name", refs: ["1 సమూ 16:13", "కీర్తన 23"], letter: "ద" },
+      { te: "పౌలు", en: "Paul", short: "Apostle to the Gentiles", full: "పౌలు (సౌలు) క్రైస్తవులను హింసించేవాడు. యేసు ప్రత్యక్షమైన తర్వాత అపొస్తలుడయ్యాడు.", category: "name", refs: ["అపొ.కా. 9:1-19", "రోమా 1:1"], letter: "ప" },
+      { te: "పేతురు", en: "Peter", short: "Leading apostle, rock", full: "సీమోను పేతురు యేసు శిష్యులలో ప్రముఖుడు. 'పేతురు' అంటే రాయి.", category: "name", refs: ["మత్తయి 16:18", "అపొ.కా. 2:14"], letter: "ప" },
+      { te: "సిలువ", en: "Cross", short: "The instrument of Christ's sacrifice", full: "యేసు మన పాపాల కోసం సిలువపై మరణించాడు. క్రైస్తవులకు రక్షణ గుర్తు.", category: "term", refs: ["మత్తయి 27:32-50", "1 కొరింథీ 1:18"], letter: "స" },
+      { te: "పునరుత్థానం", en: "Resurrection", short: "Rising from the dead", full: "యేసు మూడవ రోజు లేచాడు. విశ్వాసులకు కూడా పునరుత్థానం వాగ్దానం.", category: "concept", refs: ["మత్తయి 28:1-10", "1 కొరింథీ 15:3-4"], letter: "ప" },
+      { te: "రక్షణ", en: "Salvation", short: "Deliverance from sin and death", full: "రక్షణ యేసు క్రీస్తు రక్తం ద్వారా లభిస్తుంది. విశ్వాసం ద్వారా కృపవలన.", category: "concept", refs: ["యోహాను 3:16", "ఎఫెసీ 2:8-9"], letter: "ర" },
+      { te: "విశ్వాసం", en: "Faith", short: "Trust and belief in God", full: "విశ్వాసం అంటే దేవుని మాటలను నమ్మి ఆయనపై నమ్మకం ఉంచడం.", category: "concept", refs: ["హెబ్రీ 11:1", "రోమా 1:17"], letter: "వ" },
+      { te: "కృప", en: "Grace", short: "Unmerited favor of God", full: "కృప అంటే మనం అర్హులు కాకపోయినా దేవుడు చూపే దయ.", category: "concept", refs: ["ఎఫెసీ 2:8-9", "రోమా 3:24"], letter: "క" },
+      { te: "పశ్చాత్తాపం", en: "Repentance", short: "Turning from sin to God", full: "పశ్చాత్తాపం అంటే పాపం పట్ల విచారం కలిగి దేవుని వైపు తిరగడం.", category: "concept", refs: ["మత్తయి 3:2", "అపొ.కా. 2:38"], letter: "ప" },
+      { te: "బాప్తిస్మం", en: "Baptism", short: "Ordinance of immersion in water", full: "బాప్తిస్మం క్రీస్తుతో మరణం, సమాధి, పునరుత్థానంలో పాలుపంచుకోవడానికి గుర్తు.", category: "term", refs: ["మత్తయి 28:19", "రోమా 6:3-4"], letter: "బ" },
+      { te: "ప్రార్థన", en: "Prayer", short: "Communication with God", full: "ప్రార్థన అంటే దేవునితో మాట్లాడటం. యేసు ప్రార్థన ఎలా చేయాలో నేర్పించాడు.", category: "term", refs: ["మత్తయి 6:9-13", "ఫిలిప్పీ 4:6"], letter: "ప" },
+      { te: "సువార్త", en: "Gospel", short: "The good news of Jesus Christ", full: "సువార్త అంటే 'మంచి వార్త'. యేసు మరణం, పునరుత్థానం ద్వారా రక్షణ.", category: "term", refs: ["మార్కు 1:1", "రోమా 1:16"], letter: "స" },
+      { te: "ఆలయం", en: "Temple", short: "House of God in Jerusalem", full: "ఆలయం యెరూషలేములో దేవుని నివాస స్థలం. విశ్వాసుల శరీరాలు దేవుని ఆలయం.", category: "place", refs: ["1 రాజులు 6", "1 కొరింథీ 3:16"], letter: "ఆ" },
+      { te: "పరలోకం", en: "Heaven", short: "The dwelling place of God", full: "పరలోకం దేవుని నివాసం. విశ్వాసులు క్రీస్తుతో శాశ్వత జీవితం పొందుతారు.", category: "concept", refs: ["యోహాను 14:2-3", "ప్రకటన 21:1-4"], letter: "ప" },
+      { te: "నరకం", en: "Hell", short: "Place of eternal separation from God", full: "నరకం దేవుని సన్నిధి నుండి శాశ్వత విడిపోవడం.", category: "concept", refs: ["మత్తయి 10:28", "ప్రకటన 20:14-15"], letter: "న" },
+      { te: "యోర్దాను", en: "Jordan", short: "River of baptism and crossing", full: "యోర్దాను నది. యేసు ఇక్కడ బాప్తిస్మం తీసుకున్నాడు.", category: "place", refs: ["యెహోషువ 3", "మత్తయి 3:13-17"], letter: "య" },
+      { te: "సీనాయి", en: "Sinai", short: "Mountain where the Law was given", full: "సీనాయి పర్వతం వద్ద దేవుడు మోషేకు పది ఆజ్ఞలు ఇచ్చాడు.", category: "place", refs: ["నిర్గమ 19-20", "ద్వితీ 5"], letter: "స" },
+      { te: "గలిలయ", en: "Galilee", short: "Northern region of Israel", full: "గలిలయ ఇశ్రాయేలు ఉత్తర ప్రాంతం. యేసు ఎక్కువగా ఇక్కడ పరిచర్య చేశాడు.", category: "place", refs: ["మత్తయి 4:12-17", "మార్కు 1:14"], letter: "గ" },
+      { te: "కీర్తన", en: "Psalm", short: "Sacred song / hymn", full: "కీర్తనలు 150. చాలా వాటిని దావీదు రాశాడు.", category: "term", refs: ["కీర్తన 23", "కీర్తన 51"], letter: "క" },
+      { te: "ప్రవచనం", en: "Prophecy", short: "Message from God through a prophet", full: "ప్రవచనం దేవుని సందేశం. యేసు గురించిన ప్రవచనాలు నెరవేరాయి.", category: "term", refs: ["2 పేతురు 1:21", "ప్రకటన 19:10"], letter: "ప" },
+      { te: "ఆత్మ", en: "Spirit / Soul", short: "The immaterial part of a person", full: "ఆత్మ దేవుని ఆత్మను లేదా మనిషి ఆత్మను సూచిస్తుంది. దేవుడు ఆత్మ స్వరూపి.", category: "concept", refs: ["ఆది 2:7", "యోహాను 4:24"], letter: "ఆ" },
+      { te: "యోహాను", en: "John", short: "Beloved disciple / Baptist", full: "యోహాను బాప్తిస్మం ఇచ్చేవాడు మరియు యోహాను అపొస్తలుడు.", category: "name", refs: ["మత్తయి 3:1-17", "యోహాను 13:23"], letter: "య" },
+      { te: "మరియ", en: "Mary", short: "Mother of Jesus", full: "మరియ యేసు తల్లి. కన్యకగా ఉండగా పరిశుద్ధాత్మ వలన గర్భం ధరించింది.", category: "name", refs: ["లూకా 1:26-38", "యోహాను 19:25-27"], letter: "మ" },
+      { te: "యోసేపు", en: "Joseph", short: "Husband of Mary / son of Jacob", full: "యోసేపు — యాకోబు కుమారుడు మరియు మరియ భర్త.", category: "name", refs: ["ఆది 37-50", "మత్తయి 1:18-25"], letter: "య" },
+      { te: "ఇస్రాయేలు", en: "Israel", short: "God's chosen people / Jacob", full: "ఇస్రాయేలు యాకోబుకు దేవుడు ఇచ్చిన పేరు. అతని సంతానం ఇశ్రాయేలు జాతి.", category: "name", refs: ["ఆది 32:28", "నిర్గమ 19:5-6"], letter: "ఇ" },
+      { te: "ఐగుప్తు", en: "Egypt", short: "Land of bondage and refuge", full: "ఐగుప్తు ఇశ్రాయేలీయులు దాస్యంలో ఉన్న దేశం. మోషే ద్వారా విడిపింపబడ్డారు.", category: "place", refs: ["నిర్గమ 1-14", "మత్తయి 2:13-15"], letter: "ఐ" },
+      { te: "బబులోను", en: "Babylon", short: "Empire of exile", full: "బబులోను యూదులు 70 సంవత్సరాలు చెరలో ఉన్న సామ్రాజ్యం.", category: "place", refs: ["2 రాజులు 25", "ప్రకటన 17-18"], letter: "బ" },
+      { te: "సొలొమోను", en: "Solomon", short: "Wise king, builder of the Temple", full: "సొలొమోను దావీదు కుమారుడు. దేవుడు అతనికి జ్ఞానం ఇచ్చాడు. ఆలయం నిర్మించాడు.", category: "name", refs: ["1 రాజులు 3:5-14", "1 రాజులు 6"], letter: "స" },
+      { te: "ఏలియా", en: "Elijah", short: "Prophet of fire and power", full: "ఏలియా కర్మెలు పర్వతం మీద బయలు ప్రవక్తలను ఎదుర్కొన్నాడు.", category: "name", refs: ["1 రాజులు 18", "2 రాజులు 2:11"], letter: "ఏ" },
+      { te: "దానియేలు", en: "Daniel", short: "Prophet in Babylon", full: "దానియేలు బబులోను చెరలో ఉన్న యూదుడు. సింహాల గుహలో నుండి రక్షించబడ్డాడు.", category: "name", refs: ["దాని 1-6", "దాని 6:16-23"], letter: "ద" },
+      { te: "యోనా", en: "Jonah", short: "Prophet swallowed by a great fish", full: "యోనా నీనెవెకు పారిపోయాడు. పెద్ద చేప అతనిని మింగింది.", category: "name", refs: ["యోనా 1-4", "మత్తయి 12:39-41"], letter: "య" },
+      { te: "నీతి", en: "Righteousness", short: "Right standing with God", full: "నీతి దేవుని ముందు సరియైన స్థితి. క్రీస్తు నీతి విశ్వాసం ద్వారా లెక్కించబడుతుంది.", category: "concept", refs: ["రోమా 3:21-22", "2 కొరింథీ 5:21"], letter: "న" },
+      { te: "క్షమాపణ", en: "Forgiveness", short: "Pardon of sins", full: "దేవుడు క్రీస్తు రక్తం ద్వారా మన పాపాలను క్షమిస్తాడు.", category: "concept", refs: ["ఎఫెసీ 1:7", "1 యోహాను 1:9"], letter: "క" },
+      { te: "ప్రేమ", en: "Love", short: "Agape – selfless love of God", full: "ప్రేమ దేవుని స్వభావం. దేవుడు లోకమును ఎంతగా ప్రేమించెను.", category: "concept", refs: ["యోహాను 3:16", "1 కొరింథీ 13"], letter: "ప" },
+      { te: "శాంతి", en: "Peace", short: "Shalom – completeness and rest", full: "క్రీస్తు మన శాంతి. ఆయన లోకం ఇవ్వలేని శాంతిని ఇస్తాడు.", category: "concept", refs: ["యోహాను 14:27", "రోమా 5:1"], letter: "శ" },
+      { te: "ఆనందం", en: "Joy", short: "Deep gladness in the Lord", full: "ఆనందం పరిశుద్ధాత్మ ఫలం. ప్రభువునందు సంతోషించుడి.", category: "concept", refs: ["గలతీ 5:22", "ఫిలిప్పీ 4:4"], letter: "ఆ" },
+      { te: "ఆశ", en: "Hope", short: "Confident expectation in God", full: "ఆశ దేవుని వాగ్దానాలపై నమ్మకం. క్రీస్తు రాకడ మన ఆశ.", category: "concept", refs: ["రోమా 5:5", "తీతు 2:13"], letter: "ఆ" },
+      { te: "ధర్మశాస్త్రం", en: "Law / Torah", short: "The Law given through Moses", full: "ధర్మశాస్త్రం మోషే ద్వారా ఇవ్వబడిన ఆజ్ఞలు. క్రీస్తు ధర్మశాస్త్రం ముగింపు.", category: "term", refs: ["నిర్గమ 20", "రోమా 10:4"], letter: "ధ" },
+      { te: "నిబంధన", en: "Covenant", short: "Sacred agreement between God and people", full: "క్రొత్త నిబంధన యేసు రక్తం ద్వారా స్థాపించబడింది.", category: "term", refs: ["యిర్మీయా 31:31-34", "లూకా 22:20"], letter: "న" },
+      { te: "పెంతెకోస్తు", en: "Pentecost", short: "Day the Holy Spirit was poured out", full: "పెంతెకోస్తు రోజున పరిశుద్ధాత్మ శిష్యులపై దిగివచ్చాడు. చర్చి జన్మదినం.", category: "term", refs: ["అపొ.కా. 2:1-4"], letter: "ప" },
+      { te: "సభ", en: "Church / Assembly", short: "The body of Christ", full: "సభ అంటే పిలువబడినవారు. క్రీస్తు శరీరం.", category: "term", refs: ["మత్తయి 16:18", "ఎఫెసీ 1:22-23"], letter: "స" },
+      { te: "అపొస్తలుడు", en: "Apostle", short: "Sent one, messenger of Christ", full: "అపొస్తలుడు అంటే పంపబడినవాడు. యేసు పన్నెండు మందిని నియమించాడు.", category: "term", refs: ["మత్తయి 10:1-4", "ఎఫెసీ 2:20"], letter: "అ" },
+      { te: "ప్రవక్త", en: "Prophet", short: "One who speaks for God", full: "ప్రవక్త దేవుని మాటలను ప్రజలకు తెలియజేసేవాడు.", category: "term", refs: ["ద్వితీ 18:18", "ఎఫెసీ 4:11"], letter: "ప" },
+      { te: "రాజ్యం", en: "Kingdom", short: "The Kingdom of God / Heaven", full: "దేవుని రాజ్యం దేవుని పాలన. యేసు 'రాజ్యం సమీపమైయున్నది' అని ప్రకటించాడు.", category: "concept", refs: ["మత్తయి 4:17", "లూకా 17:20-21"], letter: "ర" },
+      { te: "నిత్యజీవం", en: "Eternal life", short: "Life that never ends with God", full: "నిత్యజీవం యేసు క్రీస్తునందు విశ్వాసం ద్వారా లభిస్తుంది.", category: "concept", refs: ["యోహాను 3:16", "యోహాను 17:3"], letter: "న" },
+      { te: "పాపం", en: "Sin", short: "Missing the mark, rebellion against God", full: "పాపం దేవుని ప్రమాణం నుండి తప్పిపోవడం. అందరూ పాపం చేశారు.", category: "concept", refs: ["రోమా 3:23", "రోమా 6:23"], letter: "ప" },
+      { te: "రక్తం", en: "Blood", short: "Blood of Christ for atonement", full: "క్రీస్తు రక్తం మన పాపాలను క్షమిస్తుంది మరియు శుద్ధి చేస్తుంది.", category: "term", refs: ["హెబ్రీ 9:22", "1 యోహాను 1:7"], letter: "ర" },
+      { te: "బలి", en: "Sacrifice / Offering", short: "Offering made to God", full: "యేసు ఒక్కసారి తనను తాను బలిగా అర్పించుకున్నాడు.", category: "term", refs: ["హెబ్రీ 10:10-14", "రోమా 12:1"], letter: "బ" },
+      { te: "మెస్సీయా", en: "Messiah", short: "The Anointed One promised by God", full: "మెస్సీయా హీబ్రూ; క్రీస్తు గ్రీకు. యేసు నజరేతు మెస్సీయా.", category: "name", refs: ["యోహాను 1:41", "యోహాను 4:25-26"], letter: "మ" },
+      { te: "ఇమ్మానుయేలు", en: "Immanuel", short: "God with us", full: "ఇమ్మానుయేలు అంటే 'దేవుడు మనతో ఉన్నాడు'. యేసు జననంతో నెరవేరింది.", category: "name", refs: ["యెషయా 7:14", "మత్తయి 1:23"], letter: "ఇ" },
+      { te: "కఫర్నహూము", en: "Capernaum", short: "Jesus' ministry base in Galilee", full: "కఫర్నహూము గలిలయ సముద్రం పక్కన. యేసు ఇక్కడ అనేక అద్భుతాలు చేశాడు.", category: "place", refs: ["మత్తయి 4:13", "మార్కు 2:1-12"], letter: "క" },
+      { te: "గెత్సెమనే", en: "Gethsemane", short: "Garden where Jesus prayed before the cross", full: "గెత్సెమనే ఆలివ్ తోట. యేసు సిలువకు ముందు ఇక్కడ ప్రార్థించాడు.", category: "place", refs: ["మత్తయి 26:36-46"], letter: "గ" },
+      { te: "గొల్గొతా", en: "Golgotha", short: "Place of the Skull – crucifixion site", full: "గొల్గొతా అంటే 'పుర్రె స్థలం'. యేసు ఇక్కడ సిలువ వేయబడ్డాడు.", category: "place", refs: ["మత్తయి 27:33", "యోహాను 19:17"], letter: "గ" },
+      { te: "ఎమ్మావు", en: "Emmaus", short: "Village where risen Jesus appeared", full: "ఎమ్మావు. పునరుత్థానం తర్వాత యేసు ఇద్దరు శిష్యులతో నడిచాడు.", category: "place", refs: ["లూకా 24:13-35"], letter: "ఎ" }
+    ];
+
+    // ============ STATE ============
+    let dictionary = [];
+    let currentCategory = "all";
+    let currentLetter = "all";
+    let searchQuery = "";
+    let editingId = null; // null = add mode, number = edit mode
+    let teluguVoice = null;
+    let speechRate = 0.9;
+
+    const STORAGE_KEY = "telugu-bible-dict-v2";
+
+    // ============ DOM ============
+    const entriesEl = document.getElementById("entries");
+    const emptyEl = document.getElementById("emptyState");
+    const resultCount = document.getElementById("resultCount");
+    const customCountEl = document.getElementById("customCount");
+    const searchInput = document.getElementById("searchInput");
+    const clearBtn = document.getElementById("clearBtn");
+    const alphaNav = document.getElementById("alphaNav");
+    const themeToggle = document.getElementById("themeToggle");
+    const addBtn = document.getElementById("addBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalClose = document.getElementById("modalClose");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const submitBtn = document.getElementById("submitBtn");
+    const toastEl = document.getElementById("toast");
+
+    // ============ SPEECH ============
+    function loadVoices() {
+      const voices = speechSynthesis.getVoices();
+      teluguVoice =
+        voices.find(v => v.lang === "te-IN" || v.lang === "te") ||
+        voices.find(v => v.lang.startsWith("te")) ||
+        voices.find(v => /telugu/i.test(v.name)) ||
+        null;
+    }
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = loadVoices;
+    }
+    loadVoices();
+
+    function speak(text, btnEl) {
+      if (!text || !window.speechSynthesis) {
+        showToast("Speech not supported");
+        return;
+      }
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "te-IN";
+      u.rate = speechRate;
+      if (teluguVoice) u.voice = teluguVoice;
+      if (btnEl) {
+        document.querySelectorAll(".speak-btn.speaking").forEach(b => b.classList.remove("speaking"));
+        btnEl.classList.add("speaking");
+      }
+      u.onend = () => { if (btnEl) btnEl.classList.remove("speaking"); };
+      u.onerror = () => { if (btnEl) btnEl.classList.remove("speaking"); };
+      speechSynthesis.speak(u);
+    }
+
+    window.speakWord = function(text, event) {
+      if (event) event.stopPropagation();
+      speak(text, event && event.currentTarget);
+    };
+
+    // ============ LOAD / SAVE ============
+    function loadDictionary() {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (saved && Array.isArray(saved) && saved.length > 0) {
+        dictionary = saved;
+      } else {
+        dictionary = builtInDictionary.map((e, i) => ({
+          ...e,
+          id: "builtin-" + i,
+          custom: false,
+          edited: false
+        }));
+      }
+    }
+
+    function saveAll() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(dictionary));
+      const customN = dictionary.filter(e => e.custom || e.edited).length;
+      showToast(`💾 Saved ${dictionary.length} entries (${customN} modified/custom)`);
+      updateCustomBadge();
+    }
+
+    function updateCustomBadge() {
+      const n = dictionary.filter(e => e.custom || e.edited).length;
+      if (n > 0) {
+        customCountEl.style.display = "inline";
+        customCountEl.textContent = `${n} modified`;
+      } else {
+        customCountEl.style.display = "none";
+      }
+    }
+
+    // ============ THEME ============
+    function initTheme() {
+      const saved = localStorage.getItem("tbd-theme");
+      if (saved === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        themeToggle.textContent = "☀️";
+      }
+    }
+
+    themeToggle.addEventListener("click", () => {
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      if (isDark) {
+        document.documentElement.removeAttribute("data-theme");
+        themeToggle.textContent = "🌙";
+        localStorage.setItem("tbd-theme", "light");
+      } else {
+        document.documentElement.setAttribute("data-theme", "dark");
+        themeToggle.textContent = "☀️";
+        localStorage.setItem("tbd-theme", "dark");
+      }
+    });
+
+    // ============ ALPHABET ============
+    const letters = ["అ", "ఆ", "ఇ", "ఐ", "ఎ", "ఏ", "క", "గ", "ద", "ధ", "న", "ప", "బ", "మ", "య", "ర", "వ", "శ", "స"];
+
+    function buildAlphaNav() {
+      alphaNav.innerHTML = "";
+      const allBtn = document.createElement("button");
+      allBtn.className = "alpha-btn all active";
+      allBtn.textContent = "All";
+      allBtn.dataset.letter = "all";
+      allBtn.addEventListener("click", () => setLetter("all"));
+      alphaNav.appendChild(allBtn);
+      letters.forEach(l => {
+        const btn = document.createElement("button");
+        btn.className = "alpha-btn";
+        btn.textContent = l;
+        btn.dataset.letter = l;
+        btn.addEventListener("click", () => setLetter(l));
+        alphaNav.appendChild(btn);
+      });
+    }
+
+    function setLetter(letter) {
+      currentLetter = letter;
+      document.querySelectorAll(".alpha-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.letter === letter);
+      });
+      render();
+    }
+
+    // ============ FILTERS ============
+    document.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        currentCategory = chip.dataset.cat;
+        render();
+      });
+    });
+
+    // ============ SEARCH ============
+    searchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value.trim().toLowerCase();
+      clearBtn.classList.toggle("visible", searchQuery.length > 0);
+      render();
+    });
+
+    clearBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      searchQuery = "";
+      clearBtn.classList.remove("visible");
+      searchInput.focus();
+      render();
+    });
+
+    // ============ MODAL: ADD & EDIT ============
+    function openAddModal() {
+      editingId = null;
+      modalTitle.textContent = "➕ Add New Entry";
+      submitBtn.textContent = "Add Entry";
+      clearForm();
+      modalOverlay.classList.add("show");
+      document.getElementById("inputTe").focus();
+    }
+
+    function openEditModal(id) {
+      const item = dictionary.find(e => e.id === id);
+      if (!item) return;
+      editingId = id;
+      modalTitle.textContent = "✎ Edit Entry";
+      submitBtn.textContent = "Save Changes";
+      document.getElementById("inputTe").value = item.te || "";
+      document.getElementById("inputEn").value = item.en || "";
+      document.getElementById("inputShort").value = item.short || "";
+      document.getElementById("inputFull").value = item.full || "";
+      document.getElementById("inputCat").value = item.category || "name";
+      document.getElementById("inputLetter").value = item.letter || "";
+      document.getElementById("inputRefs").value = (item.refs || []).join(", ");
+      modalOverlay.classList.add("show");
+      document.getElementById("inputTe").focus();
+    }
+
+    function clearForm() {
+      ["inputTe", "inputEn", "inputShort", "inputFull", "inputLetter", "inputRefs"].forEach(id => {
+        document.getElementById(id).value = "";
+      });
+      document.getElementById("inputCat").value = "name";
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove("show");
+      editingId = null;
+      clearForm();
+    }
+
+    addBtn.addEventListener("click", openAddModal);
+    modalClose.addEventListener("click", closeModal);
+    cancelBtn.addEventListener("click", closeModal);
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target === modalOverlay) closeModal();
+    });
+
+    submitBtn.addEventListener("click", () => {
+      const te = document.getElementById("inputTe").value.trim();
+      const en = document.getElementById("inputEn").value.trim();
+      const short = document.getElementById("inputShort").value.trim();
+      const full = document.getElementById("inputFull").value.trim() || short;
+      const category = document.getElementById("inputCat").value;
+      let letter = document.getElementById("inputLetter").value.trim();
+      const refsRaw = document.getElementById("inputRefs").value.trim();
+
+      if (!te || !en || !short) {
+        showToast("⚠️ Please fill Telugu, English and Short Meaning");
+        return;
+      }
+
+      if (!letter && te.length > 0) letter = te.charAt(0);
+
+      const refs = refsRaw
+        ? refsRaw.split(",").map(r => r.trim()).filter(Boolean)
+        : [];
+
+      if (editingId !== null) {
+        // EDIT existing
+        const idx = dictionary.findIndex(e => e.id === editingId);
+        if (idx !== -1) {
+          const wasCustom = dictionary[idx].custom;
+          dictionary[idx] = {
+            ...dictionary[idx],
+            te, en, short, full, category, letter, refs,
+            custom: wasCustom || false,
+            edited: true
+          };
+          showToast(`✓ Updated “${te}”`);
+        }
+      } else {
+        // ADD new
+        dictionary.push({
+          te, en, short, full, category, letter, refs,
+          custom: true,
+          edited: false,
+          id: "custom-" + Date.now()
+        });
+        showToast(`✅ Added “${te}”`);
+      }
+
+      saveAll();
+      closeModal();
+      render();
+    });
+
+    saveBtn.addEventListener("click", saveAll);
+
+    window.openEdit = function(id, event) {
+      if (event) event.stopPropagation();
+      openEditModal(id);
+    };
+
+    function deleteEntry(id) {
+      if (!confirm("Delete this entry?")) return;
+      dictionary = dictionary.filter(e => e.id !== id);
+      saveAll();
+      render();
+      showToast("🗑️ Entry deleted");
+    }
+    window.deleteEntry = deleteEntry;
+
+    // ============ TOAST ============
+    let toastTimer;
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2800);
+    }
+
+    // ============ RENDER ============
+    function getFiltered() {
+      return dictionary.filter(item => {
+        const matchCat =
+          currentCategory === "all" ||
+          (currentCategory === "custom"
+            ? (item.custom || item.edited)
+            : item.category === currentCategory);
+        const matchLetter = currentLetter === "all" || item.letter === currentLetter;
+        const q = searchQuery;
+        const matchSearch = !q ||
+          item.te.includes(searchQuery) ||
+          item.en.toLowerCase().includes(q) ||
+          (item.short && item.short.toLowerCase().includes(q)) ||
+          (item.full && item.full.toLowerCase().includes(q));
+        return matchCat && matchLetter && matchSearch;
+      });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function render() {
+      const filtered = getFiltered();
+      resultCount.textContent = `${filtered.length} ${filtered.length === 1 ? "entry" : "entries"} found`;
+      updateCustomBadge();
+
+      if (filtered.length === 0) {
+        entriesEl.innerHTML = "";
+        emptyEl.style.display = "block";
+        return;
+      }
+
+      emptyEl.style.display = "none";
+      entriesEl.innerHTML = filtered.map((item) => {
+        const isMod = item.custom || item.edited;
+        const delBtn = isMod
+          ? `<button class="del-btn" title="Delete" onclick="event.stopPropagation(); deleteEntry('${item.id}')">🗑️</button>`
+          : "";
+        const badge = item.custom
+          ? '<span class="custom-badge">custom</span>'
+          : (item.edited ? '<span class="custom-badge">edited</span>' : "");
+        const teSafe = escapeHtml(item.te).replace(/'/g, "\\'");
+        const idSafe = String(item.id).replace(/'/g, "\\'");
+
+        return `
+        <article class="entry ${item.custom ? "custom" : ""} ${item.edited && !item.custom ? "edited" : ""}">
+          <div class="entry-header" onclick="toggleEntry(this)">
+            <div class="entry-main">
+              <div class="word-row">
+                <span class="te-word">${escapeHtml(item.te)}</span>
+                <span class="en-word">${escapeHtml(item.en)}</span>
+                <span class="category">${item.category}</span>
+                ${badge}
+              </div>
+              <p class="short-meaning">${escapeHtml(item.short)}</p>
+            </div>
+            <div class="entry-actions">
+              <button class="icon-action speak-btn" title="Hear pronunciation" onclick="speakWord('${teSafe}', event)">🔊</button>
+              <button class="icon-action edit-btn" title="Edit entry" onclick="openEdit('${idSafe}', event)">✎</button>
+              ${delBtn}
+              <span class="chevron">▼</span>
+            </div>
+          </div>
+          <div class="entry-body">
+            <div class="entry-content">
+              <p class="full-meaning">${escapeHtml(item.full)}</p>
+              ${item.refs && item.refs.length ? `
+              <div class="refs">
+                <strong>📖 Scripture References</strong>
+                <div class="ref-list">
+                  ${item.refs.map(r => `<span class="ref-tag">${escapeHtml(r)}</span>`).join("")}
+                </div>
+              </div>` : ""}
+            </div>
+          </div>
+        </article>`;
+      }).join("");
+    }
+
+    function toggleEntry(header) {
+      header.closest(".entry").classList.toggle("open");
+    }
+    window.toggleEntry = toggleEntry;
+
+    // ============ INIT ============
+    initTheme();
+    loadDictionary();
+    buildAlphaNav();
+    render();
+  </script>
+</body>
+</html>

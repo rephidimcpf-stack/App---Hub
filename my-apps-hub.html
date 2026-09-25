@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My App Hub</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --text: #1a1d23;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --accent-soft: #eff4ff;
+    --border: #e5e7eb;
+    --shadow: 0 1px 3px rgba(16,24,40,.08), 0 1px 2px rgba(16,24,40,.04);
+    --shadow-hover: 0 8px 24px rgba(16,24,40,.12);
+    --radius: 14px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 48px 24px 64px; }
+  header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+  header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  header .count { color: var(--muted); font-size: 14px; }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow);
+    transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    position: relative;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent);
+  }
+  .card .icon {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .card h2 { font-size: 16px; font-weight: 650; }
+  .card p { font-size: 13px; color: var(--muted); line-height: 1.5; flex: 1; }
+  .card .open {
+    font-size: 13px; font-weight: 600; color: var(--accent);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .card .open svg { transition: transform .16s ease; }
+  .card:hover .open svg { transform: translateX(3px); }
+  .card .placeholder-tag {
+    position: absolute; top: 14px; right: 14px;
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .05em; color: #b45309;
+    background: #fef3c7; border-radius: 999px; padding: 3px 9px;
+  }
+
+  .empty-hint {
+    grid-column: 1 / -1;
+    text-align: center; color: var(--muted); font-size: 14px;
+    padding: 40px 0;
+  }
+  footer { margin-top: 40px; text-align: center; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>My App Hub</h1>
+    <span class="count" id="count"></span>
+  </header>
+  <p class="sub">Your Telugu Bible study library &mdash; apps open in a new tab, so the hub is always here when you come back.</p>
+
+  <div class="grid" id="grid"></div>
+  <footer>Drop new app HTML files in this folder and add them to the <code>APPS</code> list at the top of this file.</footer>
+</div>
+
+<script>
+// ============================================================
+//  ADD YOUR APPS HERE
+//  - file: the filename of the app's HTML file (keep it in the
+//    same folder as this hub, e.g. "todo.html")
+//  - name, desc, icon: shown on the card
+// ============================================================
+const APPS = [
+  { name: "Telugu Bible Audio", desc: "The full Telugu Bible with audio — reads completely offline.", icon: "📖", file: "Telugu_Bible_Audio.html" },
+  { name: "Bible Commentary", desc: "తెలుగు బైబిల్ వ్యాఖ్యానము — verse-by-verse Telugu Bible commentary.", icon: "✍️", file: "Telugu_Bible_Commentary.html" },
+  { name: "Outline Bible", desc: "Willmington's chapter-by-chapter outlines of the whole Bible in Telugu.", icon: "🗺️", file: "Outline_Bible-Telugu_by_willminton.html" },
+  { name: "Sermon Studio", desc: "Sermon preparation workspace built on the Telugu Bible.", icon: "🎤", file: "Sermon_Studio.html" },
+  { name: "Sermon Outlines 1000", desc: "John Ritchie's sermon outlines — works offline.", icon: "📋", file: "Sermon_Outlines_1000.html" },
+  { name: "Daily Devotion", desc: "అనుదిన ధ్యానం — daily Telugu Bible devotion, verse, and prayer.", icon: "🌅", file: "Telugu_Daily_Devotion.html" },
+  { name: "Bible Dictionary", desc: "తెలుగు బైబిల్ నిఘంటువు — search, add and edit Bible terms with audio pronunciation.", icon: "📚", file: "Telugu_Bible_Dictionary.html" },
+  { name: "Character Study", desc: "Biblical characters timeline with spiritual and moral lessons.", icon: "🕰️", file: "Character_Study.html" },
+  { name: "Song Lyrics", desc: "తెలుగు క్రైస్తవ పాటలు — Telugu Christian song lyrics.", icon: "🎵", file: "Song_Lyrics.html" },
+  { name: "Bible Quiz", desc: "Rephidim బైబిల్ క్విజ్ — Telugu Bible quiz.", icon: "❓", file: "Quiz_Creator.html" },
+  { name: "Bible Illustrations", desc: "1010 Bible sermon illustrations — searchable collection for preachers and teachers.", icon: "🖼️", file: "1010-bible-illustrations.html" },
+  { name: "Q & A", desc: "బైబిల్ విమర్శలు & ప్రశ్నలు — Bible objections and questions with answers and Scripture references.", icon: "💬", file: "Q_and_A.html" },
+  { name: "Topical Guide", desc: "బైబిల్ విషయ సూచిక — Bible topical study guide in Telugu.", icon: "🔎", file: "bible-topical-guide-telugu.html" },
+];
+
+const grid = document.getElementById("grid");
+document.getElementById("count").textContent = APPS.length + (APPS.length === 1 ? " app" : " apps");
+
+if (APPS.length === 0) {
+  grid.innerHTML = '<div class="empty-hint">No apps yet — add entries to the <code>APPS</code> list in this file.</div>';
+}
+
+APPS.forEach(app => {
+  const a = document.createElement("a");
+  a.className = "card";
+  a.href = app.file;
+  a.target = "_blank";
+  a.rel = "noopener";
+  a.innerHTML = `
+    ${app.placeholder ? '<span class="placeholder-tag">placeholder</span>' : ""}
+    <div class="icon">${app.icon || "📦"}</div>
+    <h2>${app.name}</h2>
+    <p>${app.desc || ""}</p>
+    <span class="open">Open
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </span>`;
+  grid.appendChild(a);
+});
+</script>
+</body>
+</html>

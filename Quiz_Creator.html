@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Rephidim Quiz">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="Rephidim Telugu Bible Quiz">
+  <link rel="manifest" id="appManifest">
+  <title>Rephidim బైబిల్ క్విజ్</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #38bdf8;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --correct: #22c55e;
+      --wrong: #ef4444;
+      --border: #334155;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans Telugu', 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 1.5rem;
+      line-height: 1.7;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 2rem; }
+    header h1 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #38bdf8, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.4rem;
+    }
+    header p { color: var(--muted); font-size: 0.95rem; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 1rem;
+      align-items: end;
+    }
+    @media (max-width: 600px) {
+      .controls { grid-template-columns: 1fr; }
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+      font-weight: 500;
+    }
+    select, button {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    select:focus, button:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.25);
+    }
+    button.primary {
+      background: linear-gradient(135deg, var(--accent), #818cf8);
+      border: none;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    button.primary:hover:not(:disabled) {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+    button.primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .status {
+      text-align: center;
+      padding: 1rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .quiz-header h2 { font-size: 1.2rem; }
+    .score-badge {
+      background: rgba(56,189,248,0.15);
+      color: var(--accent);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .question {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .question-num {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .question-text {
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.8rem 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .option:hover:not(.disabled) {
+      border-color: var(--accent);
+      background: rgba(56,189,248,0.08);
+    }
+    .option.selected {
+      border-color: var(--accent);
+      background: rgba(56,189,248,0.15);
+    }
+    .option.correct {
+      border-color: var(--correct);
+      background: rgba(34,197,94,0.15);
+    }
+    .option.wrong {
+      border-color: var(--wrong);
+      background: rgba(239,68,68,0.15);
+    }
+    .option.disabled { cursor: default; opacity: 0.9; }
+    .option input {
+      accent-color: var(--accent);
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+    .option-label { flex: 1; }
+    .results {
+      text-align: center;
+      padding: 1.5rem 0 0.5rem;
+    }
+    .results h3 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+    .results p { color: var(--muted); margin-bottom: 1.25rem; }
+    .hidden { display: none !important; }
+    .loading {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.5rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      justify-content: center;
+    }
+    button.secondary {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 500;
+      width: auto;
+      padding: 0.65rem 1rem;
+    }
+    button.secondary:hover {
+      border-color: var(--accent);
+      background: rgba(56,189,248,0.08);
+    }
+    .library-card { margin-top: 1.5rem; }
+    .library-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+    .lib-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      flex-wrap: wrap;
+    }
+    .lib-item .meta { flex: 1; min-width: 140px; }
+    .lib-item .date { font-size: 0.8rem; color: var(--muted); }
+    .lib-item .title { font-weight: 600; font-size: 0.95rem; }
+    .lib-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .lib-actions button {
+      width: auto;
+      padding: 0.4rem 0.7rem;
+      font-size: 0.85rem;
+    }
+    .toast {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 0.7rem 1.2rem;
+      border-radius: 10px;
+      z-index: 100;
+      transition: transform 0.3s ease;
+      font-size: 0.9rem;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Edit mode */
+    .edit-btn {
+      width: auto;
+      padding: 0.3rem 0.65rem;
+      font-size: 0.8rem;
+      margin-left: auto;
+    }
+    .question-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .edit-area {
+      display: none;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+      padding: 0.9rem;
+      background: #0f172a;
+      border: 1px dashed var(--accent);
+      border-radius: 10px;
+    }
+    .edit-area.active { display: flex; }
+    .edit-area label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+    .edit-area textarea,
+    .edit-area input[type="text"] {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      resize: vertical;
+    }
+    .edit-area textarea { min-height: 60px; }
+    .edit-opt-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .edit-opt-row input[type="radio"] {
+      accent-color: var(--correct);
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+    .edit-opt-row input[type="text"] { flex: 1; }
+    .edit-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.4rem;
+    }
+    .help-card details {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .help-card summary {
+      cursor: pointer;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 1rem;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .help-card summary::-webkit-details-marker { display: none; }
+    .help-card summary::before { content: "▶"; font-size: 0.7rem; }
+    .help-card details[open] summary::before { content: "▼"; }
+    .help-card ul { margin: 0.75rem 0 0 1.1rem; line-height: 1.65; }
+    .help-card li { margin-bottom: 0.45rem; }
+    .help-card strong { color: var(--text); }
+
+    /* Blank form fields */
+    #formQuestions .question textarea,
+    #formQuestions .question input[type="text"] {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      resize: vertical;
+    }
+    #formQuestions .question textarea { min-height: 56px; }
+    #formQuestions .question label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📖 Rephidim బైబిల్ క్విజ్</h1>
+      <p>పుస్తకం & అధ్యాయం ఎంచుకోండి → మీరే 5 ప్రశ్నలు రాయండి</p>
+      <button id="installAppBtn" class="secondary" style="width:auto;margin-top:0.75rem;display:none;">⬇ Install app</button>
+    </header>
+
+    <div class="card help-card">
+      <details>
+        <summary>ℹ️ How to use all buttons (click to expand)</summary>
+        <ul>
+          <li><strong>పుస్తకం / అధ్యాయం</strong> — Select the book and chapter this quiz is about (used as the quiz title/reference).</li>
+          <li><strong>ఖాళీ క్విజ్ ఫారం</strong> — Opens a blank form with 5 empty questions for you to write.</li>
+          <li><strong>Question / Options</strong> — Type the question and three options. Select the radio next to the correct answer.</li>
+          <li><strong>క్విజ్ ప్రారంభించండి</strong> — Locks the form and switches to answer mode so you (or someone else) can take the quiz.</li>
+          <li><strong>సమాధానాలు తనిఖీ చేయి</strong> — Checks answers and shows the score (green = correct, red = wrong).</li>
+          <li><strong>📄 Save as text</strong> — Downloads the quiz (with answers) as a .txt file.</li>
+          <li><strong>📚 Save to library</strong> — Saves the quiz in this browser, grouped by date.</li>
+          <li><strong>📂 Choose location & save</strong> — Pick a folder and save (or normal download if not supported).</li>
+          <li><strong>మళ్లీ ఎడిట్ చేయండి</strong> — Returns to the blank/edit form so you can change questions.</li>
+          <li><strong>కొత్త క్విజ్</strong> — Clears everything and starts over with book/chapter selection.</li>
+          <li><strong>Export all</strong> (library) — Exports every saved quiz into one text file.</li>
+          <li><strong>📄 Text / 📂 Save… / 🗑</strong> — Download, save to folder, or delete a library item.</li>
+          <li><strong>⬇ Install app</strong> — Add to home screen on phones (iPhone: Share → Add to Home Screen).</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="card">
+      <div class="controls">
+        <div>
+          <label for="book">పుస్తకం</label>
+          <select id="book"></select>
+        </div>
+        <div>
+          <label for="chapter">అధ్యాయం</label>
+          <select id="chapter"></select>
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button id="generateBtn" class="primary">ఖాళీ క్విజ్ ఫారం</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="status" class="status hidden"></div>
+
+    <!-- Blank form to create quiz -->
+    <div id="formArea" class="hidden">
+      <div class="card">
+        <div class="quiz-header">
+          <h2 id="formTitle">క్విజ్ ఫారం</h2>
+        </div>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;">Fill in 5 questions. For each question type the text, 3 options, and mark the correct answer (○).</p>
+        <div id="formQuestions"></div>
+        <div class="btn-row" style="margin-top:1.25rem;">
+          <button id="startQuizBtn" class="primary" style="width:auto;">క్విజ్ ప్రారంభించండి</button>
+          <button id="saveTxtFormBtn" class="secondary">📄 Save as text</button>
+          <button id="saveLibraryFormBtn" class="secondary">📚 Save to library</button>
+          <button id="saveLocationFormBtn" class="secondary">📂 Choose location & save</button>
+          <button id="clearFormBtn" class="secondary">కొత్త క్విజ్</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Take / answer the quiz -->
+    <div id="quizArea" class="hidden">
+      <div class="card">
+        <div class="quiz-header">
+          <h2 id="quizTitle"></h2>
+          <span class="score-badge" id="scoreBadge">0 / 5</span>
+        </div>
+        <div id="questions"></div>
+        <div id="results" class="results hidden">
+          <h3 id="resultTitle"></h3>
+          <p id="resultMsg"></p>
+          <div class="btn-row">
+            <button id="saveTxtBtn" class="secondary">📄 Save as text</button>
+            <button id="saveLibraryBtn" class="secondary">📚 Save to library</button>
+            <button id="saveLocationBtn" class="secondary">📂 Choose location & save</button>
+            <button id="editAgainBtn" class="secondary">మళ్లీ ఎడిట్ చేయండి</button>
+            <button id="retryBtn" class="primary">కొత్త క్విజ్</button>
+          </div>
+        </div>
+        <div class="btn-row" id="preSubmitActions" style="display:none;">
+          <button id="saveTxtEarlyBtn" class="secondary">📄 Save quiz as text</button>
+          <button id="saveLibraryEarlyBtn" class="secondary">📚 Save to library</button>
+          <button id="saveLocationEarlyBtn" class="secondary">📂 Choose location & save</button>
+          <button id="backToFormBtn" class="secondary">మళ్లీ ఎడిట్ చేయండి</button>
+        </div>
+        <button id="submitBtn" class="primary" style="margin-top:1rem;">సమాధానాలు తనిఖీ చేయి</button>
+      </div>
+    </div>
+
+    <div class="card library-card">
+      <div class="quiz-header">
+        <h2>📚 Quiz library (by date)</h2>
+        <button id="exportLibraryBtn" class="secondary" style="width:auto;">Export all</button>
+      </div>
+      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:0.75rem;">Saved quizzes are stored by date. Export or open any entry as a text file (browser will ask for location when supported).</p>
+      <div id="libraryList" class="library-list"></div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <footer>
+      తెలుగు బైబిల్ డేటా: <a href="https://github.com/aruljohn/Bible-telugu" target="_blank" rel="noopener">aruljohn/Bible-telugu</a>
+    </footer>
+  </div>
+
+  <script>
+    const BOOKS = [
+      { en: "Genesis", te: "ఆదికాండము", chapters: 50 },
+      { en: "Exodus", te: "నిర్గమకాండము", chapters: 40 },
+      { en: "Leviticus", te: "లేవీయకాండము", chapters: 27 },
+      { en: "Numbers", te: "సంఖ్యాకాండము", chapters: 36 },
+      { en: "Deuteronomy", te: "ద్వితీయోపదేశకాండము", chapters: 34 },
+      { en: "Joshua", te: "యెహోషువ", chapters: 24 },
+      { en: "Judges", te: "న్యాయాధిపతులు", chapters: 21 },
+      { en: "Ruth", te: "రూతు", chapters: 4 },
+      { en: "1 Samuel", te: "1 సమూయేలు", chapters: 31 },
+      { en: "2 Samuel", te: "2 సమూయేలు", chapters: 24 },
+      { en: "1 Kings", te: "1 రాజులు", chapters: 22 },
+      { en: "2 Kings", te: "2 రాజులు", chapters: 25 },
+      { en: "1 Chronicles", te: "1 దినవృత్తాంతములు", chapters: 29 },
+      { en: "2 Chronicles", te: "2 దినవృత్తాంతములు", chapters: 36 },
+      { en: "Ezra", te: "ఎజ్రా", chapters: 10 },
+      { en: "Nehemiah", te: "నెహెమ్యా", chapters: 13 },
+      { en: "Esther", te: "ఎస్తేరు", chapters: 10 },
+      { en: "Job", te: "యోబు", chapters: 42 },
+      { en: "Psalms", te: "కీర్తనలు", chapters: 150 },
+      { en: "Proverbs", te: "సామెతలు", chapters: 31 },
+      { en: "Ecclesiastes", te: "ప్రసంగి", chapters: 12 },
+      { en: "Song of Solomon", te: "పరమగీతము", chapters: 8 },
+      { en: "Isaiah", te: "యెషయా", chapters: 66 },
+      { en: "Jeremiah", te: "యిర్మీయా", chapters: 52 },
+      { en: "Lamentations", te: "విలాపవాక్యములు", chapters: 5 },
+      { en: "Ezekiel", te: "యెహెజ్కేలు", chapters: 48 },
+      { en: "Daniel", te: "దానియేలు", chapters: 12 },
+      { en: "Hosea", te: "హోషేయ", chapters: 14 },
+      { en: "Joel", te: "యోవేలు", chapters: 3 },
+      { en: "Amos", te: "ఆమోసు", chapters: 9 },
+      { en: "Obadiah", te: "ఓబద్యా", chapters: 1 },
+      { en: "Jonah", te: "యోనా", chapters: 4 },
+      { en: "Micah", te: "మీకా", chapters: 7 },
+      { en: "Nahum", te: "నహూము", chapters: 3 },
+      { en: "Habakkuk", te: "హబక్కూకు", chapters: 3 },
+      { en: "Zephaniah", te: "జెఫన్యా", chapters: 3 },
+      { en: "Haggai", te: "హగ్గయి", chapters: 2 },
+      { en: "Zechariah", te: "జెకర్యా", chapters: 14 },
+      { en: "Malachi", te: "మలాకీ", chapters: 4 },
+      { en: "Matthew", te: "మత్తయి", chapters: 28 },
+      { en: "Mark", te: "మార్కు", chapters: 16 },
+      { en: "Luke", te: "లూకా", chapters: 24 },
+      { en: "John", te: "యోహాను", chapters: 21 },
+      { en: "Acts", te: "అపొస్తలుల కార్యములు", chapters: 28 },
+      { en: "Romans", te: "రోమీయులకు", chapters: 16 },
+      { en: "1 Corinthians", te: "1 కొరింథీయులకు", chapters: 16 },
+      { en: "2 Corinthians", te: "2 కొరింథీయులకు", chapters: 13 },
+      { en: "Galatians", te: "గలతీయులకు", chapters: 6 },
+      { en: "Ephesians", te: "ఎఫెసీయులకు", chapters: 6 },
+      { en: "Philippians", te: "ఫిలిప్పీయులకు", chapters: 4 },
+      { en: "Colossians", te: "కొలొస్సయులకు", chapters: 4 },
+      { en: "1 Thessalonians", te: "1 థెస్సలొనీకయులకు", chapters: 5 },
+      { en: "2 Thessalonians", te: "2 థెస్సలొనీకయులకు", chapters: 3 },
+      { en: "1 Timothy", te: "1 తిమోతికి", chapters: 6 },
+      { en: "2 Timothy", te: "2 తిమోతికి", chapters: 4 },
+      { en: "Titus", te: "తీతుకు", chapters: 3 },
+      { en: "Philemon", te: "ఫిలేమోనుకు", chapters: 1 },
+      { en: "Hebrews", te: "హెబ్రీయులకు", chapters: 13 },
+      { en: "James", te: "యాకోబు", chapters: 5 },
+      { en: "1 Peter", te: "1 పేతురు", chapters: 5 },
+      { en: "2 Peter", te: "2 పేతురు", chapters: 3 },
+      { en: "1 John", te: "1 యోహాను", chapters: 5 },
+      { en: "2 John", te: "2 యోహాను", chapters: 1 },
+      { en: "3 John", te: "3 యోహాను", chapters: 1 },
+      { en: "Jude", te: "యూదా", chapters: 1 },
+      { en: "Revelation", te: "ప్రకటన", chapters: 22 }
+    ];
+
+    const bookSelect = document.getElementById('book');
+    const chapterSelect = document.getElementById('chapter');
+    const generateBtn = document.getElementById('generateBtn');
+    const statusEl = document.getElementById('status');
+    const formArea = document.getElementById('formArea');
+    const formQuestionsEl = document.getElementById('formQuestions');
+    const formTitle = document.getElementById('formTitle');
+    const quizArea = document.getElementById('quizArea');
+    const questionsEl = document.getElementById('questions');
+    const submitBtn = document.getElementById('submitBtn');
+    const resultsEl = document.getElementById('results');
+    const scoreBadge = document.getElementById('scoreBadge');
+    const quizTitle = document.getElementById('quizTitle');
+    const retryBtn = document.getElementById('retryBtn');
+
+    let currentQuestions = [];
+    let answered = false;
+    let currentQuizMeta = null; // { reference, bookTe, chapter, bookEn }
+    let lastScore = null;
+
+    const LIBRARY_KEY = 'teluguBibleQuizLibrary';
+
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    function loadLibrary() {
+      try {
+        return JSON.parse(localStorage.getItem(LIBRARY_KEY) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveLibrary(list) {
+      localStorage.setItem(LIBRARY_KEY, JSON.stringify(list));
+      renderLibrary();
+    }
+
+    function formatDate(d = new Date()) {
+      const pad = n => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function dateFolderLabel(d = new Date()) {
+      const pad = n => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+    }
+
+    function buildQuizText(includeAnswers = true, score = null) {
+      const meta = currentQuizMeta || {};
+      const lines = [];
+      lines.push('Rephidim బైబిల్ క్విజ్');
+      lines.push('========================');
+      lines.push(`Reference: ${meta.reference || quizTitle.textContent || ''}`);
+      lines.push(`Date: ${formatDate()}`);
+      if (score !== null && score !== undefined) {
+        lines.push(`Score: ${score} / 5`);
+      }
+      lines.push('');
+      currentQuestions.forEach((q, idx) => {
+        lines.push(`Q${idx + 1}. ${q.question.replace(/\n/g, ' ')}`);
+        q.options.forEach((opt, oi) => {
+          const mark = includeAnswers && opt.correct ? ' ✓' : '';
+          const letter = String.fromCharCode(65 + oi);
+          lines.push(`   ${letter}) ${opt.text}${mark}`);
+        });
+        if (includeAnswers) {
+          const ans = q.options.find(o => o.correct);
+          lines.push(`   Answer: ${ans ? ans.text : ''}`);
+        }
+        lines.push('');
+      });
+      lines.push('---');
+      lines.push('Generated by Rephidim Bible Quiz');
+      return lines.join('\n');
+    }
+
+    function safeFilename(name) {
+      return String(name || 'quiz')
+        .replace(/[\\/:*?"<>|]+/g, '_')
+        .replace(/\s+/g, '_')
+        .slice(0, 80);
+    }
+
+    async function saveTextToLocation(contents, suggestedName) {
+      // Prefer File System Access API — user picks folder/file location
+      if (window.showSaveFilePicker) {
+        try {
+          const handle = await window.showSaveFilePicker({
+            suggestedName,
+            types: [{
+              description: 'Text file',
+              accept: { 'text/plain': ['.txt'] }
+            }]
+          });
+          const writable = await handle.createWritable();
+          await writable.write(contents);
+          await writable.close();
+          toast('Saved to chosen location ✓');
+          return true;
+        } catch (err) {
+          if (err.name === 'AbortError') {
+            toast('Save cancelled');
+            return false;
+          }
+          // fall through
+        }
+      }
+      // Fallback: browser download (user can pick folder in download settings)
+      const blob = new Blob([contents], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = suggestedName;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast('Download started — choose location in the browser dialog');
+      return true;
+    }
+
+    function addToLibrary(score = null) {
+      if (!currentQuestions.length) {
+        toast('No quiz to save');
+        return;
+      }
+      const now = new Date();
+      const entry = {
+        id: 'q_' + Date.now(),
+        date: formatDate(now),
+        dateKey: dateFolderLabel(now),
+        reference: (currentQuizMeta && currentQuizMeta.reference) || quizTitle.textContent || '',
+        bookTe: currentQuizMeta && currentQuizMeta.bookTe,
+        chapter: currentQuizMeta && currentQuizMeta.chapter,
+        score: score,
+        questions: currentQuestions,
+        text: buildQuizText(true, score)
+      };
+      const list = loadLibrary();
+      list.unshift(entry);
+      saveLibrary(list);
+      toast(`Saved to library · ${entry.dateKey}`);
+    }
+
+    function renderLibrary() {
+      const list = loadLibrary();
+      const el = document.getElementById('libraryList');
+      if (!list.length) {
+        el.innerHTML = '<p style="color:var(--muted);text-align:center;padding:1rem;">No saved quizzes yet.</p>';
+        return;
+      }
+      // Group by dateKey
+      const groups = {};
+      list.forEach(item => {
+        const k = item.dateKey || item.date.slice(0, 10);
+        if (!groups[k]) groups[k] = [];
+        groups[k].push(item);
+      });
+      const keys = Object.keys(groups).sort().reverse();
+      el.innerHTML = keys.map(dateKey => {
+        const items = groups[dateKey].map(item => `
+          <div class="lib-item" data-id="${item.id}">
+            <div class="meta">
+              <div class="title">${item.reference || 'Quiz'}</div>
+              <div class="date">${item.date}${item.score !== null && item.score !== undefined ? ' · Score ' + item.score + '/5' : ''}</div>
+            </div>
+            <div class="lib-actions">
+              <button class="secondary lib-export" data-id="${item.id}">📄 Text</button>
+              <button class="secondary lib-location" data-id="${item.id}">📂 Save…</button>
+              <button class="secondary lib-delete" data-id="${item.id}">🗑</button>
+            </div>
+          </div>
+        `).join('');
+        return `<div style="margin-bottom:0.75rem;"><div style="font-size:0.8rem;color:var(--accent);font-weight:600;margin-bottom:0.4rem;">📅 ${dateKey}</div>${items}</div>`;
+      }).join('');
+
+      el.querySelectorAll('.lib-export').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = loadLibrary().find(x => x.id === btn.dataset.id);
+          if (!item) return;
+          const name = safeFilename(`${item.dateKey}_${item.reference}`) + '.txt';
+          const blob = new Blob([item.text || ''], { type: 'text/plain;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = name;
+          a.click();
+          URL.revokeObjectURL(url);
+          toast('Text file download started');
+        });
+      });
+      el.querySelectorAll('.lib-location').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const item = loadLibrary().find(x => x.id === btn.dataset.id);
+          if (!item) return;
+          const name = safeFilename(`${item.dateKey}_${item.reference}`) + '.txt';
+          await saveTextToLocation(item.text || '', name);
+        });
+      });
+      el.querySelectorAll('.lib-delete').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (!confirm('Delete this saved quiz?')) return;
+          const list = loadLibrary().filter(x => x.id !== btn.dataset.id);
+          saveLibrary(list);
+          toast('Deleted');
+        });
+      });
+    }
+
+    function wireSaveButtons() {
+      const saveTxt = async () => {
+        if (!currentQuestions.length) return toast('Generate a quiz first');
+        const ref = (currentQuizMeta && currentQuizMeta.reference) || 'quiz';
+        const name = safeFilename(`${dateFolderLabel()}_${ref}`) + '.txt';
+        const contents = buildQuizText(true, lastScore);
+        const blob = new Blob([contents], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        a.click();
+        URL.revokeObjectURL(url);
+        toast('Text file download started');
+      };
+      const saveLib = () => addToLibrary(lastScore);
+      const saveLoc = async () => {
+        if (!currentQuestions.length) return toast('Generate a quiz first');
+        const ref = (currentQuizMeta && currentQuizMeta.reference) || 'quiz';
+        const name = safeFilename(`${dateFolderLabel()}_${ref}`) + '.txt';
+        await saveTextToLocation(buildQuizText(true, lastScore), name);
+      };
+
+      ['saveTxtBtn', 'saveTxtEarlyBtn'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', saveTxt);
+      });
+      ['saveLibraryBtn', 'saveLibraryEarlyBtn'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', saveLib);
+      });
+      ['saveLocationBtn', 'saveLocationEarlyBtn'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', saveLoc);
+      });
+      document.getElementById('exportLibraryBtn').addEventListener('click', async () => {
+        const list = loadLibrary();
+        if (!list.length) return toast('Library is empty');
+        const all = list.map(i => i.text).join('\n\n' + '='.repeat(40) + '\n\n');
+        const name = safeFilename(`quiz-library_${dateFolderLabel()}`) + '.txt';
+        await saveTextToLocation(all, name);
+      });
+    }
+
+    BOOKS.forEach((b, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = b.te;
+      bookSelect.appendChild(opt);
+    });
+
+    function updateChapters() {
+      const book = BOOKS[bookSelect.value];
+      chapterSelect.innerHTML = '';
+      for (let i = 1; i <= book.chapters; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = i;
+        chapterSelect.appendChild(opt);
+      }
+    }
+    bookSelect.addEventListener('change', updateChapters);
+    updateChapters();
+
+    bookSelect.value = BOOKS.findIndex(b => b.en === 'John');
+    updateChapters();
+    chapterSelect.value = 3;
+
+    function showStatus(msg, loading = false) {
+      statusEl.classList.remove('hidden');
+      statusEl.innerHTML = loading ? `<span class="loading"></span>${msg}` : msg;
+    }
+    function hideStatus() {
+      statusEl.classList.add('hidden');
+    }
+
+    function getSelectedReference() {
+      const book = BOOKS[bookSelect.value];
+      const chapter = chapterSelect.value;
+      return {
+        reference: `${book.te} ${chapter}`,
+        bookTe: book.te,
+        chapter: chapter,
+        bookEn: book.en
+      };
+    }
+
+    function emptyQuestions() {
+      return Array.from({ length: 5 }, () => ({
+        question: '',
+        options: [
+          { text: '', correct: true },
+          { text: '', correct: false },
+          { text: '', correct: false }
+        ]
+      }));
+    }
+
+    function renderBlankForm(existing) {
+      const qs = existing && existing.length === 5 ? existing : emptyQuestions();
+      currentQuestions = qs.map(q => ({
+        question: q.question || '',
+        options: (q.options || []).map((o, i) => ({
+          text: o.text || '',
+          correct: !!o.correct
+        }))
+      }));
+      // Ensure exactly 3 options and one correct
+      currentQuestions.forEach(q => {
+        while (q.options.length < 3) q.options.push({ text: '', correct: false });
+        q.options = q.options.slice(0, 3);
+        if (!q.options.some(o => o.correct)) q.options[0].correct = true;
+      });
+
+      const meta = currentQuizMeta || getSelectedReference();
+      formTitle.textContent = meta.reference + ' — క్విజ్ ఫారం';
+
+      formQuestionsEl.innerHTML = '';
+      currentQuestions.forEach((q, idx) => {
+        const correctIdx = Math.max(0, q.options.findIndex(o => o.correct));
+        const block = document.createElement('div');
+        block.className = 'question';
+        block.dataset.idx = idx;
+        block.innerHTML = `
+          <div class="question-num">ప్రశ్న ${idx + 1} / 5</div>
+          <div style="margin-bottom:0.6rem;">
+            <label>Question</label>
+            <textarea data-role="form-q" rows="2" placeholder="Type your question here…">${q.question.replace(/</g, '&lt;')}</textarea>
+          </div>
+          ${[0, 1, 2].map(oi => `
+            <div class="edit-opt-row" style="margin-bottom:0.45rem;">
+              <input type="radio" name="formCorrect${idx}" value="${oi}" ${oi === correctIdx ? 'checked' : ''} title="Mark as correct">
+              <input type="text" data-role="form-opt" data-oi="${oi}" placeholder="Option ${String.fromCharCode(65 + oi)}" value="${(q.options[oi].text || '').replace(/"/g, '&quot;')}">
+            </div>
+          `).join('')}
+          <p style="font-size:0.78rem;color:var(--muted);margin:0.2rem 0 0;">○ = correct answer</p>
+        `;
+        formQuestionsEl.appendChild(block);
+      });
+
+      formArea.classList.remove('hidden');
+      quizArea.classList.add('hidden');
+      hideStatus();
+    }
+
+    function collectFormQuestions() {
+      const blocks = formQuestionsEl.querySelectorAll('.question');
+      const qs = [];
+      for (const block of blocks) {
+        const idx = +block.dataset.idx;
+        const qText = (block.querySelector('[data-role="form-q"]').value || '').trim();
+        const optInputs = block.querySelectorAll('[data-role="form-opt"]');
+        const correctRadio = block.querySelector(`input[name="formCorrect${idx}"]:checked`);
+        const options = [];
+        optInputs.forEach((inp, oi) => {
+          options.push({
+            text: (inp.value || '').trim(),
+            correct: correctRadio ? +correctRadio.value === oi : oi === 0
+          });
+        });
+        qs.push({ question: qText, options });
+      }
+      return qs;
+    }
+
+    function validateQuestions(qs) {
+      for (let i = 0; i < qs.length; i++) {
+        const q = qs[i];
+        if (!q.question) return `Question ${i + 1}: enter the question text`;
+        if (q.options.some(o => !o.text)) return `Question ${i + 1}: fill all 3 options`;
+        if (!q.options.some(o => o.correct)) return `Question ${i + 1}: mark the correct answer`;
+      }
+      return null;
+    }
+
+    function renderAnswerMode(questions) {
+      currentQuestions = questions;
+      answered = false;
+      const meta = currentQuizMeta || getSelectedReference();
+      quizTitle.textContent = meta.reference;
+      scoreBadge.textContent = '0 / 5';
+      resultsEl.classList.add('hidden');
+      submitBtn.classList.remove('hidden');
+      submitBtn.disabled = false;
+
+      questionsEl.innerHTML = '';
+      questions.forEach((q, idx) => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        div.dataset.idx = idx;
+        div.innerHTML = `
+          <div class="question-num">ప్రశ్న ${idx + 1} / 5</div>
+          <div class="question-text">${q.question.replace(/\n/g, '<br>').replace(/</g, '&lt;')}</div>
+          <div class="options">
+            ${q.options.map((opt, oi) => `
+              <label class="option" data-oi="${oi}">
+                <input type="radio" name="q${idx}" value="${oi}">
+                <span class="option-label">${opt.text.replace(/</g, '&lt;')}</span>
+              </label>
+            `).join('')}
+          </div>
+        `;
+        questionsEl.appendChild(div);
+      });
+
+      questionsEl.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          if (answered) return;
+          const qDiv = opt.closest('.question');
+          qDiv.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          opt.querySelector('input').checked = true;
+        });
+      });
+
+      lastScore = null;
+      document.getElementById('preSubmitActions').style.display = 'flex';
+      formArea.classList.add('hidden');
+      quizArea.classList.remove('hidden');
+    }
+
+
+    // Open blank form for selected book + chapter
+    generateBtn.addEventListener('click', () => {
+      currentQuizMeta = getSelectedReference();
+      currentQuestions = emptyQuestions();
+      lastScore = null;
+      answered = false;
+      renderBlankForm(currentQuestions);
+      window.scrollTo({ top: formArea.offsetTop - 20, behavior: 'smooth' });
+    });
+
+    function syncFormToCurrent() {
+      const qs = collectFormQuestions();
+      currentQuestions = qs;
+      return qs;
+    }
+
+    document.getElementById('startQuizBtn').addEventListener('click', () => {
+      const qs = syncFormToCurrent();
+      const err = validateQuestions(qs);
+      if (err) {
+        toast(err);
+        return;
+      }
+      if (!currentQuizMeta) currentQuizMeta = getSelectedReference();
+      renderAnswerMode(qs);
+      window.scrollTo({ top: quizArea.offsetTop - 20, behavior: 'smooth' });
+    });
+
+    document.getElementById('clearFormBtn').addEventListener('click', () => {
+      if (!confirm('Clear the form and start a new quiz?')) return;
+      formArea.classList.add('hidden');
+      quizArea.classList.add('hidden');
+      currentQuestions = [];
+      currentQuizMeta = null;
+      lastScore = null;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function goBackToForm() {
+      // Preserve current questions when returning to edit
+      renderBlankForm(currentQuestions);
+      window.scrollTo({ top: formArea.offsetTop - 20, behavior: 'smooth' });
+    }
+
+    document.getElementById('backToFormBtn').addEventListener('click', goBackToForm);
+    document.getElementById('editAgainBtn').addEventListener('click', goBackToForm);
+
+    // Form save buttons
+    document.getElementById('saveTxtFormBtn').addEventListener('click', () => {
+      const qs = syncFormToCurrent();
+      const err = validateQuestions(qs);
+      if (err) return toast(err);
+      if (!currentQuizMeta) currentQuizMeta = getSelectedReference();
+      lastScore = null;
+      const ref = currentQuizMeta.reference || 'quiz';
+      const name = safeFilename(`${dateFolderLabel()}_${ref}`) + '.txt';
+      const contents = buildQuizText(true, null);
+      const blob = new Blob([contents], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast('Text file download started');
+    });
+    document.getElementById('saveLibraryFormBtn').addEventListener('click', () => {
+      const qs = syncFormToCurrent();
+      const err = validateQuestions(qs);
+      if (err) return toast(err);
+      if (!currentQuizMeta) currentQuizMeta = getSelectedReference();
+      lastScore = null;
+      addToLibrary(null);
+    });
+    document.getElementById('saveLocationFormBtn').addEventListener('click', async () => {
+      const qs = syncFormToCurrent();
+      const err = validateQuestions(qs);
+      if (err) return toast(err);
+      if (!currentQuizMeta) currentQuizMeta = getSelectedReference();
+      lastScore = null;
+      const ref = currentQuizMeta.reference || 'quiz';
+      const name = safeFilename(`${dateFolderLabel()}_${ref}`) + '.txt';
+      await saveTextToLocation(buildQuizText(true, null), name);
+    });
+
+    submitBtn.addEventListener('click', () => {
+      if (answered) return;
+      answered = true;
+      let score = 0;
+
+      currentQuestions.forEach((q, idx) => {
+        const qDiv = questionsEl.querySelector(`[data-idx="${idx}"]`);
+        const selected = qDiv.querySelector('input:checked');
+        const options = qDiv.querySelectorAll('.option');
+
+        options.forEach(o => {
+          o.classList.add('disabled');
+          const oi = +o.dataset.oi;
+          if (q.options[oi].correct) o.classList.add('correct');
+        });
+
+        if (selected) {
+          const chosenIdx = +selected.value;
+          if (q.options[chosenIdx].correct) score++;
+          else selected.closest('.option').classList.add('wrong');
+        }
+      });
+
+      scoreBadge.textContent = `${score} / 5`;
+      lastScore = score;
+      submitBtn.classList.add('hidden');
+      document.getElementById('preSubmitActions').style.display = 'none';
+      resultsEl.classList.remove('hidden');
+
+      const messages = [
+        'అధ్యయనం కొనసాగించండి — ప్రతి వచనం ముఖ్యం!',
+        'మంచి ప్రయత్నం! అధ్యాయం మళ్లీ చదివి ప్రయత్నించండి.',
+        'బాగుంది! మీరు అర్థం చేసుకుంటున్నారు.',
+        'చాలా బాగా చేశారు! అధ్యాయం బాగా తెలుసు.',
+        'అద్భుతం! మీకు ఈ అధ్యాయం బాగా తెలుసు.',
+        'పరిపూర్ణ స్కోరు! దేవుని వాక్యం మీకు బాగా తెలుసు.'
+      ];
+      document.getElementById('resultTitle').textContent = score === 5 ? '🎉 పరిపూర్ణం!' : `మీ స్కోరు ${score}/5`;
+      document.getElementById('resultMsg').textContent = messages[score];
+    });
+
+    retryBtn.addEventListener('click', () => {
+      formArea.classList.add('hidden');
+      quizArea.classList.add('hidden');
+      currentQuestions = [];
+      currentQuizMeta = null;
+      lastScore = null;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    wireSaveButtons();
+    renderLibrary();
+
+    // ========== PWA / Install on mobile ==========
+    (function setupPWA() {
+      const manifest = {
+        name: "Rephidim బైబిల్ క్విజ్",
+        short_name: "Rephidim Quiz",
+        description: "Rephidim Telugu Bible chapter quiz",
+        start_url: ".",
+        display: "standalone",
+        background_color: "#0f172a",
+        theme_color: "#0f172a",
+        orientation: "any",
+        icons: [{
+          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230f172a'/%3E%3Ctext x='64' y='82' text-anchor='middle' font-size='64'%3E%F0%9F%93%96%3C/text%3E%3C/svg%3E",
+          sizes: "128x128",
+          type: "image/svg+xml",
+          purpose: "any maskable"
+        }]
+      };
+      const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.getElementById("appManifest");
+      if (link) link.href = url;
+
+      if ("serviceWorker" in navigator) {
+        const swCode = `
+          const CACHE = "rephidim-quiz-v1";
+          self.addEventListener("install", e => { self.skipWaiting(); e.waitUntil(caches.open(CACHE)); });
+          self.addEventListener("activate", e => { e.waitUntil(self.clients.claim()); });
+          self.addEventListener("fetch", e => {
+            e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+          });
+        `;
+        const swUrl = URL.createObjectURL(new Blob([swCode], { type: "text/javascript" }));
+        navigator.serviceWorker.register(swUrl).catch(() => {});
+      }
+
+      let deferredPrompt = null;
+      const installBtn = document.getElementById("installAppBtn");
+      window.addEventListener("beforeinstallprompt", e => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (installBtn) installBtn.style.display = "inline-flex";
+      });
+      if (installBtn) {
+        installBtn.addEventListener("click", async () => {
+          if (!deferredPrompt) {
+            toast("iPhone: Share → Add to Home Screen. Android: browser menu → Install app.");
+            return;
+          }
+          deferredPrompt.prompt();
+          await deferredPrompt.userChoice;
+          deferredPrompt = null;
+          installBtn.style.display = "none";
+        });
+      }
+      // Show install tip button always on mobile so user can see instructions
+      if (installBtn && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        installBtn.style.display = "inline-flex";
+      }
+    })();
+  </script>
+</body>
+</html>

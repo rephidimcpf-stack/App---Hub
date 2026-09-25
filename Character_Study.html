@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblical Characters Timeline — Spiritual & Moral Lessons</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2332;
+      --surface2: #243044;
+      --border: #2d3a4f;
+      --text: #e8eef7;
+      --text-muted: #9aabc4;
+      --accent: #c9a227;
+      --accent2: #4a9eff;
+      --ot: #c9a227;
+      --nt: #5b9bd5;
+      --success: #3dba7a;
+      --radius: 12px;
+      --shadow: 0 8px 32px rgba(0,0,0,0.35);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(135deg, #1a2332 0%, #0f1c2e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 1rem 1.25rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, var(--accent), #e8d48b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      align-items: center;
+    }
+    .search-wrap {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+    .search-wrap input {
+      width: 100%;
+      padding: 0.65rem 1rem 0.65rem 2.4rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-wrap input:focus { border-color: var(--accent); }
+    .search-wrap::before {
+      content: "⌕";
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+    .filters {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0f1419;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .filter-btn.ot.active { background: var(--ot); }
+    .filter-btn.nt.active { background: var(--nt); color: #fff; }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .stats {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1.1rem;
+      font-size: 0.9rem;
+    }
+    .stat strong { color: var(--accent); }
+    .timeline {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--ot), var(--nt));
+      border-radius: 2px;
+    }
+    .era {
+      margin-bottom: 2rem;
+    }
+    .era-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.85rem;
+      padding-left: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .era-title::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent);
+    }
+    .era.era-nt .era-title::before {
+      background: var(--nt);
+      box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--nt);
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 0.85rem;
+      overflow: hidden;
+      transition: box-shadow 0.25s, border-color 0.25s;
+      cursor: pointer;
+    }
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+    }
+    .card.open {
+      border-color: var(--accent2);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 1rem 1.15rem;
+    }
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      color: #0f1419;
+    }
+    .avatar.ot { background: linear-gradient(135deg, #c9a227, #e8d48b); }
+    .avatar.nt { background: linear-gradient(135deg, #4a9eff, #7ec0ff); }
+    .card-meta { flex: 1; min-width: 0; }
+    .card-name {
+      font-weight: 650;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .badge.ot { background: rgba(201,162,39,0.2); color: var(--ot); }
+    .badge.nt { background: rgba(91,155,213,0.2); color: var(--nt); }
+    .card-role {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 0.15rem;
+    }
+    .chevron {
+      color: var(--text-muted);
+      transition: transform 0.25s;
+      font-size: 1.2rem;
+    }
+    .card.open .chevron { transform: rotate(180deg); }
+    .card-body {
+      display: none;
+      padding: 0 1.15rem 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .card.open .card-body { display: block; }
+    .section {
+      margin-top: 1rem;
+    }
+    .section h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .section p, .section li {
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    .section ul {
+      padding-left: 1.2rem;
+      margin-top: 0.3rem;
+    }
+    .section li { margin-bottom: 0.35rem; }
+    .refs {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.75rem;
+      font-style: italic;
+    }
+    .apply {
+      background: rgba(61,186,122,0.1);
+      border-left: 3px solid var(--success);
+      padding: 0.75rem 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-top: 0.75rem;
+    }
+    .apply h4 { color: var(--success); }
+    .empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+    }
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.25rem; }
+      .card-header { padding: 0.85rem; }
+      .avatar { width: 40px; height: 40px; font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1>Biblical Characters Timeline</h1>
+      <p class="subtitle">Spiritual & moral lessons for life application · Chronological order</p>
+      <div class="controls">
+        <div class="search-wrap">
+          <input type="search" id="search" placeholder="Search characters, lessons, themes..." autocomplete="off">
+        </div>
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn ot" data-filter="ot">Old Testament</button>
+          <button class="filter-btn nt" data-filter="nt">New Testament</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="stats" id="stats"></div>
+    <div class="timeline" id="timeline"></div>
+    <div class="empty" id="empty" style="display:none;">No characters match your search.</div>
+  </main>
+
+  <footer>
+    Approximate chronological order based on biblical narrative. Dates are traditional estimates and debated by scholars. Focus is on spiritual application.
+  </footer>
+
+  <script>
+    const characters = [
+      // ========== CREATION ==========
+      {
+        id: "adam-eve",
+        name: "Adam & Eve",
+        era: "Creation",
+        testament: "ot",
+        role: "First humans · Genesis 1–5",
+        initial: "A",
+        summary: "Created in God's image and placed in Eden. They disobeyed by eating the forbidden fruit, introducing sin and death into the world. God clothed them and promised a future Redeemer.",
+        lessons: ["Obedience matters — small acts of distrust have large consequences.", "God still pursues and provides even after failure.", "We are made for relationship with God and one another."],
+        application: "When tempted to take shortcuts or doubt God's goodness, remember that true freedom is found in trusting His boundaries. After failure, run to God rather than hide.",
+        refs: "Genesis 1–5; Romans 5:12–19; 1 Corinthians 15:21–22"
+      },
+      {
+        id: "abel",
+        name: "Abel",
+        era: "Creation",
+        testament: "ot",
+        role: "Righteous worshiper · Genesis 4",
+        initial: "A",
+        summary: "Second son of Adam and Eve. He offered a better sacrifice by faith and was murdered by his brother Cain. Scripture remembers him as righteous.",
+        lessons: ["God looks at the heart behind the offering.", "Faithful worship can provoke opposition.", "The blood of the righteous still speaks."],
+        application: "Bring God your best with a sincere heart. Do not be surprised if righteousness draws hostility. Trust that God sees and remembers.",
+        refs: "Genesis 4:1–10; Hebrews 11:4; Matthew 23:35; 1 John 3:12"
+      },
+      {
+        id: "cain",
+        name: "Cain",
+        era: "Creation",
+        testament: "ot",
+        role: "First murderer · Genesis 4",
+        initial: "C",
+        summary: "Adam and Eve's firstborn who, enraged that God accepted Abel's offering and not his own, murdered his brother. God's question — 'Where is your brother?' — and the mark of protection placed on Cain reveal both sin's escalation and God's continuing mercy toward the guilty.",
+        lessons: [
+        "Unaddressed anger escalates toward destruction.",
+        "Sin is crouching at the door, but you must master it.",
+        "God disciplines yet still protects even the guilty.",
+        ],
+        application: "Deal with jealousy before it deals with you — bring it to God while it is still only a feeling. And remember that you are your brother's keeper.",
+        refs: "Genesis 4:1–16; 1 John 3:11–12; Jude 11"
+      },
+      {
+        id: "enoch",
+        name: "Enoch",
+        era: "Creation",
+        testament: "ot",
+        role: "Walked with God · Genesis 5",
+        initial: "E",
+        summary: "In a long genealogy of death, Enoch stands out: he walked with God and was taken without dying. His life was a quiet testimony of intimacy with the Lord.",
+        lessons: ["Intimate fellowship with God is possible even in a corrupt world.", "A consistent walk with God leaves a lasting legacy.", "God can translate the faithful beyond ordinary endings."],
+        application: "Prioritize daily walking with God over public achievement. Cultivate a private life that God notices.",
+        refs: "Genesis 5:21–24; Hebrews 11:5; Jude 14–15"
+      },
+      {
+        id: "noah",
+        name: "Noah",
+        era: "Creation",
+        testament: "ot",
+        role: "Righteous ark-builder · Genesis 6–9",
+        initial: "N",
+        summary: "In a corrupt generation, Noah walked with God. He obeyed the command to build the ark for decades despite ridicule, preserving his family and the animals through the flood.",
+        lessons: ["Faithfulness when no one else is watching (or agreeing).", "Obedience can look foolish to the culture around you.", "God remembers and rescues the righteous."],
+        application: "Stay faithful to God's word even when it is unpopular. Your quiet obedience can become a means of salvation for others.",
+        refs: "Genesis 6–9; Hebrews 11:7; 2 Peter 2:5"
+      },
+      {
+        id: "job",
+        name: "Job",
+        era: "Creation",
+        testament: "ot",
+        role: "Righteous sufferer · Book of Job",
+        initial: "J",
+        summary: "A blameless man who lost everything in a single day. He wrestled honestly with God, rejected shallow explanations, and ultimately encountered the Lord in a whirlwind. God restored him twofold.",
+        lessons: ["Suffering is not always the result of personal sin.", "Honest lament is better than pious clichés.", "God's wisdom and sovereignty transcend our understanding."],
+        application: "When pain comes, bring your raw questions to God rather than accusing Him or pretending everything is fine. Trust His character even when His ways are hidden.",
+        refs: "Book of Job; James 5:11; Ezekiel 14:14"
+      },
+      // ========== PATRIARCHS ==========
+      {
+        id: "abraham",
+        name: "Abraham",
+        era: "Patriarchs",
+        testament: "ot",
+        role: "Father of faith · Genesis 12–25",
+        initial: "A",
+        summary: "Called to leave his homeland for an unknown land, Abraham believed God's promises of descendants and blessing. His willingness to offer Isaac demonstrated radical trust.",
+        lessons: ["Faith is trusting God when the path is unclear.", "God's promises are fulfilled in His timing, not ours.", "True faith leads to costly obedience."],
+        application: "Step out when God calls, even without full details. Hold loosely to what you love most, knowing God is trustworthy.",
+        refs: "Genesis 12–25; Romans 4; Hebrews 11:8–19; Galatians 3:6–9"
+      },
+      {
+        id: "melchizedek",
+        name: "Melchizedek",
+        era: "Patriarchs",
+        testament: "ot",
+        role: "King-priest of Salem · Genesis 14",
+        initial: "M",
+        summary: "King of Salem and priest of God Most High who blessed Abraham and received a tithe. He appears suddenly as a type of Christ's eternal priesthood.",
+        lessons: ["True greatness serves and blesses others.", "Priesthood and kingship find their fulfillment in Christ.", "God has always had witnesses beyond the covenant line."],
+        application: "Bless those God places in your path. Look to Jesus as your eternal High Priest who intercedes for you.",
+        refs: "Genesis 14:18–20; Psalm 110:4; Hebrews 5–7"
+      },
+      {
+        id: "sarah",
+        name: "Sarah",
+        era: "Patriarchs",
+        testament: "ot",
+        role: "Mother of nations · Genesis 11–23",
+        initial: "S",
+        summary: "Wife of Abraham who waited decades for the promised child. She laughed in disbelief, yet God fulfilled His word and Isaac was born when she was 90.",
+        lessons: ["God's timing often requires long waiting.", "Doubt can be transformed into joyful faith.", "God keeps His promises even when they seem impossible."],
+        application: "Bring your honest doubts to God. Wait actively in hope rather than forcing solutions in your own strength.",
+        refs: "Genesis 11–23; Hebrews 11:11; 1 Peter 3:6"
+      },
+      {
+        id: "hagar",
+        name: "Hagar & Ishmael",
+        era: "Patriarchs",
+        testament: "ot",
+        role: "The God who sees · Genesis 16, 21",
+        initial: "H",
+        summary: "An Egyptian servant of Sarah who bore Abraham's first son and was later sent into the desert. Abandoned and alone, she was found by the Angel of the LORD at a well and given a promise for her son — so she named God 'El Roi, the God who sees me.'",
+        lessons: [
+        "God sees and cares for society's most overlooked people.",
+        "Being mistreated does not make you invisible to God.",
+        "God gives promises even to those outside the covenant line.",
+        ],
+        application: "Whatever rejection or injustice you face, remember you are seen by God. And imitate Him — go looking for the people everyone else has sent away.",
+        refs: "Genesis 16; 21:8–21"
+      },
+      {
+        id: "isaac",
+        name: "Isaac",
+        era: "Patriarchs",
+        testament: "ot",
+        role: "Child of promise · Genesis 21–28",
+        initial: "I",
+        summary: "The long-awaited son of Abraham and Sarah. He submitted to being bound on the altar, later reopened his father's wells, and blessed his sons. A quieter patriarch who modeled peaceful faith.",
+        lessons: ["Submission to God's will can look like quiet trust.", "Peace and continuity matter as much as dramatic beginnings.", "God's covenant continues through successive generations."],
+        application: "You don't have to be the founder to be faithful. Walk in the inheritance you have received and keep the wells of faith open.",
+        refs: "Genesis 21–28; Hebrews 11:20"
+      },
+      {
+        id: "rebekah",
+        name: "Rebekah",
+        era: "Patriarchs",
+        testament: "ot",
+        role: "Chosen bride · Genesis 24–27",
+        initial: "R",
+        summary: "Chosen through prayer and hospitality as Isaac's wife. She later favored Jacob and orchestrated the deception for the birthright blessing, showing both faith and flawed human scheming.",
+        lessons: ["God guides through prayer and ordinary acts of kindness.", "Favoritism and manipulation fracture families.", "God can still work through imperfect choices."],
+        application: "Seek God's guidance in major decisions. Resist the urge to force outcomes through deception — trust His timing more than your strategies.",
+        refs: "Genesis 24–27"
+      },
+      {
+        id: "esau",
+        name: "Esau",
+        era: "Patriarchs",
+        testament: "ot",
+        role: "Birthright despiser · Genesis 25–36",
+        initial: "E",
+        summary: "Jacob's twin who sold his birthright for a single meal and later wept bitterly when the blessing passed him by. Though genuinely wronged by Jacob's deception, Esau's own low regard for sacred things cost him more than any trick could.",
+        lessons: [
+        "Immediate appetite can forfeit a lasting inheritance.",
+        "Some losses cannot be recovered, however bitterly they are wept.",
+        "Reconciliation is still possible after deep family wounds.",
+        ],
+        application: "Treat what God calls precious as precious. Do not trade an eternal birthright — your calling, purity, or family — for a momentary appetite.",
+        refs: "Genesis 25:29–34; 27; 33; Hebrews 12:16–17"
+      },
+      {
+        id: "jacob",
+        name: "Jacob (Israel)",
+        era: "Patriarchs",
+        testament: "ot",
+        role: "Father of the twelve tribes · Genesis 25–50",
+        initial: "J",
+        summary: "A deceiver who wrestled with God and was renamed Israel. After years of scheming and exile, he was transformed into a man who leaned on God and blessed his sons prophetically.",
+        lessons: ["God can transform a schemer into a prince with God.", "Wrestling with God is better than running from Him.", "Identity is ultimately given by God, not seized by us."],
+        application: "Stop relying on your own cleverness. Bring your struggles directly to God and let Him rename and reshape you.",
+        refs: "Genesis 25–50; Hosea 12:3–5; Hebrews 11:21"
+      },
+      {
+        id: "judah",
+        name: "Judah",
+        era: "Patriarchs",
+        testament: "ot",
+        role: "Transformed brother · Genesis 37–44",
+        initial: "J",
+        summary: "The fourth son of Jacob who suggested selling Joseph into slavery and helped deceive his father. Years later in Egypt he offered himself as a slave in Benjamin's place — a transformation that moved Joseph to tears and won his line the blessing of the royal tribe of David and Jesus.",
+        lessons: [
+        "Genuine repentance shows itself in self-sacrifice for others.",
+        "God transforms compromisers into leaders.",
+        "Christ's kingly line came through a man who learned to lay down his life for his brother.",
+        ],
+        application: "Let your failures become the raw material of transformation. Stand in the gap for the very people you once failed.",
+        refs: "Genesis 29:35; 37:26–27; 43:8–9; 44:18–34; 49:8–12"
+      },
+      {
+        id: "joseph",
+        name: "Joseph",
+        era: "Patriarchs",
+        testament: "ot",
+        role: "Dreamer to deliverer · Genesis 37–50",
+        initial: "J",
+        summary: "Sold into slavery by his brothers, falsely accused, and imprisoned, Joseph rose to power in Egypt and saved many lives during famine. He forgave his brothers, seeing God's hand in it all.",
+        lessons: ["God can redeem even the worst betrayals for good.", "Integrity under pressure is a powerful witness.", "Forgiveness frees both the offender and the offended."],
+        application: "In seasons of injustice or delay, keep doing the next right thing. Trust that God is writing a larger story.",
+        refs: "Genesis 37–50; Psalm 105:16–22; Acts 7:9–16"
+      },
+      // ========== EXODUS ==========
+      {
+        id: "moses",
+        name: "Moses",
+        era: "Exodus",
+        testament: "ot",
+        role: "Deliverer & lawgiver · Exodus–Deuteronomy",
+        initial: "M",
+        summary: "Raised in Pharaoh's court, then a fugitive, Moses was called at the burning bush to lead Israel out of Egypt. He mediated the covenant, received the Law, and interceded for a stubborn people.",
+        lessons: ["God uses the reluctant and the imperfect.", "True leadership involves intercession and humility.", "God's presence is more valuable than any promised land."],
+        application: "Don't disqualify yourself by your past or weaknesses. Rely on God's strength and stay close to His presence.",
+        refs: "Exodus 1–Deuteronomy 34; Hebrews 11:23–29; Acts 7:20–44"
+      },
+      {
+        id: "jethro",
+        name: "Jethro",
+        era: "Exodus",
+        testament: "ot",
+        role: "Wise Midianite priest · Exodus 18",
+        initial: "J",
+        summary: "Moses' father-in-law, a Midianite priest, visited the camp and observed Moses judging every dispute alone from morning to night. He advised Moses to delegate to capable, God-fearing men — advice Moses humbly adopted.",
+        lessons: [
+        "Good counsel often comes from outside your circle.",
+        "Delegation is not weakness; it is wisdom and survival.",
+        "Listening to advice protects you and the people you serve.",
+        ],
+        application: "Do not try to carry every burden alone — train and trust others. Stay humble enough to take correction, even from unlikely sources.",
+        refs: "Exodus 2:16–22; 18; Numbers 10:29–32"
+      },
+      {
+        id: "aaron",
+        name: "Aaron",
+        era: "Exodus",
+        testament: "ot",
+        role: "First high priest · Exodus–Numbers",
+        initial: "A",
+        summary: "Moses' brother and spokesman who became Israel's first high priest. He failed at the golden calf yet was restored and served in the tabernacle, teaching that mediation requires both grace and holiness.",
+        lessons: ["God can still use those who have failed publicly.", "Priestly service requires holiness and intercession.", "Supporting another's calling is itself a high calling."],
+        application: "If you have stumbled, receive God's restoration and return to service. Use your voice to support God's purposes, not to create idols.",
+        refs: "Exodus 4, 28–29, 32; Numbers 16–17; Hebrews 5"
+      },
+      {
+        id: "miriam",
+        name: "Miriam",
+        era: "Exodus",
+        testament: "ot",
+        role: "Prophetess & worship leader · Exodus 15; Numbers 12",
+        initial: "M",
+        summary: "Sister of Moses and Aaron who watched over the infant Moses and later led the women in song after the Red Sea. She was disciplined for challenging Moses' unique role, then restored.",
+        lessons: ["Worship and leadership can flow from women as well as men.", "Jealousy of another's calling invites discipline.", "God restores the repentant and gives second chances."],
+        application: "Celebrate the gifts God gives others instead of comparing. If you have overstepped, repent quickly — God restores the humble.",
+        refs: "Exodus 15:20–21; Numbers 12; Micah 6:4"
+      },
+      {
+        id: "bezalel",
+        name: "Bezalel",
+        era: "Exodus",
+        testament: "ot",
+        role: "Spirit-filled craftsman · Exodus 31–39",
+        initial: "B",
+        summary: "A craftsman whom God filled with the Spirit 'with skill, with intelligence, with knowledge, and in all craftsmanship' to build the tabernacle. He shows that artistic excellence is a Spirit-empowered calling, not a lesser ministry.",
+        lessons: [
+        "God's Spirit empowers skill and artistry, not only preaching.",
+        "Excellence in a craft is a form of worship.",
+        "Every gift has a place in God's house.",
+        ],
+        application: "Whatever your craft — design, engineering, cooking, code — build it as unto the Lord. Offer excellence as worship, not as applause.",
+        refs: "Exodus 31:1–11; 35:30–39:43"
+      },
+      {
+        id: "balaam",
+        name: "Balaam",
+        era: "Exodus",
+        testament: "ot",
+        role: "Prophet for hire · Numbers 22–24",
+        initial: "B",
+        summary: "A pagan prophet hired to curse Israel whose donkey saw the angel he could not. Forbidden to curse, he blessed Israel instead — yet later taught Balak how to seduce Israel into sin, and died among the enemies he had been paid to oppose.",
+        lessons: [
+        "You can know God's word and still love the world's wages.",
+        "God's gifts do not sanctify a corrupt heart.",
+        "Leading others into sin is as destructive as sinning yourself.",
+        ],
+        application: "Check your motives when your ministry becomes profitable. Never trade spiritual influence for material gain.",
+        refs: "Numbers 22–24; 31:16; 2 Peter 2:15–16; Revelation 2:14"
+      },
+      {
+        id: "joshua",
+        name: "Joshua",
+        era: "Conquest & Judges",
+        testament: "ot",
+        role: "Conquering successor · Joshua",
+        initial: "J",
+        summary: "Moses' aide who spied out the land courageously and later led Israel across the Jordan. He commanded the sun to stand still and closed his life declaring, 'As for me and my house, we will serve the LORD.'",
+        lessons: ["Courage is rooted in God's presence, not personality.", "Faithful service in another's shadow prepares for leadership.", "Choose whom you will serve, and make it public."],
+        application: "Be strong in the Lord when facing new territory. Serve faithfully where you are now, and lead your household in deliberate commitment to God.",
+        refs: "Joshua 1–24; Hebrews 11:30–31"
+      },
+      {
+        id: "caleb",
+        name: "Caleb",
+        era: "Conquest & Judges",
+        testament: "ot",
+        role: "Wholehearted spy · Numbers 13–14; Joshua 14",
+        initial: "C",
+        summary: "One of two spies (with Joshua) who believed God could give Israel the land. Because he followed the LORD wholeheartedly, he waited forty-five years in the wilderness and at eighty-five claimed his mountain, saying, 'Give me this hill country.'",
+        lessons: [
+        "Majority opinion does not settle what God has promised.",
+        "Faith that starts strong must also endure long.",
+        "Wholehearted devotion is rewarded, even if decades later.",
+        ],
+        application: "Do not let the fear of the majority shrink your faith. Hold onto God's promises through the long middle years, and finish by claiming what He assigned you.",
+        refs: "Numbers 13–14; Joshua 14:6–15; 15:13–19"
+      },
+      {
+        id: "rahab",
+        name: "Rahab",
+        era: "Conquest & Judges",
+        testament: "ot",
+        role: "Faithful outsider · Joshua 2, 6",
+        initial: "R",
+        summary: "A Canaanite woman in Jericho who hid the Israelite spies and asked for mercy based on what she had heard of Israel's God. She was spared, joined God's people, and became an ancestor of David and Jesus.",
+        lessons: ["Faith can begin with secondhand reports and still be genuine.", "No past disqualifies a person from God's redemptive plan.", "Faith proves itself in costly action."],
+        application: "Whatever your background, God welcomes real faith. Act on what you know of Him, even when it costs you.",
+        refs: "Joshua 2; 6:22–25; Matthew 1:5; Hebrews 11:31; James 2:25"
+      },
+      {
+        id: "deborah",
+        name: "Deborah",
+        era: "Conquest & Judges",
+        testament: "ot",
+        role: "Judge & prophetess · Judges 4–5",
+        initial: "D",
+        summary: "A prophetess judging Israel who summoned Barak to battle Sisera and went with him when he hesitated. Her victory song is one of the oldest poems in Scripture.",
+        lessons: ["God raises up leaders according to need, not convention.", "Courage multiplies when someone steps forward first.", "Worship and leadership belong together."],
+        application: "Step forward when God calls, even if you are unexpected in the role. Encourage someone hesitant to obey God by standing with them.",
+        refs: "Judges 4–5"
+      },
+      {
+        id: "gideon",
+        name: "Gideon",
+        era: "Conquest & Judges",
+        testament: "ot",
+        role: "Reluctant judge · Judges 6–8",
+        initial: "G",
+        summary: "A fearful man threshing wheat in a winepress whom God called a 'mighty warrior.' With 300 men and torches he defeated a vast army, though later his compromise led Israel astray.",
+        lessons: ["God sees potential we do not see in ourselves.", "God deliberately reduces our resources so the victory is clearly His.", "Finishing well matters as much as starting well."],
+        application: "Accept God's view of you over your fears. Let Him strip away your dependencies so the credit clearly belongs to Him. Guard your heart in success.",
+        refs: "Judges 6–8; Hebrews 11:32"
+      },
+      {
+        id: "jephthah",
+        name: "Jephthah",
+        era: "Conquest & Judges",
+        testament: "ot",
+        role: "Rash-vow judge · Judges 11",
+        initial: "J",
+        summary: "A rejected son of Gilead raised up to deliver Israel from Ammon who won the battle but lost his joy through a rash vow made before fighting. His story closes with the loss of his daughter — the Bible's starkest warning about hasty promises to God.",
+        lessons: [
+        "God can use people the church has rejected.",
+        "Vows to God should be weighed before they are made.",
+        "Zeal without wisdom wounds the innocent.",
+        ],
+        application: "Before making sweeping spiritual commitments, count their real cost. Do not let intensity of devotion outrun wisdom.",
+        refs: "Judges 11:1–40; Ecclesiastes 5:2–5"
+      },
+      {
+        id: "samson",
+        name: "Samson",
+        era: "Conquest & Judges",
+        testament: "ot",
+        role: "Flawed strongman judge · Judges 13–16",
+        initial: "S",
+        summary: "Set apart as a Nazirite from birth and gifted with supernatural strength, Samson squandered his calling on impulsive choices and Philistine women. Captured, blinded, and mocked, he prayed one final prayer — and God answered it.",
+        lessons: [
+        "Gifts without character end in self-destruction.",
+        "God's patience outlasts our repeated failures.",
+        "Even a wasted calling can be reclaimed in one final act of faith.",
+        ],
+        application: "Guard your strengths — they are where you are most vulnerable. If you have squandered what God gave you, it is not too late to turn back to Him.",
+        refs: "Judges 13–16; Hebrews 11:32"
+      },
+      {
+        id: "ruth",
+        name: "Ruth",
+        era: "Conquest & Judges",
+        testament: "ot",
+        role: "Loyal daughter-in-law · Book of Ruth",
+        initial: "R",
+        summary: "A Moabite widow who clung to Naomi and her God, gleaning in Boaz's field. Her loyal love and quiet faith carried her into the lineage of David and the Messiah.",
+        lessons: ["Loyal love (hesed) reflects God's own character.", "Faithfulness in small, humble work opens redemptive doors.", "God welcomes foreigners into His family."],
+        application: "Stay faithful to the people God has given you, especially when it costs. Do humble work diligently — God weaves ordinary faithfulness into extraordinary stories.",
+        refs: "Book of Ruth; Matthew 1:5"
+      },
+      {
+        id: "naomi",
+        name: "Naomi",
+        era: "Conquest & Judges",
+        testament: "ot",
+        role: "Bitterness to blessing · Book of Ruth",
+        initial: "N",
+        summary: "A widow who left Bethlehem full and returned empty, telling the town to call her Mara — 'bitter.' Yet Ruth's loyalty and Boaz's redemption turned her emptiness into fullness, and she nursed Obed, the grandfather of David.",
+        lessons: [
+        "Honest grief is permitted; despair's verdicts are not final.",
+        "God works backstage during the famine years.",
+        "Redemption often arrives through ordinary family faithfulness.",
+        ],
+        application: "Bring your bitterness to God honestly, but do not rename yourself by it — the story is not over until He says it is.",
+        refs: "Ruth 1–4"
+      },
+      {
+        id: "boaz",
+        name: "Boaz",
+        era: "Conquest & Judges",
+        testament: "ot",
+        role: "Kinsman-redeemer · Ruth 2–4",
+        initial: "B",
+        summary: "A wealthy, God-fearing landowner of Bethlehem who protected Ruth in his fields, redeemed her dead husband's land, and married her — becoming Scripture's clearest picture of the kinsman-redeemer and great-grandfather of David.",
+        lessons: [
+        "Righteous men protect the vulnerable rather than exploit them.",
+        "Redemption is costly and undertaken willingly.",
+        "Small acts of kindness sit inside God's great redemptive plan.",
+        ],
+        application: "Use your position and resources to shield the stranger, the widow, and the poor. Be someone's answer of redemption.",
+        refs: "Ruth 2–4; Matthew 1:5"
+      },
+      {
+        id: "hannah",
+        name: "Hannah",
+        era: "United Kingdom",
+        testament: "ot",
+        role: "Praying mother · 1 Samuel 1–2",
+        initial: "H",
+        summary: "Tormented year after year by barrenness and a rival's taunts, Hannah poured out her soul before the LORD at Shiloh and vowed her son to His service. God answered with Samuel, and her song of praise echoes Mary's Magnificat.",
+        lessons: [
+        "Take your deepest anguish directly to God in prayer.",
+        "Vows made to God in tears should be honored in joy.",
+        "God hears the prayer of the overlooked and opens wombs, doors, and futures.",
+        ],
+        application: "Stop carrying your grief silently — pray it out honestly before God. When He answers, keep the promises you made in your desperation.",
+        refs: "1 Samuel 1–2; Luke 1:46–55"
+      },
+      {
+        id: "eli",
+        name: "Eli",
+        era: "United Kingdom",
+        testament: "ot",
+        role: "Weak high priest · 1 Samuel 1–4",
+        initial: "E",
+        summary: "The high priest who raised Samuel and trained him to hear God's voice, yet honored his corrupt sons above God by refusing to restrain them. He died on the same day the ark was captured, and his priestly line was judged.",
+        lessons: [
+        "Mentoring others cannot substitute for leading your own home.",
+        "Tolerance of known sin in the family is not love but cowardice.",
+        "Spiritual privilege does not excuse parental failure.",
+        ],
+        application: "Confront the sins of those you love while you still can. Being a godly parent is a higher calling than public ministry.",
+        refs: "1 Samuel 1–4; 2:22–36"
+      },
+      {
+        id: "samuel",
+        name: "Samuel",
+        era: "United Kingdom",
+        testament: "ot",
+        role: "Last judge & prophet · 1 Samuel",
+        initial: "S",
+        summary: "Dedicated to the LORD before birth, Samuel heard God's voice as a boy and grew into a prophet over Israel. He anointed the first two kings yet grieved their failures and kept interceding.",
+        lessons: ["Listening is the first act of true prophetic ministry.", "God's call often comes to the young and unlikely.", "You can be faithful even when those you lead fail."],
+        application: "Cultivate a heart that says, 'Speak, LORD, for your servant is listening.' Pray for leaders rather than merely criticizing them.",
+        refs: "1 Samuel 1–16; Psalm 99:6; Jeremiah 15:1; Hebrews 11:32"
+      },
+      {
+        id: "saul",
+        name: "Saul",
+        era: "United Kingdom",
+        testament: "ot",
+        role: "First king of Israel · 1 Samuel 9–31",
+        initial: "S",
+        summary: "Israel's first king — tall, humble, and Spirit-empowered at his anointing — whose insecurity, partial obedience, and jealousy toward David hardened into consulting a medium before dying in battle. 'To obey is better than sacrifice' became his epitaph.",
+        lessons: [
+        "Good beginnings do not guarantee good endings.",
+        "Partial obedience is disobedience.",
+        "Jealousy of another's calling corrodes your own.",
+        ],
+        application: "Obey fully what God has clearly said. Deal with insecurity at the root before it destroys your relationships and your legacy.",
+        refs: "1 Samuel 9–31; 15:22–23; 2 Samuel 1:17–27"
+      },
+      {
+        id: "david",
+        name: "David",
+        era: "United Kingdom",
+        testament: "ot",
+        role: "Shepherd king · 1–2 Samuel",
+        initial: "D",
+        summary: "The youngest son of Jesse, anointed while overlooked. He defeated Goliath, wrote psalms of raw honesty, committed grievous sin yet repented deeply, and was called a man after God's own heart.",
+        lessons: ["God looks at the heart, not the résumé.", "Giant problems shrink before a big God.", "Genuine repentance restores what sin destroys."],
+        application: "Do not let others' definitions limit you. Face your giants in God's strength. When you fall, run toward God in repentance, not away from Him in shame.",
+        refs: "1–2 Samuel; Psalms; Acts 13:22"
+      },
+      {
+        id: "jonathan",
+        name: "Jonathan",
+        era: "United Kingdom",
+        testament: "ot",
+        role: "Loyal friend & prince · 1 Samuel",
+        initial: "J",
+        summary: "Saul's son and heir to the throne, Jonathan recognized God's choice of David and loved him as his own soul, protecting him at great personal cost and making a covenant of friendship.",
+        lessons: ["True friendship celebrates another's calling above personal ambition.", "Loyalty to God's purposes outranks family expectation.", "Covenant love is self-sacrificing."],
+        application: "Champion the people God has favored, even when their success costs you something. Be the friend who protects, not the rival who resents.",
+        refs: "1 Samuel 14; 18–20; 2 Samuel 1:26"
+      },
+      {
+        id: "mephibosheth",
+        name: "Mephibosheth",
+        era: "United Kingdom",
+        testament: "ot",
+        role: "Covenant kindness received · 2 Samuel 9",
+        initial: "M",
+        summary: "Jonathan's crippled son, hidden in obscurity in Lo-debar until David sought him out to show kindness 'for Jonathan's sake.' Seated at the king's table like one of his sons, he became a portrait of covenant grace to the undeserving.",
+        lessons: [
+        "Grace seeks us out; we do not earn an invitation to the King's table.",
+        "Covenant faithfulness extends to the next generation.",
+        "A place at God's table is greater than any lost inheritance.",
+        ],
+        application: "Receive God's kindness without trying to earn it, and extend covenant love to the children and legacy of those who blessed you.",
+        refs: "2 Samuel 4:4; 9; 19:24–30"
+      },
+      {
+        id: "abigail",
+        name: "Abigail",
+        era: "United Kingdom",
+        testament: "ot",
+        role: "Wise peacemaker · 1 Samuel 25",
+        initial: "A",
+        summary: "Married to the foolish and harsh Nabal, she acted swiftly and wisely when his insult nearly brought David's vengeance on her household — riding out with provisions and a humble, reasoned appeal that turned David from bloodshed.",
+        lessons: [
+        "Wise, quick action can avert disaster.",
+        "You can honor God even within a bad marriage or situation.",
+        "Courageous humility disarms anger better than argument.",
+        ],
+        application: "When conflict ignites around you, be the calm, wise voice that de-escalates. Do what is right quickly and humbly, even when the fault is not yours.",
+        refs: "1 Samuel 25; 2 Samuel 3:3"
+      },
+      {
+        id: "nathan",
+        name: "Nathan",
+        era: "United Kingdom",
+        testament: "ot",
+        role: "Courageous court prophet · 2 Samuel 12; 1 Kings 1",
+        initial: "N",
+        summary: "The prophet who confronted King David after his sin with Bathsheba using a parable about a stolen lamb, bringing the king to repentance with the words 'You are the man!' In David's old age he also secured Solomon's succession.",
+        lessons: [
+        "Truth-telling to power requires both courage and craft.",
+        "God sends people to correct us — receive them.",
+        "Even great leaders need accountability.",
+        ],
+        application: "Speak hard truths with wisdom and love when God asks you to. And when someone confronts you, respond like David — with repentance, not retaliation.",
+        refs: "2 Samuel 12; 1 Kings 1:8–45; Psalm 51"
+      },
+      {
+        id: "solomon",
+        name: "Solomon",
+        era: "United Kingdom",
+        testament: "ot",
+        role: "Wise king & temple builder · 1 Kings 1–11",
+        initial: "S",
+        summary: "Granted unmatched wisdom and wealth, Solomon built the temple and led Israel's golden age. Yet his many compromises — foreign wives and idols — turned his heart and split the kingdom after him.",
+        lessons: ["Wisdom without wholehearted devotion ends in drift.", "Gifts from God do not exempt us from obedience.", "Small compromises accumulate into a divided heart."],
+        application: "Ask God for wisdom, but guard your heart above all. Do not let success and comfort slowly erode your first love.",
+        refs: "1 Kings 1–11; Proverbs; Ecclesiastes; 2 Chronicles 1–9"
+      },
+      {
+        id: "rehoboam",
+        name: "Rehoboam",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Kingdom-splitter · 1 Kings 12",
+        initial: "R",
+        summary: "Solomon's son whose harsh answer to the elders' plea — 'my father disciplined you with whips, but I will discipline you with scorpions' — split the kingdom in two. Rejecting the counsel of the old for the flattery of the young, he lost ten tribes in a day.",
+        lessons: [
+        "Pride isolates leaders from wisdom.",
+        "Harshness shatters what patience could have held.",
+        "One foolish decision can divide what generations built.",
+        ],
+        application: "Value experienced counsel over flattering voices. Handle authority gently — strength without grace breaks things.",
+        refs: "1 Kings 12; 14:21–31; 2 Chronicles 10–12"
+      },
+      {
+        id: "ahab-jezebel",
+        name: "Ahab & Jezebel",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Wicked royal couple · 1 Kings 16–22",
+        initial: "A",
+        summary: "Israel's most notorious royal couple: a king who 'sold himself to do what was evil,' stirred by a queen who murdered the LORD's prophets, stole Naboth's vineyard, and imported Baal worship into Israel. Both met the judgments Elijah had announced.",
+        lessons: [
+        "Passive leadership that lets evil rule is itself evil.",
+        "Greed disguised as legality still robs the innocent.",
+        "God's word outlasts royal power.",
+        ],
+        application: "Do not surrender your convictions to a dominant influence. Examine whether your ambition is quietly devouring someone else's vineyard.",
+        refs: "1 Kings 16:29–33; 18; 21; 2 Kings 9:30–37"
+      },
+      {
+        id: "elijah",
+        name: "Elijah",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Prophet of fire · 1 Kings 17–19; 2 Kings 1–2",
+        initial: "E",
+        summary: "Confronted Baal's prophets on Carmel and was fed by ravens, yet fled in despair under Jezebel's threat. God met him not in wind or fire but in a whisper, then refreshed and recommissioned him.",
+        lessons: ["Bold public victories and private despair can share one heart.", "God restores the exhausted with gentleness, food, and presence.", "God often speaks in the whisper, not the storm."],
+        application: "After spiritual highs, guard against crash. When burnt out, let God care for your body and soul before He recommissions you.",
+        refs: "1 Kings 17–19; 2 Kings 1–2; James 5:17–18"
+      },
+      {
+        id: "elisha",
+        name: "Elisha",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Prophet of double portion · 2 Kings 2–13",
+        initial: "E",
+        summary: "Elijah's successor who asked for a double portion of his spirit. His quiet miracles — feeding, healing, guiding kings — showed God's care for ordinary people and even enemies.",
+        lessons: ["Ask boldly for God's Spirit to continue His work.", "God's power is at work in everyday needs, not just dramatic moments.", "Mercy extends even to hostile outsiders."],
+        application: "Serve in the ordinary with extraordinary devotion. Believe God cares about daily bread, sickness, and enemies alike.",
+        refs: "2 Kings 2–13; Luke 4:27"
+      },
+      {
+        id: "amos",
+        name: "Amos",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Prophet of justice · Book of Amos",
+        initial: "A",
+        summary: "A shepherd and dresser of sycamore figs from Tekoa — not a professional prophet — sent to announce judgment on a prosperous nation that trampled the needy. His message joins burning social justice to the promise of a restored house of David.",
+        lessons: [
+        "God calls available people with His word, not professionals with credentials.",
+        "Worship without justice is noise to God.",
+        "True religion includes how we treat the poor.",
+        ],
+        application: "Let justice for the poor test your worship. Obey God's call with the occupation you already have — He does not wait for you to feel qualified.",
+        refs: "Book of Amos; 7:14–15; 9:11"
+      },
+      {
+        id: "jonah",
+        name: "Jonah",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Reluctant missionary · Book of Jonah",
+        initial: "J",
+        summary: "A prophet who ran from God's call to preach to Nineveh, Israel's enemy. A storm, a great fish, and a gourd later, he obeyed — and the entire city repented, while Jonah sulked over God's mercy toward people he wanted judged.",
+        lessons: [
+        "You cannot flee from God's presence or His assignments.",
+        "God's compassion extends to people we consider undeserving.",
+        "Anger at God's mercy reveals our hearts, not His.",
+        ],
+        application: "Examine whether you quietly want some people excluded from God's forgiveness. Obey His call even when the audience is one you would rather see judged.",
+        refs: "Book of Jonah; 2 Kings 14:25; Matthew 12:39–41"
+      },
+      {
+        id: "hosea",
+        name: "Hosea",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Prophet of unrelenting love · Book of Hosea",
+        initial: "H",
+        summary: "Commanded by God to marry Gomer, a woman who would be unfaithful, Hosea's own broken marriage became a living parable of God's covenant love for unfaithful Israel. He kept pursuing, redeeming, and reclaiming his bride at great cost.",
+        lessons: [
+        "God's love is covenant love — it does not quit when betrayed.",
+        "Obedience sometimes means modeling a painful message with your own life.",
+        "God redeems and restores what unfaithfulness ruins.",
+        ],
+        application: "Love people the way God loves you — faithfully, even when it hurts. Never assume someone (including you) has strayed beyond redemption.",
+        refs: "Book of Hosea; Romans 9:25–26"
+      },
+      {
+        id: "hezekiah",
+        name: "Hezekiah",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Reforming king · 2 Kings 18–20",
+        initial: "H",
+        summary: "A king of Judah who tore down idolatrous worship, reopened the temple, and trusted the LORD when the Assyrian army laid siege to Jerusalem — and God delivered the city in one night. Later, pride over Babylon's envoys and a terminal illness tested him in succession.",
+        lessons: [
+        "Revival often begins with one leader's obedience.",
+        "Prayer changes situations armies cannot.",
+        "Success and praise can erode the humility that crisis builds.",
+        ],
+        application: "Tear down whatever competes with God in your life and pray boldly in impossible situations. Guard your heart when the crisis passes.",
+        refs: "2 Kings 18–20; 2 Chronicles 29–32; Isaiah 36–39"
+      },
+      {
+        id: "micah",
+        name: "Micah",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Prophet of the summary law · Book of Micah",
+        initial: "M",
+        summary: "A contemporary of Isaiah who indicted leaders who 'build Zion with blood,' and paired it with the verse that summarizes the whole law: 'to do justice, and to love kindness, and to walk humbly with your God.' He also named Bethlehem as the Messiah's birthplace.",
+        lessons: [
+        "God's requirement is clear: justice, kindness, humility.",
+        "Corruption at the top draws certain judgment.",
+        "God announces His rescue plan centuries ahead — down to the village.",
+        ],
+        application: "Audit your life against Micah 6:8 — God asks not for more religion but for justice, mercy, and humility. Trust His promises even when only a little Bethlehem remains.",
+        refs: "Book of Micah; 5:2; 6:8; Matthew 2:5–6"
+      },
+      {
+        id: "isaiah",
+        name: "Isaiah",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Prophet of the Holy One · Book of Isaiah",
+        initial: "I",
+        summary: "Called in the year King Uzziah died with a vision of God's throne, Isaiah pronounced judgment and hope in equal measure, foreseeing the Suffering Servant who would bear our sins.",
+        lessons: ["A real glimpse of God's holiness reorders everything else.", "Prophetic truth-telling must be paired with hope.", "God's rescue plan was announced centuries in advance."],
+        application: "Seek a fresh vision of God's greatness — it cleanses and commissions. Speak both truth and hope to your generation.",
+        refs: "Book of Isaiah; John 12:38–41"
+      },
+      {
+        id: "josiah",
+        name: "Josiah",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Boy king reformer · 2 Kings 22–23",
+        initial: "J",
+        summary: "A king crowned at eight who in his twenties ordered the temple repaired — and the priest Hilkiah found the Book of the Law. Hearing it read, Josiah tore his robes, led the deepest reform in Judah's history, and delayed God's judgment by his humility.",
+        lessons: [
+        "The rediscovery of God's word can change a whole generation.",
+        "Humility can postpone judgment on a nation.",
+        "Young leaders can out-reform their elders.",
+        ],
+        application: "Return to the Book you have neglected — read it and respond with action, not nostalgia. It is never too early to lead reform.",
+        refs: "2 Kings 22–23; 2 Chronicles 34–35"
+      },
+      {
+        id: "jeremiah",
+        name: "Jeremiah",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Weeping prophet · Book of Jeremiah",
+        initial: "J",
+        summary: "Called as a youth to announce Judah's exile, Jeremiah was rejected, imprisoned, and plotted against, yet he kept preaching for forty years and bought a field as an act of hope in exile.",
+        lessons: ["Faithfulness is measured over decades, not moments.", "Obedience to God may cost popularity and comfort.", "Hope can be acted out even when circumstances scream despair."],
+        application: "Stay committed to what God told you, even when nobody listens. Do tangible acts of hope in declining situations.",
+        refs: "Book of Jeremiah; Lamentations"
+      },
+      {
+        id: "habakkuk",
+        name: "Habakkuk",
+        era: "Divided Kingdom & Prophets",
+        testament: "ot",
+        role: "Complaining prophet of faith · Book of Habakkuk",
+        initial: "H",
+        summary: "A prophet who complained to God about injustice — and received an answer he did not want: Babylon was coming. He wrestled through to the great declaration: 'Though the fig tree does not blossom... yet I will rejoice in the LORD.'",
+        lessons: [
+        "You may bring complaints to God, not only praises.",
+        "The just shall live by faith — the truth that launched the Reformation.",
+        "Joy in God can survive the loss of everything else.",
+        ],
+        application: "When God's plan makes no sense, keep the dialogue honest and end where Habakkuk did — rejoicing in God Himself, not in His gifts.",
+        refs: "Book of Habakkuk; 2:4; 3:17–19; Romans 1:17"
+      },
+      {
+        id: "daniel",
+        name: "Daniel",
+        era: "Exile & Return",
+        testament: "ot",
+        role: "Exile statesman & dream interpreter · Book of Daniel",
+        initial: "D",
+        summary: "Deported to Babylon as a youth, Daniel served four kings in two empires without compromise. He refused defiled food, prayed openly despite the lion's den, and interpreted empires' dreams.",
+        lessons: ["Convictions settled in advance survive pressure.", "Excellence and integrity can coexist in hostile workplaces.", "Prayer is worth risking everything for."],
+        application: "Decide your boundaries before temptation arrives. Be the most excellent and most honest person in the room, and keep praying no matter the cost.",
+        refs: "Book of Daniel; Matthew 24:15"
+      },
+      {
+        id: "shadrach",
+        name: "Shadrach, Meshach & Abednego",
+        era: "Exile & Return",
+        testament: "ot",
+        role: "Fiery furnace faithful · Daniel 3",
+        initial: "S",
+        summary: "Three exiled friends of Daniel who refused Nebuchadnezzar's command to bow to his golden image. Bound and thrown into a furnace heated seven times hotter, they walked in the flames with a fourth figure 'like a son of the gods' — and came out without even the smell of smoke.",
+        lessons: [
+        "Conviction is proven when the cost is real.",
+        "Faith can say, 'Even if He does not deliver us, we will not bow.'",
+        "Christ stands with His people in the fire.",
+        ],
+        application: "Decide in advance that you will not bow to whatever your culture enthrones. Trust God for deliverance, but obey Him even when He does not provide it on your terms.",
+        refs: "Daniel 3; Isaiah 43:1–2"
+      },
+      {
+        id: "ezekiel",
+        name: "Ezekiel",
+        era: "Exile & Return",
+        testament: "ot",
+        role: "Prophet of dry bones · Book of Ezekiel",
+        initial: "E",
+        summary: "A priest exiled in Babylon, called through overwhelming visions of God's glory. He dramatized Jerusalem's judgment with his own life, then spoke to a valley of dry bones that rose into a living army — promising God would give new hearts and new spirits.",
+        lessons: [
+        "God can bring life to what is utterly dead.",
+        "Faithful ministry may require personal cost and drama.",
+        "Hope belongs to people in exile, not just at home.",
+        ],
+        application: "Never look at a hopeless situation — your own or another's — as beyond God's breath. Speak life where others see only dry bones.",
+        refs: "Book of Ezekiel; Ezekiel 37; 36:26–27"
+      },
+      {
+        id: "esther",
+        name: "Esther",
+        era: "Exile & Return",
+        testament: "ot",
+        role: "Queen for such a time · Book of Esther",
+        initial: "E",
+        summary: "A Jewish orphan turned Persian queen who risked her life to expose Haman's plot of genocide. Her cousin Mordecai's words — 'for such a time as this' — spurred her to act for her people.",
+        lessons: ["God's providence works even where His name is unspoken.", "Position is given for protection of others, not personal comfort.", "Courage may be required at the worst possible time."],
+        application: "See your influence — job, network, resources — as placed there 'for such a time as this.' Use it to defend the vulnerable.",
+        refs: "Book of Esther"
+      },
+      {
+        id: "mordecai",
+        name: "Mordecai",
+        era: "Exile & Return",
+        testament: "ot",
+        role: "Covenant statesman · Book of Esther",
+        initial: "M",
+        summary: "Esther's older cousin who raised her, refused to bow to Haman, and turned the empire's genocide decree into the Jews' deliverance. His challenge — 'who knows whether you have not come to the kingdom for such a time as this?' — shows quiet, strategic faithfulness.",
+        lessons: [
+        "Some convictions cannot be bowed, whatever it costs.",
+        "God positions people strategically before crises arrive.",
+        "Faithful parenting of an adopted child changed an empire's history.",
+        ],
+        application: "Refuse to bow where bowing would deny God, and trust that your position in this season is preparation for a purpose you cannot yet see.",
+        refs: "Book of Esther; 4:13–14"
+      },
+      {
+        id: "haggai-zechariah",
+        name: "Haggai & Zechariah",
+        era: "Exile & Return",
+        testament: "ot",
+        role: "Temple-rebuilding prophets · Ezra 5–6",
+        initial: "H",
+        summary: "Two post-exile prophets whose preaching roused the returned settlers to finish the temple after sixteen years of delay. Haggai rebuked misplaced comfort — 'consider your ways' — while Zechariah sustained the work with visions of the Spirit's power and the coming Branch.",
+        lessons: [
+        "'Not by might, nor by power, but by My Spirit,' says the LORD.",
+        "Discouragement, not enemy opposition, usually stalls God's work.",
+        "Prophetic encouragement and practical rebuilding belong together.",
+        ],
+        application: "If a God-given project has stalled in your comfort, consider your ways and resume it — relying on the Spirit, not on your own strength.",
+        refs: "Book of Haggai; Zechariah 1–8; Ezra 5:1–2; 6:14"
+      },
+      {
+        id: "ezra",
+        name: "Ezra",
+        era: "Exile & Return",
+        testament: "ot",
+        role: "Scribe & reformer · Book of Ezra",
+        initial: "E",
+        summary: "A priest 'skilled in the Law of Moses' who led a return of exiles to Jerusalem with the king's blessing and treasury. He fasted and prayed over the people's mixed marriages, then led a nationwide repentance and re-education in God's word.",
+        lessons: [
+        "Study of Scripture must precede teaching of it.",
+        "Trembling at God's word prepares a people for renewal.",
+        "Intercession and confession can precede and enable reform.",
+        ],
+        application: "Set your heart to study, do, and teach God's word — in that order. Pray and fast before confronting sin, beginning with your own.",
+        refs: "Book of Ezra; Ezra 7:10; Nehemiah 8"
+      },
+      {
+        id: "nehemiah",
+        name: "Nehemiah",
+        era: "Exile & Return",
+        testament: "ot",
+        role: "Wall-builder & reformer · Book of Nehemiah",
+        initial: "N",
+        summary: "A cupbearer who wept over Jerusalem's ruins, prayed, and petitioned the king. He organized the rebuilding of the walls against fierce opposition in fifty-two days, then led social and spiritual reform.",
+        lessons: ["God-given burden must become prayer, then action.", "Leadership means pairing work with a weapon in hand.", "Finishing the work requires confronting injustice within."],
+        application: "Turn your holy discontent into prayer and a plan. Expect opposition, keep building, and address the wrongs among your own people first.",
+        refs: "Book of Nehemiah"
+      },
+      {
+        id: "malachi",
+        name: "Malachi",
+        era: "Exile & Return",
+        testament: "ot",
+        role: "Last prophet of the Old Testament · Book of Malachi",
+        initial: "M",
+        summary: "The final prophetic voice of the Old Testament, confronting a weary post-exile people over diluted offerings, unfaithful marriages, and withheld tithes — and closing with the promise of a forerunner and the sun of righteousness rising with healing in its wings.",
+        lessons: [
+        "Routine worship can quietly become dishonoring worship.",
+        "God keeps a book of remembrance for those who fear Him.",
+        "Scripture closes pointing forward to Christ.",
+        ],
+        application: "Give God your best, not your leftovers. Keep serving faithfully in the silence between the promise and its fulfillment.",
+        refs: "Book of Malachi; 3:1, 10; 4:2; Luke 1:17"
+      },
+      // ========== NEW TESTAMENT ==========
+      {
+        id: "mary-mother",
+        name: "Mary, Mother of Jesus",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "God-bearer · Luke 1–2; John 19",
+        initial: "M",
+        summary: "A young woman of Nazareth who received the angel's announcement with troubling and wonder, declaring, 'Let it be to me according to your word.' She treasured, pondered, and stood at the cross.",
+        lessons: ["Availability to God matters more than ability.", "Obedience can be costly and public.", "Faith ponders; it does not rush to explain everything."],
+        application: "Offer God your simple 'yes' even when the plan is frightening and misunderstood by others. Treasure and ponder what God is doing rather than demanding full explanations.",
+        refs: "Luke 1–2; John 2:1–11; 19:25–27; Acts 1:14"
+      },
+      {
+        id: "joseph-carpenter",
+        name: "Joseph the Carpenter",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Guardian of the Son of God · Matthew 1–2",
+        initial: "J",
+        summary: "The righteous descendant of David to whom God entrusted His Son. He believed the angel's dream, took the pregnant Mary as his wife, fled to Egypt to save the child, and then quietly disappears from the narrative — a just man whose calling was protection and provision.",
+        lessons: [
+        "Obedience sometimes means accepting a costly story you did not write.",
+        "Godly fatherhood is presence, protection, and obedience without applause.",
+        "Righteousness can be quiet and decisive at once.",
+        ],
+        application: "Accept the assignments God hands you even when they look costly and confusing — protect and provide for what He has placed in your care.",
+        refs: "Matthew 1:18–25; 2:13–23; Luke 2:4, 41–52"
+      },
+      {
+        id: "zechariah-elizabeth",
+        name: "Zechariah & Elizabeth",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Righteous barren couple · Luke 1",
+        initial: "Z",
+        summary: "An aged priestly couple, 'righteous before God, walking blamelessly in all the commandments,' who had no child — until Gabriel met Zechariah at the altar of incense. His unbelief became mute wonder, Elizabeth conceived John the Baptist, and Zechariah's tongue broke loose in blessing.",
+        lessons: [
+        "Righteous living does not exempt us from long-delayed hopes.",
+        "God answers long-shot prayers in His own timing.",
+        "Doubt may delay praise, but it cannot cancel God's plan.",
+        ],
+        application: "Keep serving faithfully through the years your prayer goes unanswered. When God moves, let doubt give way to loud blessing.",
+        refs: "Luke 1:5–25, 57–80"
+      },
+      {
+        id: "simeon-anna",
+        name: "Simeon & Anna",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Waiting worshippers · Luke 2:25–38",
+        initial: "S",
+        summary: "Two elderly worshippers in the temple. Simeon, waiting for Israel's consolation, took the forty-day-old Jesus in his arms and blessed God; Anna, a widow of about eighty-four who never left the temple, began telling everyone about Him.",
+        lessons: [
+        "A lifetime of waiting can end in one fulfilled moment.",
+        "The aged can carry prophetic vision for the young.",
+        "Seeing Christ is worth every year of waiting.",
+        ],
+        application: "Do not let deferred hope make you cynical. Keep showing up in God's presence until your eyes see His salvation.",
+        refs: "Luke 2:25–38"
+      },
+      {
+        id: "john-baptist",
+        name: "John the Baptist",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Forerunner & wilderness preacher · Matthew 3; John 1",
+        initial: "J",
+        summary: "The prophesied forerunner who preached repentance in the wilderness, baptized Jesus, and pointed his own disciples away from himself to the Lamb of God. He was imprisoned and executed for truth.",
+        lessons: ["Ministry is about pointing to Christ, not building a name.", "Faithfulness may end in apparent failure.", "Humility says, 'He must increase; I must decrease.'"],
+        application: "Direct attention to Jesus, not yourself. Keep believing even when your circumstances contradict God's promises, and let success be measured by His increase.",
+        refs: "Matthew 3; 11; 14:1–12; John 1:19–34; 3:22–30"
+      },
+      {
+        id: "nicodemus",
+        name: "Nicodemus",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Night seeker · John 3, 7, 19",
+        initial: "N",
+        summary: "A Pharisee and member of the Sanhedrin who came to Jesus by night with honest questions and heard, 'You must be born again.' He later defended Jesus before the council and, with Joseph of Arimathea, gave His body an honored burial.",
+        lessons: [
+        "It is safe to bring honest questions to Jesus.",
+        "Faith may begin in private before it shows itself in public.",
+        "New birth is God's work, not self-improvement.",
+        ],
+        application: "Ask your real questions — even secretly at first — but don't stay in the dark forever. Let private seeking mature into open allegiance to Christ.",
+        refs: "John 3:1–21; 7:50–52; 19:38–42"
+      },
+      {
+        id: "andrew",
+        name: "Andrew",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "The bringer · John 1, 6, 12",
+        initial: "A",
+        summary: "One of the first two disciples of John the Baptist to follow Jesus, Andrew immediately found his brother Simon and brought him to Christ. He kept doing it — bringing a boy with loaves and fishes to Jesus and later some Greeks who wanted to see Him.",
+        lessons: [
+        "You do not need prominence to be powerfully useful.",
+        "Bringing people to Jesus is a complete ministry in itself.",
+        "Personal evangelism usually starts with your own family and circle.",
+        ],
+        application: "Stop waiting for a bigger platform. Bring the people already around you — siblings, friends, colleagues — to Jesus with what you have.",
+        refs: "John 1:35–42; 6:8–9; 12:20–22; Matthew 4:18–20"
+      },
+      {
+        id: "peter",
+        name: "Peter (Simon)",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Rock of the early church · Gospels; Acts",
+        initial: "P",
+        summary: "A impulsive fisherman who walked on water, confessed Christ, denied Him three times, and was restored on a beach. He preached at Pentecost and led the apostles through rejection and joy.",
+        lessons: ["Failure is not final when grace intervenes.", "Enthusiasm must be refined into steadfastness.", "Jesus restores the denier and recommissions the broken."],
+        application: "Let your worst failure become the platform for your deepest ministry. Accept restoration from Jesus rather than living in self-condemnation.",
+        refs: "Matthew 4:18–20; 14:22–33; 16:13–23; 26:69–75; John 21; Acts 2–12; 1–2 Peter"
+      },
+      {
+        id: "john-apostle",
+        name: "John the Apostle",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Beloved disciple · John; Revelation",
+        initial: "J",
+        summary: "The disciple whom Jesus loved — a Son of Thunder whom Jesus slowly transformed into the apostle of love. He leaned on Jesus' chest at supper, stood at the cross when the others fled, received Mary as his charge, and decades later wrote the Gospel, the epistles, and Revelation.",
+        lessons: [
+        "Closeness to Jesus reshapes ambition into love.",
+        "Presence at the cross precedes leadership in the church.",
+        "Love and truth become inseparable in maturity.",
+        ],
+        application: "Draw near — intimacy with Jesus transforms your temperament. Stay faithful across the decades until your last words still point to love.",
+        refs: "John 13:23–25; 19:26–27; 20:1–8; 1 John; Revelation 1:1–4"
+      },
+      {
+        id: "james-zebedee",
+        name: "James (Son of Zebedee)",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "First martyred apostle · Acts 12",
+        initial: "J",
+        summary: "One of Jesus' inner three — with Peter and John — present at the transfiguration and in Gethsemane. Once rebuked for wanting fire called down on Samaria, he became the first apostle to be martyred, killed by Herod Agrippa around AD 44.",
+        lessons: [
+        "Ambition for thrones must be converted into a willingness to drink the cup.",
+        "God does not explain why some suffer early.",
+        "The inner circle of Jesus is a circle of the cross.",
+        ],
+        application: "Let Jesus reframe your ambition from greatness to sacrifice. Accept that faithfulness may cost you more than it costs others.",
+        refs: "Matthew 4:21–22; 17:1; 20:20–28; Luke 9:51–56; Acts 12:1–2"
+      },
+      {
+        id: "matthew",
+        name: "Matthew",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Tax collector turned evangelist · Matthew 9",
+        initial: "M",
+        summary: "A tax collector for Rome — a collaborator despised by his people — called from his booth with two words: 'Follow me.' He rose, left everything, hosted a banquet for Jesus and other sinners, and wrote the Gospel presenting Jesus as the promised King.",
+        lessons: [
+        "No occupation or reputation excludes you from the call.",
+        "Grace turns outcasts into evangelists to outcasts.",
+        "The right response to a call is immediate and total.",
+        ],
+        application: "Answer the call without negotiating terms. Use your skills — even the despised ones — to present Christ to people like you.",
+        refs: "Matthew 9:9–13; Mark 2:13–17; Luke 5:27–32"
+      },
+      {
+        id: "thomas",
+        name: "Thomas",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Honest doubter · John 11, 20",
+        initial: "T",
+        summary: "The disciple who said, 'Let us also go, that we may die with him,' yet could not believe the resurrection reports without proof. When the risen Jesus invited him to touch His wounds, Thomas answered with the highest confession in the Gospels: 'My Lord and my God!'",
+        lessons: [
+        "Honest doubt sincerely pursued can end in profound faith.",
+        "Jesus meets doubters where they are without shaming them.",
+        "Willingness to die with Christ and unbelief can coexist in one heart.",
+        ],
+        application: "Do not hide your doubts — voice them and bring them before the risen Christ. He would rather you wrestle honestly than pretend comfortably.",
+        refs: "John 11:16; 14:5; 20:24–29; 21:2"
+      },
+      {
+        id: "mary-magdalene",
+        name: "Mary Magdalene",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Delivered disciple & first witness · Luke 8; John 20",
+        initial: "M",
+        summary: "Freed by Jesus from seven demons, she followed and supported Him to the cross when most men had fled. She was the first to see the risen Christ and the first to announce the resurrection.",
+        lessons: ["Gratitude fuels costly devotion.", "God entrusts the greatest news to the humble.", "Love stays near when faith is confused."],
+        application: "Stay close to Jesus through the confusing, dark seasons — you may be positioned to witness what others miss. Let gratitude for what He has done drive your loyalty.",
+        refs: "Luke 8:1–3; 24:1–11; John 19:25; 20:1–18"
+      },
+      {
+        id: "martha-mary",
+        name: "Martha & Mary of Bethany",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Hospitable host & devoted listener · Luke 10; John 11",
+        initial: "M",
+        summary: "Sisters who hosted Jesus in Bethany. Martha served with anxious complaint while Mary sat at His feet; later both entrusted their brother Lazarus's tomb to the One who is the resurrection.",
+        lessons: ["Service without devotion breeds resentment.", "Sitting at Jesus' feet is never wasted time.", "Honest grief and bold faith can coexist."],
+        application: "Balance your doing with being. Bring your griefs and disappointments directly to Jesus and believe He can still bring life.",
+        refs: "Luke 10:38–42; John 11:1–44; 12:1–8"
+      },
+      {
+        id: "lazarus",
+        name: "Lazarus",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "The raised friend · John 11",
+        initial: "L",
+        summary: "The brother of Martha and Mary whom Jesus loved, whose illness Jesus deliberately delayed — for the glory of God — until he had been dead four days. At the tomb Jesus wept, then called, 'Lazarus, come out!' — sealing His claim: 'I am the resurrection and the life.'",
+        lessons: [
+        "God's delays are not denials; His timing serves a greater glory.",
+        "Jesus weeps with us even when He is about to act.",
+        "Christ holds resurrection power over the most final loss.",
+        ],
+        application: "Where death — literal or metaphorical — has settled into your story, bring Jesus to the tomb. Believe that His delay may be mercy in disguise.",
+        refs: "John 11:1–44; 12:1–11"
+      },
+      {
+        id: "zacchaeus",
+        name: "Zacchaeus",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Transformed tax collector · Luke 19",
+        initial: "Z",
+        summary: "A wealthy chief tax collector in Jericho who climbed a tree to see Jesus. When Jesus invited Himself to Zacchaeus's house, joy transformed him into a man of radical restitution.",
+        lessons: ["Curiosity about Jesus can be the start of conversion.", "Salvation demonstrates itself in concrete restitution.", "Jesus seeks the despised."],
+        application: "Let genuine encounter with Christ change your money and your treatment of those you wronged. Restoration is proven by action, not apology alone.",
+        refs: "Luke 19:1–10"
+      },
+      {
+        id: "judas",
+        name: "Judas Iscariot",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "The betrayer · Matthew 26–27",
+        initial: "J",
+        summary: "The trusted treasurer among the Twelve who betrayed Jesus for thirty pieces of silver with a kiss. His story is Scripture's darkest warning: proximity to Jesus, miracles, and ministry do not by themselves produce a transformed heart.",
+        lessons: [
+        "You can follow Jesus closely and still not belong to Him.",
+        "Unresolved greed and offense open the door to betrayal.",
+        "Repentance toward Jesus heals; remorse alone destroys.",
+        ],
+        application: "Examine your heart, not just your attendance. Do not let wounds or greed turn you against the very people God placed around you.",
+        refs: "Matthew 26:14–16, 47–50; 27:3–10; John 12:4–6; Acts 1:16–20"
+      },
+      {
+        id: "pilate",
+        name: "Pontius Pilate",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Hand-washing governor · John 18–19",
+        initial: "P",
+        summary: "The Roman governor who three times declared Jesus innocent — 'I find no basis for a charge against him' — yet scourged and crucified Him anyway, washing his hands before the crowd. Face to face with the Truth incarnate, he asked, 'What is truth?' and walked away from the answer.",
+        lessons: [
+        "Knowing the right thing is worthless without the courage to do it.",
+        "Trying to stay neutral about Jesus is itself a decision against Him.",
+        "Crowd pressure can overturn conviction.",
+        ],
+        application: "When righteousness costs your comfort or career, do not wash your hands. Stand on what you know is true even when it is politically expensive.",
+        refs: "Matthew 27:11–26; John 18:28–19:16"
+      },
+      {
+        id: "joseph-arimathea",
+        name: "Joseph of Arimathea",
+        era: "Life of Christ",
+        testament: "nt",
+        role: "Bold member of the council · Matthew 27; John 19",
+        initial: "J",
+        summary: "A rich member of the Sanhedrin and a secret disciple of Jesus who, when everyone else had fled, went openly to Pilate and asked for the body of Jesus, burying it honorably in his own new rock-hewn tomb.",
+        lessons: [
+        "Courage often appears only after others have fled.",
+        "Secret faith must eventually become public, costly action.",
+        "God uses our resources — even tombs — for redemptive purposes.",
+        ],
+        application: "There comes a moment when following Jesus quietly is no longer enough. Be willing to risk reputation and give your best for Him when it counts.",
+        refs: "Matthew 27:57–60; Mark 15:43–46; John 19:38"
+      },
+      {
+        id: "ananias-sapphira",
+        name: "Ananias & Sapphira",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Deceiving couple · Acts 5:1–11",
+        initial: "A",
+        summary: "A couple who sold property and publicly pretended to give the full price to the church while secretly keeping part. Confronted separately by Peter, each lied to the Holy Spirit and fell dead — and great fear came on the whole church.",
+        lessons: [
+        "God cares about truth in giving, not the size of the gift.",
+        "Hypocrisy in worship is a serious offense to the Spirit.",
+        "Comparing ourselves with others' generosity can corrupt our own.",
+        ],
+        application: "Give honestly and keep your public image aligned with private reality. Fear God more than you crave a reputation for generosity.",
+        refs: "Acts 5:1–11"
+      },
+      {
+        id: "stephen",
+        name: "Stephen",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "First martyr · Acts 6–7",
+        initial: "S",
+        summary: "A deacon full of faith and the Spirit who performed wonders and preached a sweeping defense of the faith. Stoned by the Sanhedrin, he died praying for his killers — watched by Saul of Tarsus.",
+        lessons: ["Boldness and grace belong together, even unto death.", "Praying for persecutors reflects Christ Himself.", "God's plan can advance through apparent defeat."],
+        application: "Speak truth with a Christlike spirit even when it costs you. Your faithfulness in 'defeat' may be the seed of someone else's conversion.",
+        refs: "Acts 6:8–8:1; 22:20"
+      },
+      {
+        id: "philip",
+        name: "Philip the Evangelist",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Evangelist to Samaria & the desert · Acts 8, 21",
+        initial: "P",
+        summary: "One of the seven deacons chosen with Stephen. After the persecution scattered the church, he preached Christ in Samaria with signs following, then was directed by an angel to a desert road where he led an Ethiopian official to faith and baptism.",
+        lessons: [
+        "Scattered believers carry the gospel — persecution spreads, not stops, the church.",
+        "The gospel crosses ethnic and geographic boundaries.",
+        "Obedience in obscure places can reach nations.",
+        ],
+        application: "Treat disruption and displacement as divine deployment. Be ready to explain the gospel anywhere — a desert road or a crowded city.",
+        refs: "Acts 6:5; 8:4–40; 21:8–9"
+      },
+      {
+        id: "cornelius",
+        name: "Cornelius",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "God-fearing centurion · Acts 10",
+        initial: "C",
+        summary: "A Roman centurion in Caesarea known for generosity and constant prayer. An angel directed him to send for Peter, while God prepared Peter with a vision — and at their meeting the Holy Spirit fell on Gentiles just as on the first believers.",
+        lessons: [
+        "God is already at work in seekers before we arrive.",
+        "Obedient prayer and generosity position us for encounter.",
+        "The gospel deliberately demolishes ethnic barriers.",
+        ],
+        application: "Pray and give faithfully even before you see results — God notices. And be willing to have your prejudices corrected by His Spirit.",
+        refs: "Acts 10:1–48; 11:1–18"
+      },
+      {
+        id: "dorcas",
+        name: "Dorcas (Tabitha)",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Giver & seamstress · Acts 9:36–43",
+        initial: "D",
+        summary: "A disciple in Joppa 'full of good works and acts of charity,' whose sewing for widows was so loved that when she died, they gathered weeping around her garments. Peter prayed, and she was raised back to life.",
+        lessons: [
+        "Practical, hands-on service is full discipleship.",
+        "Quiet consistent kindness builds a community that mourns its loss.",
+        "God can restore what death takes.",
+        ],
+        application: "Serve with the skills you already have — even a needle. Let your kindness be so consistent that people's lives are visibly better because of you.",
+        refs: "Acts 9:36–43"
+      },
+      {
+        id: "ananias-damascus",
+        name: "Ananias of Damascus",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Paul's welcoming disciple · Acts 9:10–19",
+        initial: "A",
+        summary: "A disciple the Lord sent to Straight Street to lay hands on the church's fiercest persecutor. His nervous obedience healed Paul's sight, baptized him, and set the apostle to the Gentiles on his course with the word, 'Brother Saul.'",
+        lessons: [
+        "God sometimes asks us to trust that His enemies have become brothers.",
+        "Obedience in one small errand can unlock world missions.",
+        "A word of welcome can change a man's entire identity.",
+        ],
+        application: "When God sends you to someone you fear, go — that person may become the greatest servant of Christ you ever meet.",
+        refs: "Acts 9:10–19; 22:12–16"
+      },
+      {
+        id: "paul",
+        name: "Paul (Saul of Tarsus)",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Apostle to the Gentiles · Acts; Epistles",
+        initial: "P",
+        summary: "A zealous Pharisee who persecuted the church until the risen Christ met him on the Damascus road. He became the greatest missionary of the first century, planting churches and writing much of the New Testament.",
+        lessons: ["No one is beyond the reach of grace.", "God's grace can redirect the most misdirected passion.", "Strength is perfected in weakness."],
+        application: "Never write anyone off — including yourself. Let Christ redirect your zeal rather than extinguish it, and learn to boast in your weaknesses so His power rests on you.",
+        refs: "Acts 9; 13–28; Romans; 1–2 Corinthians; Galatians; Ephesians; Philippians; 1–2 Timothy"
+      },
+      {
+        id: "barnabas",
+        name: "Barnabas",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Son of encouragement · Acts 4–15",
+        initial: "B",
+        summary: "A generous Levite who sold land for the church, vouched for the converted Saul when others feared him, and mentored John Mark when Paul refused to. His nickname meant 'encourager.'",
+        lessons: ["Encouragement is a spiritual gift of leadership.", "Trusting risky people can change history.", "Generosity with money and with second chances reflects God's heart."],
+        application: "Be the one who vouches for the person with a bad reputation. Give people second chances — God gave you one.",
+        refs: "Acts 4:36–37; 9:26–28; 11:22–30; 13–15; Galatians 2"
+      },
+      {
+        id: "silas",
+        name: "Silas",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Singing prisoner & Paul's partner · Acts 15–18",
+        initial: "S",
+        summary: "A leading Jerusalem believer and prophet who carried the council's letter to Antioch, then became Paul's missionary partner. Beaten and jailed in Philippi, he and Paul sang hymns at midnight until God shook the prison open — and the jailer believed.",
+        lessons: [
+        "Worship in the dark is powerful witness.",
+        "Faithful partners make hard ministries sustainable.",
+        "Suffering unjustly can open doors for the gospel.",
+        ],
+        application: "Sing and pray in your midnight prisons rather than despair. Be the kind of companion who strengthens others' calling at personal cost.",
+        refs: "Acts 15:22–40; 16:19–40; 2 Corinthians 1:19"
+      },
+      {
+        id: "john-mark",
+        name: "John Mark",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Restored dropout · Acts 12–15",
+        initial: "J",
+        summary: "Barnabas's cousin who deserted the first missionary journey at Perga, causing Paul to refuse him on the second. Barnabas took him anyway — and years later Paul wrote, 'Get Mark and bring him with you, for he is very useful to me for ministry.' He also wrote the second Gospel.",
+        lessons: [
+        "One failure does not define a life.",
+        "Barnabas-style advocates turn dropouts into Gospel writers.",
+        "God restores deserters into useful ministry.",
+        ],
+        application: "Do not write yourself or others off after a quit. If someone has bailed on a calling, be a Barnabas and give them a second run.",
+        refs: "Acts 12:12; 13:13; 15:36–41; 2 Timothy 4:11; 1 Peter 5:13"
+      },
+      {
+        id: "james-brother",
+        name: "James, Brother of Jesus",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Pillar of Jerusalem church · Acts 15; James",
+        initial: "J",
+        summary: "A half-brother of Jesus who once dismissed Him as out of His mind — 'not even his brothers believed in him' — until the risen Christ appeared to him. He became the pillar leading the Jerusalem church, chaired the Acts 15 council, and wrote the epistle of faith that works.",
+        lessons: [
+        "Skepticism can be converted by an encounter with the risen Christ.",
+        "Humble wisdom in leadership produces peace, not factions.",
+        "Real faith necessarily produces works.",
+        ],
+        application: "If you grew up around Christianity but never owned it, seek the risen Jesus for yourself. Let your leadership be marked by wisdom and mercy.",
+        refs: "Mark 3:21; John 7:5; 1 Corinthians 15:7; Acts 15:13–21; James 1–5"
+      },
+      {
+        id: "lydia",
+        name: "Lydia",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Merchant & first European convert · Acts 16",
+        initial: "L",
+        summary: "A dealer in purple cloth from Thyatira who worshipped God by the river at Philippi. The Lord opened her heart, she and her household were baptized, and her home became Europe's first church.",
+        lessons: ["God opens hearts in quiet, ordinary settings.", "Hospitality is foundational to church planting.", "Business skill and deep faith can serve one mission."],
+        application: "Offer your home and resources as a base for God's work. Stay open in ordinary places — God may be opening your heart today.",
+        refs: "Acts 16:11–15, 40"
+      },
+      {
+        id: "luke",
+        name: "Luke",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Physician & historian · Luke; Acts",
+        initial: "L",
+        summary: "A Gentile physician and careful historian who joined Paul at Troas and stayed with him to the very end — 'Luke alone is with me.' He compiled his Gospel and the book of Acts from careful investigation 'that you may have certainty concerning the things you have been taught.'",
+        lessons: [
+        "Careful scholarship can serve faith — certainty was his goal.",
+        "Faithful companionship through suffering is rare and precious ministry.",
+        "Medicine and mission belong together — God uses vocations.",
+        ],
+        application: "Investigate thoroughly and write faithfully what God has done. Stay close to people in their imprisonments, not only on their platforms.",
+        refs: "Colossians 4:14; 2 Timothy 4:11; Philemon 24; Luke 1:1–4; Acts 1:1–3"
+      },
+      {
+        id: "timothy",
+        name: "Timothy",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Young pastor & protégé · Acts 16; 1–2 Timothy",
+        initial: "T",
+        summary: "A young believer with a believing mother and grandmother whom Paul called his true son in the faith. He shepherded the church in Ephesus amid timidity and false teaching.",
+        lessons: ["Faith is often transmitted through family generations.", "Youthfulness is no disqualification from leadership.", "Guard the truth entrusted to you."],
+        application: "Do not let age or timidity silence your calling. Fan into flame the gift God gave you, and hold fast to sound teaching.",
+        refs: "Acts 16:1–3; 1–2 Timothy; 2 Timothy 1:5"
+      },
+      {
+        id: "priscilla-aquila",
+        name: "Priscilla & Aquila",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Tentmaking ministry couple · Acts 18; Romans 16",
+        initial: "P",
+        summary: "Tentmakers expelled from Rome who became Paul's coworkers and hosts. They quietly discipled the gifted Apollos, explaining the way of God more accurately in their own home.",
+        lessons: ["Couples can disciple together.", "Hospitality plus sound teaching is powerful discipleship.", 'Secular skill ("tentmaking") can fund sacred mission.'],
+        application: "Use your trade and your table for God's kingdom. Look for gifted people who need gentle correction and invest in them.",
+        refs: "Acts 18:1–3, 24–28; Romans 16:3–5; 1 Corinthians 16:19"
+      },
+      {
+        id: "apollos",
+        name: "Apollos",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Eloquent teacher corrected · Acts 18:24–28",
+        initial: "A",
+        summary: "An eloquent Alexandrian, 'mighty in the Scriptures,' who preached Jesus accurately but knew only the baptism of John. Priscilla and Aquila took him aside and explained the way of God more accurately — and he became a powerful public defender of the faith.",
+        lessons: [
+        "Gifted teachers still need humble correction.",
+        "Being teachable multiplies ministry impact.",
+        "His correction was private; his ministry stayed public.",
+        ],
+        application: "Stay teachable however gifted you are — and when you correct others, do it over a table rather than from a platform.",
+        refs: "Acts 18:24–28; 1 Corinthians 1:12; 3:4–6; 16:12"
+      },
+      {
+        id: "titus",
+        name: "Titus",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Church planter in Crete · Titus; 2 Corinthians",
+        initial: "T",
+        summary: "A Gentile convert and trusted Pauline envoy who carried the tense Corinthian letter, delivered relief to Jerusalem's poor, and was left in Crete to 'appoint elders in every town' and set the churches in order.",
+        lessons: [
+        "Trustworthiness is proven by handling hard assignments.",
+        "Healthy churches need intentional structure, not just spontaneity.",
+        "Sound doctrine and good works belong together.",
+        ],
+        application: "Be the person leaders can trust with the hardest tasks. Wherever God gives you responsibility, build things that last and teach others to do good.",
+        refs: "Titus 1:5; 2 Corinthians 7:6–16; 8:16–24; Galatians 2:1–3"
+      },
+      {
+        id: "onesimus",
+        name: "Onesimus",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Runaway slave turned brother · Philemon",
+        initial: "O",
+        summary: "A runaway slave from Colossae who, in Rome, encountered the imprisoned Paul and became a son in the faith. Paul sent him back to his master Philemon carrying the letter that asked the church to receive him 'no longer as a slave but more than a slave, as a beloved brother.'",
+        lessons: [
+        "The gospel turns fugitives into brothers.",
+        "Reconciliation requires returning to make things right.",
+        "The Spirit works through ordinary letters to create a new community.",
+        ],
+        application: "Let the gospel heal the wrongs you have done by facing them directly. Bridge the social and relational chasms the world treats as permanent.",
+        refs: "Philemon 1:10–21; Colossians 4:9"
+      },
+      {
+        id: "phoebe",
+        name: "Phoebe",
+        era: "Early Church & Apostles",
+        testament: "nt",
+        role: "Deacon & patron · Romans 16",
+        initial: "P",
+        summary: "A deacon of the church at Cenchreae whom Paul entrusted to deliver his letter to Rome, commending her as 'a patron of many and of myself as well.' She likely read and explained the letter to the Roman churches.",
+        lessons: [
+        "God entrusts women with weighty ministry responsibility.",
+        "Behind great letters and ministries stand generous patrons.",
+        "Faithful carriers of the word deserve honor and welcome.",
+        ],
+        application: "Support God's work with your resources and reputation. Be worthy of trust with what others place in your hands.",
+        refs: "Romans 16:1–2"
+      },
+    ];
+
+    // ---------- State ----------
+    let activeFilter = "all";
+    let searchTerm = "";
+
+    const timelineEl = document.getElementById("timeline");
+    const statsEl = document.getElementById("stats");
+    const emptyEl = document.getElementById("empty");
+    const searchInput = document.getElementById("search");
+
+    // ---------- Helpers ----------
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&" + "amp;")
+        .replace(/</g, "&" + "lt;")
+        .replace(/>/g, "&" + "gt;")
+        .replace(/"/g, "&" + "quot;");
+    }
+
+    function matches(c) {
+      if (activeFilter !== "all" && c.testament !== activeFilter) return false;
+      if (!searchTerm) return true;
+      const haystack = [
+        c.name, c.role, c.era, c.summary, c.application, c.refs,
+        (c.lessons || []).join(" ")
+      ].join(" ").toLowerCase();
+      return searchTerm.split(/\s+/).every(w => haystack.includes(w));
+    }
+
+    function cardHtml(c) {
+      const testamentLabel = c.testament === "ot" ? "OT" : "NT";
+      const lessons = (c.lessons || [])
+        .map(l => `<li>${escapeHtml(l)}</li>`)
+        .join("");
+      return `
+        <div class="card" data-id="${escapeHtml(c.id)}">
+          <div class="card-header">
+            <div class="avatar ${c.testament}">${escapeHtml(c.initial)}</div>
+            <div class="card-meta">
+              <div class="card-name">
+                ${escapeHtml(c.name)}
+                <span class="badge ${c.testament}">${testamentLabel}</span>
+              </div>
+              <div class="card-role">${escapeHtml(c.role)}</div>
+            </div>
+            <span class="chevron">⌄</span>
+          </div>
+          <div class="card-body">
+            <div class="section">
+              <h4>Story</h4>
+              <p>${escapeHtml(c.summary)}</p>
+            </div>
+            <div class="section">
+              <h4>Spiritual & Moral Lessons</h4>
+              <ul>${lessons}</ul>
+            </div>
+            <div class="section apply">
+              <h4>Life Application</h4>
+              <p>${escapeHtml(c.application)}</p>
+            </div>
+            <div class="refs">${escapeHtml(c.refs)}</div>
+          </div>
+        </div>`;
+    }
+
+    // ---------- Render ----------
+    function render() {
+      const visible = characters.filter(matches);
+
+      // group by era, preserving the chronological order of the data
+      const eraOrder = [];
+      const byEra = {};
+      characters.forEach(c => {
+        if (!byEra[c.era]) {
+          byEra[c.era] = [];
+          eraOrder.push(c.era);
+        }
+      });
+      const grouped = {};
+      visible.forEach(c => {
+        (grouped[c.era] = grouped[c.era] || []).push(c);
+      });
+
+      let html = "";
+      eraOrder.forEach(era => {
+        const items = grouped[era];
+        if (!items || !items.length) return;
+        const anyNt = items.some(c => c.testament === "nt");
+        html += `<section class="era${anyNt ? " era-nt" : ""}">
+          <h3 class="era-title">${escapeHtml(era)}</h3>
+          ${items.map(cardHtml).join("")}
+        </section>`;
+      });
+
+      timelineEl.innerHTML = html;
+      emptyEl.style.display = visible.length ? "none" : "block";
+
+      const otTotal = characters.filter(c => c.testament === "ot").length;
+      const ntTotal = characters.filter(c => c.testament === "nt").length;
+      statsEl.innerHTML = `
+        <div class="stat"><strong>${visible.length}</strong> showing${searchTerm || activeFilter !== "all" ? " of " + characters.length : ""}</div>
+        <div class="stat"><strong>${otTotal}</strong> Old Testament</div>
+        <div class="stat"><strong>${ntTotal}</strong> New Testament</div>
+        <div class="stat"><strong>${characters.reduce((n, c) => n + (c.lessons || []).length, 0)}</strong> lessons</div>`;
+    }
+
+    // ---------- Events ----------
+    timelineEl.addEventListener("click", e => {
+      const header = e.target.closest(".card-header");
+      if (!header) return;
+      header.parentElement.classList.toggle("open");
+    });
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeFilter = btn.dataset.filter;
+        render();
+      });
+    });
+
+    searchInput.addEventListener("input", e => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
