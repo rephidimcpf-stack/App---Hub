@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hands of Hope — Beneficiary & Fund Manager</title>
+<style>
+  :root{
+    --primary:#0f766e; --primary-dark:#115e59; --primary-light:#ccfbf1;
+    --accent:#b45309; --bg:#f4f6f5; --card:#ffffff; --border:#e2e8e6;
+    --text:#1f2937; --muted:#6b7280; --danger:#b91c1c; --ok:#15803d;
+    --radius:12px; --shadow:0 1px 3px rgba(16,24,40,.08),0 1px 2px rgba(16,24,40,.04);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:15px}
+  .hidden{display:none!important}
+
+  /* ---------- PIN screen ---------- */
+  #pinScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f766e,#134e4a);padding:16px}
+  .pin-card{background:#fff;border-radius:16px;padding:32px 28px;width:100%;max-width:380px;box-shadow:0 20px 50px rgba(0,0,0,.25);text-align:center}
+  .pin-card h1{font-size:20px;color:var(--primary-dark);margin-bottom:4px}
+  .pin-card p{color:var(--muted);font-size:13px;margin-bottom:20px}
+  .pin-card input{width:100%;padding:12px;border:2px solid var(--border);border-radius:10px;font-size:18px;text-align:center;letter-spacing:6px;margin-bottom:12px}
+  .pin-card input:focus{outline:none;border-color:var(--primary)}
+
+  /* ---------- Layout ---------- */
+  #app{display:flex;min-height:100vh}
+  aside{width:230px;background:#0b3d38;color:#d1fae5;padding:20px 14px;flex-shrink:0;display:flex;flex-direction:column;gap:4px}
+  aside .logo{font-size:17px;font-weight:700;color:#fff;padding:6px 10px 18px;line-height:1.3}
+  aside .logo small{display:block;font-weight:400;font-size:11px;color:#99f6e4;margin-top:3px}
+  .navbtn{display:block;width:100%;text-align:left;background:none;border:none;color:#a7f3d0;padding:11px 12px;border-radius:9px;font-size:14px;cursor:pointer;font-family:inherit}
+  .navbtn:hover{background:rgba(255,255,255,.08)}
+  .navbtn.active{background:var(--primary);color:#fff;font-weight:600}
+  aside .spacer{flex:1}
+  main{flex:1;padding:24px;max-width:1100px;margin:0 auto;width:100%}
+  h2.view-title{font-size:22px;margin-bottom:18px;color:var(--primary-dark)}
+  .subtitle{color:var(--muted);font-size:13px;margin:-14px 0 18px}
+
+  /* ---------- Components ---------- */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:22px}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+  .stat .num{font-size:24px;font-weight:700;color:var(--primary-dark)}
+  .stat .lbl{font-size:12px;color:var(--muted);margin-top:2px}
+  .btn{display:inline-block;background:var(--primary);color:#fff;border:none;border-radius:9px;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+  .btn:hover{background:var(--primary-dark)}
+  .btn.secondary{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary)}
+  .btn.danger{background:var(--danger)}
+  .btn.small{padding:6px 12px;font-size:12.5px;border-radius:7px}
+  .btn.ghost{background:transparent;border:none;color:var(--danger);font-weight:600;cursor:pointer;font-family:inherit;font-size:13px;padding:6px 8px}
+  input[type=text],input[type=number],input[type=date],input[type=password],select,textarea{
+    width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:var(--text)}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+  label{display:block;font-size:12.5px;font-weight:600;color:#374151;margin:0 0 5px}
+  .field{margin-bottom:14px}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);padding:8px 10px;border-bottom:2px solid var(--border)}
+  td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:600;white-space:nowrap}
+  .b-orphan{background:#ede9fe;color:#6d28d9}.b-widow{background:#fce7f3;color:#be185d}
+  .b-poor{background:#fef3c7;color:#b45309}.b-disabled{background:#e0f2fe;color:#075985}
+  .b-evangelist{background:#dcfce7;color:#15803d}.b-believer{background:#f1f5f9;color:#334155}
+  .b-pastor{background:#ffe4e6;color:#9f1239}
+  .st-active{background:#dcfce7;color:#15803d}.st-hold{background:#fef9c3;color:#a16207}.st-closed{background:#f3f4f6;color:#6b7280}
+  .amt{font-weight:700;color:var(--primary-dark);white-space:nowrap}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .toolbar input[type=text]{flex:1;min-width:180px}
+  .toolbar select{width:auto;min-width:130px}
+  .empty{text-align:center;color:var(--muted);padding:34px 10px;font-size:14px}
+  .muted{color:var(--muted);font-size:12.5px}
+  .link{color:var(--primary);cursor:pointer;text-decoration:underline;font-weight:600}
+  .detail-head{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:flex-start}
+  .avatar{width:46px;height:46px;border-radius:50%;background:var(--primary-light);color:var(--primary-dark);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex-shrink:0}
+  .kv{font-size:13.5px;margin-bottom:5px}
+  .kv b{color:var(--muted);font-weight:600}
+
+  /* ---------- Modal ---------- */
+  #modalOverlay{position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;padding:14px;z-index:50;overflow-y:auto}
+  .modal{background:#fff;border-radius:14px;width:100%;max-width:520px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.3);max-height:92vh;overflow-y:auto}
+  .modal h3{font-size:17px;color:var(--primary-dark);margin-bottom:16px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+  .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+
+  /* ---------- Mobile ---------- */
+  .bottom-nav{display:none}
+  @media(max-width:800px){
+    aside{display:none}
+    main{padding:16px 14px 90px}
+    .bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#0b3d38;z-index:40;padding:6px 4px}
+    .bottom-nav button{flex:1;background:none;border:none;color:#a7f3d0;font-size:11px;font-family:inherit;cursor:pointer;padding:8px 2px;border-radius:8px}
+    .bottom-nav button.active{background:var(--primary);color:#fff}
+    .grid2{grid-template-columns:1fr}
+    table{font-size:13px}
+    td,th{padding:8px 6px}
+    .hide-sm{display:none}
+  }
+
+  /* ---------- Print ---------- */
+  @media print{
+    aside,.bottom-nav,.toolbar,.btn,button,#modalOverlay{display:none!important}
+    main{padding:0;max-width:none}
+    body{background:#fff}
+    .stat,.card{box-shadow:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- PIN / setup screen -->
+<div id="pinScreen" class="hidden">
+  <div class="pin-card">
+    <h1 id="pinTitle">Hands of Hope</h1>
+    <p id="pinMsg">Enter your PIN to open the records</p>
+    <div id="pinSetup" class="hidden">
+      <div class="field"><label>New PIN (4+ digits)</label><input type="password" id="pinNew1" inputmode="numeric" maxlength="8"></div>
+      <div class="field"><label>Confirm PIN</label><input type="password" id="pinNew2" inputmode="numeric" maxlength="8"></div>
+      <button class="btn" style="width:100%" onclick="savePin()">Save PIN</button>
+      <button class="btn secondary" style="width:100%;margin-top:8px" onclick="skipPin()">Skip — no PIN for now</button>
+    </div>
+    <div id="pinEntry">
+      <input type="password" id="pinInput" inputmode="numeric" maxlength="8" placeholder="••••">
+      <button class="btn" style="width:100%" onclick="tryPin()">Unlock</button>
+      <p class="muted" style="margin-top:12px">Forgot the PIN? Clear this site's browser data to reset.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Main app -->
+<div id="app" class="hidden">
+  <aside>
+    <div class="logo"><span id="sideName">Hands of Hope</span><small>Beneficiary & Fund Manager</small></div>
+    <button class="navbtn" data-view="dashboard" onclick="showView('dashboard')">Dashboard</button>
+    <button class="navbtn" data-view="beneficiaries" onclick="showView('beneficiaries')">Beneficiaries</button>
+    <button class="navbtn" data-view="support" onclick="showView('support')">Funds</button>
+    <button class="navbtn" data-view="reports" onclick="showView('reports')">Reports</button>
+    <button class="navbtn" data-view="settings" onclick="showView('settings')">Settings</button>
+    <div class="spacer"></div>
+    <button class="navbtn" onclick="lockApp()">Lock</button>
+  </aside>
+  <main id="main"></main>
+  <nav class="bottom-nav">
+    <button data-view="dashboard" onclick="showView('dashboard')">Home</button>
+    <button data-view="beneficiaries" onclick="showView('beneficiaries')">People</button>
+    <button data-view="support" onclick="showView('support')">Funds</button>
+    <button data-view="reports" onclick="showView('reports')">Reports</button>
+    <button data-view="settings" onclick="showView('settings')">Settings</button>
+  </nav>
+</div>
+
+<div id="modalOverlay" class="hidden"></div>
+
+<script>
+"use strict";
+/* ============================ Data ============================ */
+const DEFAULT_CATEGORIES = ["Orphan","Widow","Poor / Needy","Disabled","Evangelist","Needy Believer","Pastor"];
+const MODES = ["Cash","Bank Transfer","UPI","In Kind"];
+const PURPOSES = ["Food","Medical","Education","Rent / Housing","Clothing","Ministry / Evangelism","Emergency","Other"];
+const STATUSES = ["Active","On Hold","Closed"];
+const LS_KEY = "handsOfHopeData_v1";
+
+let state = { pin:"", ngoName:"Hands of Hope", categories:[], beneficiaries:[], supports:[], receipts:[], lastBackupAt:"" };
+let currentView = "dashboard";
+let filters = { q:"", category:"", status:"", q2:"", from:"", to:"" };
+let fundTab = "given";
+let currentDetailId = null;
+
+function uid(p){ return p + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function load(){ try{ const raw = localStorage.getItem(LS_KEY); if(raw){ const d = JSON.parse(raw); state = Object.assign(state, d);} }catch(e){ console.warn("load failed", e); } if(!Array.isArray(state.categories) || !state.categories.length){ state.categories = DEFAULT_CATEGORIES.slice(); } if(!Array.isArray(state.receipts)) state.receipts = []; }
+function persist(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+function esc(s){
+  const S = String.fromCharCode, M = {};
+  M[S(38)] = S(38) + "amp;";
+  M[S(60)] = S(38) + "lt;";
+  M[S(62)] = S(38) + "gt;";
+  M[S(34)] = S(38) + "quot;";
+  M[S(39)] = S(38) + "#39;";
+  return String(s ?? "").replace(/[&<>"']/g, c => M[c]);
+}
+function money(n){ return "\u20B9" + Number(n||0).toLocaleString("en-IN"); }
+function fmtDate(iso){ if(!iso) return "—"; const p = iso.split("-"); return p.length===3 ? p[2]+"/"+p[1]+"/"+p[0] : iso; }
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+const CAT_PALETTES = [["#ede9fe","#6d28d9"],["#fce7f3","#be185d"],["#fef3c7","#b45309"],["#e0f2fe","#075985"],["#dcfce7","#15803d"],["#f1f5f9","#334155"],["#ffe4e6","#9f1239"],["#ecfeff","#155e75"],["#fef2f2","#991b1b"],["#f0fdf4","#166534"]];
+function catColor(c){
+  let h = 0; for(let i=0;i<c.length;i++) h = (h*31 + c.charCodeAt(i)) >>> 0;
+  return CAT_PALETTES[h % CAT_PALETTES.length];
+}
+function catBadge(c){
+  const slug = c.toLowerCase().split(" ")[0].replace("/","");
+  if(DEFAULT_CATEGORIES.indexOf(c) !== -1) return '<span class="badge b-'+esc(slug)+'">'+esc(c)+'</span>';
+  const p = catColor(c);
+  return '<span class="badge" style="background:'+p[0]+';color:'+p[1]+'">'+esc(c)+'</span>';
+}
+function statusBadge(s){ return '<span class="badge st-'+esc(s.toLowerCase().split(" ")[0])+'">'+esc(s)+'</span>'; }
+function ben(id){ return state.beneficiaries.find(b => b.id === id); }
+function benName(id){ const b = ben(id); return b ? b.name : "(deleted)"; }
+function totalFor(id){ return state.supports.filter(s => s.beneficiaryId === id).reduce((a,s)=>a+Number(s.amount||0),0); }
+function countFor(id){ return state.supports.filter(s => s.beneficiaryId === id).length; }
+function initials(n){ return (n||"?").trim().split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase(); }
+
+/* ============================ PIN gate ============================ */
+function initPin(){
+  const scr = $("#pinScreen");
+  scr.classList.remove("hidden");
+  $("#app").classList.add("hidden");
+  $("#pinTitle").textContent = state.ngoName || "Hands of Hope";
+  if(!state.pin){
+    $("#pinMsg").textContent = "First time here — set a PIN to protect these records";
+    $("#pinSetup").classList.remove("hidden");
+    $("#pinEntry").classList.add("hidden");
+  }else{
+    $("#pinMsg").textContent = "Enter your PIN to open the records";
+    $("#pinSetup").classList.add("hidden");
+    $("#pinEntry").classList.remove("hidden");
+    $("#pinInput").value = "";
+    setTimeout(()=>$("#pinInput").focus(), 50);
+  }
+}
+function savePin(){
+  const a = $("#pinNew1").value, b = $("#pinNew2").value;
+  if(a.length < 4){ alert("PIN must be at least 4 digits."); return; }
+  if(a !== b){ alert("PINs do not match."); return; }
+  state.pin = a; persist(); openApp();
+}
+function skipPin(){ state.pin = ""; persist(); openApp(); }
+function tryPin(){
+  if($("#pinInput").value === state.pin){ openApp(); }
+  else{ alert("Incorrect PIN."); $("#pinInput").value = ""; }
+}
+function openApp(){ $("#pinScreen").classList.add("hidden"); $("#app").classList.remove("hidden"); renderCurrent(); }
+function lockApp(){ initPin(); }
+
+/* ============================ Views ============================ */
+function $(sel){ return document.querySelector(sel); }
+function $all(sel){ return document.querySelectorAll(sel); }
+
+function showView(v){
+  currentView = v;
+  $all(".navbtn, .bottom-nav button").forEach(b => b.classList.toggle("active", b.dataset.view === v));
+  renderCurrent();
+  window.scrollTo(0,0);
+}
+function renderCurrent(){
+  const m = $("#main");
+  if(currentView === "dashboard") m.innerHTML = viewDashboard();
+  else if(currentView === "beneficiaries") m.innerHTML = viewBeneficiaries();
+  else if(currentView === "support") m.innerHTML = viewSupport();
+  else if(currentView === "reports") m.innerHTML = viewReports();
+  else if(currentView === "settings") m.innerHTML = viewSettings();
+  else if(currentView === "detail") m.innerHTML = viewDetail(currentDetailId);
+  $("#sideName").textContent = state.ngoName || "Hands of Hope";
+}
+
+/* ============================ Dashboard ============================ */
+function viewDashboard(){
+  const bens = state.beneficiaries;
+  const active = bens.filter(b=>b.status==="Active").length;
+  const total = state.supports.reduce((a,s)=>a+Number(s.amount||0),0);
+  const received = state.receipts.reduce((a,r)=>a+Number(r.amount||0),0);
+  const ym = todayISO().slice(0,7);
+  const thisMonth = state.supports.filter(s=>(s.date||"").slice(0,7)===ym).reduce((a,s)=>a+Number(s.amount||0),0);
+  const recent = [...state.supports].sort((a,b)=> (b.date||"").localeCompare(a.date||"")).slice(0,6);
+  const today = todayISO();
+  const soon = new Date(Date.now()+7*86400000).toISOString().slice(0,10);
+  const fups = bens.filter(b=>b.followUp && b.followUp<=soon && b.status!=="Closed").sort((a,b)=>a.followUp.localeCompare(b.followUp));
+  const overdue = fups.filter(b=>b.followUp<today).length;
+  const needsBackup = (bens.length || state.supports.length) && (!state.lastBackupAt || (Date.now() - new Date(state.lastBackupAt).getTime()) > 30*86400000);
+  const catRows = state.categories.map(c=>{
+    const n = bens.filter(b=>b.category===c).length;
+    const amt = state.supports.filter(s=>{const b=ben(s.beneficiaryId); return b && b.category===c;}).reduce((a,s)=>a+Number(s.amount||0),0);
+    return {c,n,amt};
+  }).filter(r=>r.n>0 || r.amt>0);
+  return `
+  <h2 class="view-title">Dashboard</h2>
+  ${needsBackup?`
+  <div class="card" style="margin-bottom:18px;border-color:#fcd34d;background:#fffbeb">
+    <b>Backup reminder:</b> ${state.lastBackupAt ? "it has been more than a month since your last backup." : "you have never exported a backup yet."}
+    <button class="btn small" style="margin-left:10px" onclick="exportJSON()">Backup now</button>
+  </div>`:""}
+  <div class="stat-grid">
+    <div class="stat"><div class="num">${bens.length}</div><div class="lbl">Total beneficiaries</div></div>
+    <div class="stat"><div class="num">${active}</div><div class="lbl">Active now</div></div>
+    <div class="stat"><div class="num">${money(total)}</div><div class="lbl">Total support given</div></div>
+    <div class="stat"><div class="num">${money(thisMonth)}</div><div class="lbl">Given this month</div></div>
+    <div class="stat"><div class="num">${money(received)}</div><div class="lbl">Funds received</div></div>
+    <div class="stat"><div class="num" ${overdue?'style="color:var(--danger)"':''}>${overdue}</div><div class="lbl">Follow-ups overdue</div></div>
+  </div>
+  ${fups.length?`
+  <h3 style="color:var(--primary-dark);margin:4px 0 10px">Follow-ups (next 7 days and overdue)</h3>
+  <div class="card" style="padding:6px 12px;margin-bottom:20px">
+    <table><tbody>
+      ${fups.map(b=>`<tr>
+        <td><span class="link" onclick="goDetail('${b.id}')">${esc(b.name)}</span><div class="muted">${catBadge(b.category)}</div></td>
+        <td style="white-space:nowrap">${b.followUp<today ? '<span class="badge" style="background:#fee2e2;color:#b91c1c">Overdue — '+fmtDate(b.followUp)+'</span>' : '<span class="badge st-active">'+fmtDate(b.followUp)+'</span>'}</td>
+        <td style="text-align:right"><button class="btn small secondary" onclick="followUpDone('${b.id}')">Done</button></td>
+      </tr>`).join("")}
+    </tbody></table>
+  </div>`:""}
+  <div class="row" style="justify-content:space-between;margin-bottom:12px">
+    <h3 style="color:var(--primary-dark)">Recent support given</h3>
+    <div>
+      <button class="btn small" onclick="openSupportModal()">+ Add support</button>
+      <button class="btn small secondary" onclick="openBeneficiaryModal()">+ Add beneficiary</button>
+    </div>
+  </div>
+  <div class="card" style="padding:6px 12px">
+    ${ recent.length ? `<table><thead><tr><th>Date</th><th>Beneficiary</th><th class="hide-sm">Purpose</th><th style="text-align:right">Amount</th></tr></thead><tbody>
+      ${recent.map(s=>`<tr>
+        <td style="white-space:nowrap">${fmtDate(s.date)}</td>
+        <td><span class="link" onclick="goDetail('${s.beneficiaryId}')">${esc(benName(s.beneficiaryId))}</span></td>
+        <td class="hide-sm muted">${esc(s.purpose||"—")}</td>
+        <td style="text-align:right" class="amt">${money(s.amount)}</td>
+      </tr>`).join("")}
+    </tbody></table>` : `<div class="empty">No support recorded yet. Use "+ Add support" to record the first gift.</div>`}
+  </div>
+  ${catRows.length ? `
+  <h3 style="color:var(--primary-dark);margin:22px 0 10px">By category</h3>
+  <div class="card" style="padding:6px 12px">
+    <table><thead><tr><th>Category</th><th style="text-align:right">People</th><th style="text-align:right">Support given</th></tr></thead><tbody>
+      ${catRows.map(r=>`<tr><td>${catBadge(r.c)}</td><td style="text-align:right">${r.n}</td><td style="text-align:right" class="amt">${money(r.amt)}</td></tr>`).join("")}
+    </tbody></table>
+  </div>` : ""}`}
+
+function filteredBeneficiaries(){
+  const q = filters.q.trim().toLowerCase();
+  return state.beneficiaries
+    .filter(b => (!filters.category || b.category === filters.category))
+    .filter(b => (!filters.status || b.status === filters.status))
+    .filter(b => !q || [b.name,b.phone,b.location,b.notes].join(" ").toLowerCase().includes(q))
+    .sort((a,b)=> (b.createdAt||"").localeCompare(a.createdAt||""));
+}
+function goDetail(id){ currentDetailId = id; showView("detail"); }
+
+function viewDetail(id){
+  const b = ben(id);
+  if(!b) return `<h2 class="view-title">Not found</h2><p class="muted">This beneficiary was deleted. <span class="link" onclick="showView('beneficiaries')">Back to list</span></p>`;
+  const fup = b.followUp ? (b.followUp < todayISO() ? '<span style="color:var(--danger);font-weight:700">Overdue — '+fmtDate(b.followUp)+"</span>" : fmtDate(b.followUp)) + ' <button class="btn small secondary" onclick="followUpDone(\''+b.id+'\')">Mark done</button>' : "—";
+  const rows = state.supports.filter(s=>s.beneficiaryId===id).sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  return `
+  <h2 class="view-title">Beneficiary profile</h2>
+  <div class="card" style="margin-bottom:16px">
+    <div class="detail-head">
+      <div style="display:flex;gap:14px;align-items:center">
+        <div class="avatar">${esc(initials(b.name))}</div>
+        <div>
+          <div style="font-size:19px;font-weight:700">${esc(b.name)}</div>
+          <div style="margin-top:5px">${catBadge(b.category)} ${statusBadge(b.status)}</div>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn small" onclick="openSupportModal(null,'${b.id}')">+ Add support</button>
+        <button class="btn small secondary" onclick="openBeneficiaryModal('${b.id}')">Edit</button>
+        <button class="btn small secondary" onclick="window.print()">Print</button>
+        <button class="btn small danger" onclick="deleteBeneficiary('${b.id}')">Delete</button>
+      </div>
+    </div>
+    <div style="margin:16px 0 4px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px 24px">
+      <div class="kv"><b>Phone:</b> ${esc(b.phone||"—")}</div>
+      <div class="kv"><b>Age / Gender:</b> ${b.age? esc(b.age)+" / ":""}${esc(b.gender||"—")}</div>
+      <div class="kv"><b>Location:</b> ${esc(b.location||"—")}</div>
+      <div class="kv"><b>Registered on:</b> ${fmtDate(b.joinedDate)}</div>
+      <div class="kv"><b>Next follow-up:</b> ${fup}</div>
+      <div class="kv"><b>Total support:</b> <span class="amt">${money(totalFor(b.id))}</span> (${rows.length} entries)</div>
+    </div>
+    ${b.notes ? `<div class="kv" style="margin-top:10px"><b>Notes:</b> ${esc(b.notes).replace(/\n/g,"<br>")}</div>` : ""}
+  </div>
+  <h3 style="color:var(--primary-dark);margin:4px 0 10px">Support history</h3>
+  <div class="card" style="padding:6px 12px">
+    ${ rows.length ? `<table><thead><tr><th>Date</th><th class="hide-sm">Purpose</th><th class="hide-sm">Mode</th><th>Notes</th><th style="text-align:right">Amount</th><th></th></tr></thead><tbody>
+      ${rows.map(s=>`<tr>
+        <td style="white-space:nowrap">${fmtDate(s.date)}</td>
+        <td class="hide-sm">${esc(s.purpose||"—")}</td>
+        <td class="hide-sm muted">${esc(s.mode||"—")}</td>
+        <td class="muted">${esc(s.notes||"")}</td>
+        <td style="text-align:right" class="amt">${money(s.amount)}</td>
+        <td style="white-space:nowrap"><button class="link" onclick="openSupportModal('${s.id}')">Edit</button> <button class="ghost" onclick="deleteSupport('${s.id}')">Delete</button></td>
+      </tr>`).join("")}
+    </tbody></table>` : `<div class="empty">No support recorded for this person yet.</div>`}
+  </div>
+  <p style="margin-top:14px"><span class="link" onclick="showView('beneficiaries')">← Back to all beneficiaries</span></p>`;
+}
+
+function openBeneficiaryModal(id){
+  const b = id ? ben(id) : null;
+  const opt = (arr,sel)=>arr.map(x=>`<option ${x===sel?"selected":""}>${x}</option>`).join("");
+  openModal(`
+  <h3>${b?"Edit beneficiary":"Register new beneficiary"}</h3>
+  <div class="field"><label>Full name *</label><input type="text" id="f_name" value="${esc(b?.name||"")}"></div>
+  <div class="grid2">
+    <div class="field"><label>Category *</label><select id="f_cat" onchange="maybeNewCategory(this)">${catOptionsHtml(b?.category)}<option value="__new__">+ New category…</option></select></div>
+    <div class="field"><label>Status</label><select id="f_status">${opt(STATUSES, b?.status||"Active")}</select></div>
+    <div class="field"><label>Gender</label><select id="f_gender"><option value="">—</option><option ${b?.gender==="Male"?"selected":""}>Male</option><option ${b?.gender==="Female"?"selected":""}>Female</option><option ${b?.gender==="Other"?"selected":""}>Other</option></select></div>
+    <div class="field"><label>Age</label><input type="number" id="f_age" min="0" max="120" value="${esc(b?.age||"")}"></div>
+    <div class="field"><label>Phone</label><input type="text" id="f_phone" value="${esc(b?.phone||"")}"></div>
+    <div class="field"><label>Location / address</label><input type="text" id="f_loc" value="${esc(b?.location||"")}"></div>
+    <div class="field"><label>Registered on</label><input type="date" id="f_joined" value="${esc(b?.joinedDate||todayISO())}"></div>
+    <div class="field"><label>Next follow-up visit</label><input type="date" id="f_followup" value="${esc(b?.followUp||"")}"></div>
+  </div>
+  <div class="field"><label>Notes (family background, needs, follow-ups…)</label><textarea id="f_notes" rows="3">${esc(b?.notes||"")}</textarea></div>
+  <div class="modal-actions">
+    <button class="btn secondary" onclick="closeModal()">Cancel</button>
+    <button class="btn" onclick="saveBeneficiary('${id||""}')">${b?"Save changes":"Register"}</button>
+  </div>`);
+  setTimeout(()=>$("#f_name").focus(),50);
+}
+function saveBeneficiary(id){
+  const name = $("#f_name").value.trim();
+  if(!name){ alert("Please enter a name."); return; }
+  const cat = $("#f_cat").value;
+  if(!cat || cat === "__new__"){ alert("Please choose a category."); return; }
+  const rec = {
+    id: id || uid("b"),
+    name, category: cat, status: $("#f_status").value,
+    gender: $("#f_gender").value, age: $("#f_age").value ? Number($("#f_age").value) : "",
+    phone: $("#f_phone").value.trim(), location: $("#f_loc").value.trim(),
+    joinedDate: $("#f_joined").value || todayISO(), followUp: $("#f_followup").value || "", notes: $("#f_notes").value.trim(),
+    createdAt: id ? (ben(id).createdAt||new Date().toISOString()) : new Date().toISOString()
+  };
+  if(id){ const i = state.beneficiaries.findIndex(b=>b.id===id); state.beneficiaries[i]=rec; }
+  else state.beneficiaries.push(rec);
+  persist(); closeModal(); renderCurrent();
+}
+function deleteBeneficiary(id){
+  const b = ben(id); if(!b) return;
+  const n = countFor(id);
+  if(!confirm(`Delete ${b.name}?` + (n?`\n\nTheir ${n} support entries (total ${money(totalFor(id))}) will also be deleted.`:""))) return;
+  state.beneficiaries = state.beneficiaries.filter(x=>x.id!==id);
+  state.supports = state.supports.filter(s=>s.beneficiaryId!==id);
+  persist(); showView("beneficiaries");
+}
+
+/* ============================ Support (funds) ============================ */
+function viewSupport(){
+  if(fundTab === "received") return viewReceipts();
+  const q = filters.q2 || "";
+  const from = filters.from || "", to = filters.to || "";
+  const list = state.supports
+    .filter(s => !q || benName(s.beneficiaryId).toLowerCase().includes(q.toLowerCase()) || (s.notes||"").toLowerCase().includes(q.toLowerCase()))
+    .filter(s => !from || (s.date||"") >= from)
+    .filter(s => !to || (s.date||"") <= to)
+    .sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  const total = list.reduce((a,s)=>a+Number(s.amount||0),0);
+  const received = state.receipts.reduce((a,r)=>a+Number(r.amount||0),0);
+  const given = state.supports.reduce((a,s)=>a+Number(s.amount||0),0);
+  const net = received - given;
+  return `
+  <h2 class="view-title">Funds</h2>
+  <p class="subtitle">Every gift given from personal funds — and anything received towards the work.</p>
+  <div class="row" style="margin-bottom:14px">
+    <button class="btn ${fundTab==="given"?"":"secondary"}" onclick="fundTab='given';renderCurrent()">Support given</button>
+    <button class="btn ${fundTab==="received"?"":"secondary"}" onclick="fundTab='received';renderCurrent()">Funds received</button>
+  </div>
+  <div class="toolbar">
+    <input type="text" placeholder="Search person or notes…" value="${esc(q)}" oninput="filters.q2=this.value;renderCurrent()">
+    <input type="date" title="From date" value="${esc(from)}" onchange="filters.from=this.value;renderCurrent()">
+    <input type="date" title="To date" value="${esc(to)}" onchange="filters.to=this.value;renderCurrent()">
+    ${(q||from||to)?`<button class="btn secondary" onclick="filters.q2='';filters.from='';filters.to='';renderCurrent()">Clear filters</button>`:""}
+    <button class="btn" onclick="openSupportModal()">+ Add support</button>
+  </div>
+  <div class="card" style="padding:6px 12px">
+    ${ list.length ? `<table><thead><tr><th>Date</th><th>Beneficiary</th><th class="hide-sm">Purpose</th><th class="hide-sm">Mode</th><th style="text-align:right">Amount</th><th></th></tr></thead><tbody>
+      ${list.map(s=>`<tr>
+        <td style="white-space:nowrap">${fmtDate(s.date)}</td>
+        <td><span class="link" onclick="goDetail('${s.beneficiaryId}')">${esc(benName(s.beneficiaryId))}</span></td>
+        <td class="hide-sm">${esc(s.purpose||"—")}</td>
+        <td class="hide-sm muted">${esc(s.mode||"—")}</td>
+        <td style="text-align:right" class="amt">${money(s.amount)}</td>
+        <td style="white-space:nowrap"><button class="link" onclick="openSupportModal('${s.id}')">Edit</button> <button class="ghost" onclick="deleteSupport('${s.id}')">Delete</button></td>
+      </tr>`).join("")}
+      <tr><td colspan="4" style="text-align:right;font-weight:700">Showing ${list.length} entries</td>
+      <td style="text-align:right" class="amt">${money(total)}</td><td></td></tr>
+    </tbody></table>` : `<div class="empty">No support entries ${(from||to)?"in this date range":"yet"}.</div>`}
+  </div>
+  <div class="muted" style="margin-top:12px">Received ${money(received)} · Given ${money(given)} · ${net>=0 ? "Balance " : "Covered from personal funds "}${money(Math.abs(net))}</div>`;
+}
+
+function viewReceipts(){
+  const list = [...state.receipts].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  const received = state.receipts.reduce((a,r)=>a+Number(r.amount||0),0);
+  const given = state.supports.reduce((a,s)=>a+Number(s.amount||0),0);
+  const net = received - given;
+  return `
+  <h2 class="view-title">Funds</h2>
+  <p class="subtitle">Offerings and gifts received towards the work, if any. Leave empty if everything comes from personal funds.</p>
+  <div class="row" style="margin-bottom:14px">
+    <button class="btn secondary" onclick="fundTab='given';renderCurrent()">Support given</button>
+    <button class="btn" onclick="fundTab='received';renderCurrent()">Funds received</button>
+  </div>
+  <div class="stat-grid">
+    <div class="stat"><div class="num">${money(received)}</div><div class="lbl">Total received</div></div>
+    <div class="stat"><div class="num">${money(given)}</div><div class="lbl">Total given</div></div>
+    <div class="stat"><div class="num">${money(net)}</div><div class="lbl">${net>=0?"Balance":"Covered from personal funds"}</div></div>
+  </div>
+  <div class="toolbar"><button class="btn" onclick="openReceiptModal()">+ Add received</button></div>
+  <div class="card" style="padding:6px 12px">
+    ${ list.length ? `<table><thead><tr><th>Date</th><th>Source</th><th>Notes</th><th style="text-align:right">Amount</th><th></th></tr></thead><tbody>
+      ${list.map(r=>`<tr>
+        <td style="white-space:nowrap">${fmtDate(r.date)}</td>
+        <td>${esc(r.source||"—")}</td>
+        <td class="muted">${esc(r.notes||"")}</td>
+        <td style="text-align:right" class="amt">${money(r.amount)}</td>
+        <td style="white-space:nowrap"><button class="link" onclick="openReceiptModal('${r.id}')">Edit</button> <button class="ghost" onclick="deleteReceipt('${r.id}')">Delete</button></td>
+      </tr>`).join("")}
+    </tbody></table>` : `<div class="empty">No funds received recorded.</div>`}
+  </div>`;
+}
+
+function openReceiptModal(id){
+  const r = id ? state.receipts.find(x=>x.id===id) : null;
+  openModal(`
+  <h3>${r?"Edit received funds":"Record funds received"}</h3>
+  <div class="grid2">
+    <div class="field"><label>Date *</label><input type="date" id="r_date" value="${esc(r?.date||todayISO())}"></div>
+    <div class="field"><label>Amount (\u20B9) *</label><input type="number" id="r_amt" min="1" value="${esc(r?.amount||"")}"></div>
+  </div>
+  <div class="field"><label>Source (e.g. Sunday offering, a friend, personal savings)</label><input type="text" id="r_src" value="${esc(r?.source||"")}"></div>
+  <div class="field"><label>Notes</label><textarea id="r_notes" rows="2">${esc(r?.notes||"")}</textarea></div>
+  <div class="modal-actions">
+    <button class="btn secondary" onclick="closeModal()">Cancel</button>
+    <button class="btn" onclick="saveReceipt('${id||""}')">${r?"Save changes":"Add entry"}</button>
+  </div>`);
+  setTimeout(()=>$("#r_amt").focus(),50);
+}
+function saveReceipt(id){
+  const amt = Number($("#r_amt").value);
+  if(!amt || amt<=0){ alert("Enter a valid amount."); return; }
+  if(!$("#r_date").value){ alert("Choose a date."); return; }
+  const rec = {
+    id: id || uid("r"), date: $("#r_date").value, amount: amt,
+    source: $("#r_src").value.trim(), notes: $("#r_notes").value.trim(),
+    createdAt: id ? (state.receipts.find(x=>x.id===id).createdAt||new Date().toISOString()) : new Date().toISOString()
+  };
+  if(id){ const i = state.receipts.findIndex(x=>x.id===id); state.receipts[i]=rec; }
+  else state.receipts.push(rec);
+  persist(); closeModal(); renderCurrent();
+}
+function deleteReceipt(id){
+  if(!confirm("Delete this received-funds entry?")) return;
+  state.receipts = state.receipts.filter(r=>r.id!==id);
+  persist(); renderCurrent();
+}
+function followUpDone(id){
+  const b = ben(id); if(!b) return;
+  if(!confirm("Mark the follow-up visit for "+b.name+" as done?")) return;
+  b.followUp = ""; persist(); renderCurrent();
+}
+
+function openSupportModal(id, presetBenId){
+  if(!state.beneficiaries.length){ alert("Register a beneficiary first."); return; }
+  const s = id ? state.supports.find(x=>x.id===id) : null;
+  const sel = s ? s.beneficiaryId : (presetBenId || "");
+  const opt = (arr,v)=>arr.map(x=>`<option ${x===v?"selected":""}>${x}</option>`).join("");
+  openModal(`
+  <h3>${s?"Edit support entry":"Record support given"}</h3>
+  <div class="field"><label>Beneficiary *</label><select id="s_ben">
+    ${state.beneficiaries.map(b=>`<option value="${b.id}" ${b.id===sel?"selected":""}>${esc(b.name)} — ${esc(b.category)}</option>`).join("")}
+  </select></div>
+  <div class="grid2">
+    <div class="field"><label>Date *</label><input type="date" id="s_date" value="${esc(s?.date||todayISO())}"></div>
+    <div class="field"><label>Amount (₹) *</label><input type="number" id="s_amt" min="1" value="${esc(s?.amount||"")}"></div>
+    <div class="field"><label>Purpose</label><select id="s_purpose"><option value="">—</option>${opt(PURPOSES, s?.purpose)}</select></div>
+    <div class="field"><label>Mode</label><select id="s_mode"><option value="">—</option>${opt(MODES, s?.mode)}</select></div>
+  </div>
+  <div class="field"><label>Notes</label><textarea id="s_notes" rows="2">${esc(s?.notes||"")}</textarea></div>
+  <div class="modal-actions">
+    <button class="btn secondary" onclick="closeModal()">Cancel</button>
+    <button class="btn" onclick="saveSupport('${id||""}')">${s?"Save changes":"Add entry"}</button>
+  </div>`);
+  setTimeout(()=>$("#s_amt").focus(),50);
+}
+function saveSupport(id){
+  const amt = Number($("#s_amt").value);
+  if(!$("#s_ben").value){ alert("Choose a beneficiary."); return; }
+  if(!amt || amt<=0){ alert("Enter a valid amount."); return; }
+  if(!$("#s_date").value){ alert("Choose a date."); return; }
+  const rec = {
+    id: id || uid("s"),
+    beneficiaryId: $("#s_ben").value, date: $("#s_date").value,
+    amount: amt, purpose: $("#s_purpose").value, mode: $("#s_mode").value,
+    notes: $("#s_notes").value.trim(),
+    createdAt: id ? (state.supports.find(x=>x.id===id).createdAt||new Date().toISOString()) : new Date().toISOString()
+  };
+  if(id){ const i = state.supports.findIndex(x=>x.id===id); state.supports[i]=rec; }
+  else state.supports.push(rec);
+  persist(); closeModal(); renderCurrent();
+}
+function deleteSupport(id){
+  if(!confirm("Delete this support entry?")) return;
+  state.supports = state.supports.filter(s=>s.id!==id);
+  persist(); renderCurrent();
+}
+
+/* ============================ Reports ============================ */
+function viewReports(){
+  const total = state.supports.reduce((a,s)=>a+Number(s.amount||0),0);
+  const received = state.receipts.reduce((a,r)=>a+Number(r.amount||0),0);
+  const catRows = state.categories.map(c=>{
+    const n = state.beneficiaries.filter(b=>b.category===c).length;
+    const amt = state.supports.filter(s=>{const b=ben(s.beneficiaryId); return b && b.category===c;}).reduce((a,s)=>a+Number(s.amount||0),0);
+    return {c,n,amt};
+  });
+  const months = {};
+  state.supports.forEach(s=>{ const m=(s.date||"").slice(0,7); if(m){ if(!months[m]) months[m]={given:0,count:0,received:0}; months[m].given+=Number(s.amount||0); months[m].count++; } });
+  state.receipts.forEach(r=>{ const m=(r.date||"").slice(0,7); if(m){ if(!months[m]) months[m]={given:0,count:0,received:0}; months[m].received+=Number(r.amount||0); } });
+  const monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const monthRows = Object.keys(months).sort().reverse().slice(0,12).map(m=>({label:monthNames[Number(m.slice(5,7))-1]+" "+m.slice(0,4), given:months[m].given, count:months[m].count, received:months[m].received}));
+  const top = state.beneficiaries.map(b=>({b,amt:totalFor(b.id)})).filter(x=>x.amt>0).sort((a,b2)=>b2.amt-a.amt).slice(0,10);
+  return `
+  <h2 class="view-title">Reports</h2>
+  <p class="subtitle">Summary of people served and funds given from personal funds.</p>
+  <div style="margin:-8px 0 16px"><button class="btn small secondary" onclick="window.print()">Print this report</button></div>
+  <div class="stat-grid">
+    <div class="stat"><div class="num">${money(total)}</div><div class="lbl">Total disbursed</div></div>
+    <div class="stat"><div class="num">${money(received)}</div><div class="lbl">Total received</div></div>
+    <div class="stat"><div class="num">${money(received-total)}</div><div class="lbl">${received-total>=0?"Net surplus":"From personal funds"}</div></div>
+    <div class="stat"><div class="num">${state.beneficiaries.length}</div><div class="lbl">People served</div></div>
+    <div class="stat"><div class="num">${state.supports.length}</div><div class="lbl">Gifts given</div></div>
+    <div class="stat"><div class="num">${state.supports.length? money(Math.round(total/state.supports.length)) : "—"}</div><div class="lbl">Average per gift</div></div>
+  </div>
+  <h3 style="color:var(--primary-dark);margin:4px 0 10px">Category-wise</h3>
+  <div class="card" style="padding:6px 12px;margin-bottom:20px">
+    <table><thead><tr><th>Category</th><th style="text-align:right">People</th><th style="text-align:right">Total given</th><th style="text-align:right">Share</th></tr></thead><tbody>
+    ${catRows.map(r=>`<tr><td>${catBadge(r.c)}</td><td style="text-align:right">${r.n}</td><td style="text-align:right" class="amt">${money(r.amt)}</td><td style="text-align:right">${total?Math.round(r.amt*100/total):0}%</td></tr>`).join("")}
+    <tr><td style="font-weight:700">All</td><td style="text-align:right;font-weight:700">${state.beneficiaries.length}</td><td style="text-align:right" class="amt">${money(total)}</td><td></td></tr>
+    </tbody></table>
+  </div>
+  ${monthRows.length?`
+  <h3 style="color:var(--primary-dark);margin:4px 0 10px">Month-wise</h3>
+  <div class="card" style="padding:6px 12px;margin-bottom:20px">
+    <table><thead><tr><th>Month</th><th style="text-align:right">Gifts</th><th style="text-align:right">Given</th><th style="text-align:right">Received</th><th style="text-align:right">Net</th></tr></thead><tbody>
+    ${monthRows.map(r=>`<tr><td>${r.label}</td><td style="text-align:right">${r.count}</td><td style="text-align:right" class="amt">${money(r.given)}</td><td style="text-align:right">${money(r.received)}</td><td style="text-align:right">${money(r.received-r.given)}</td></tr>`).join("")}
+    </tbody></table>
+  </div>`:""}
+  ${top.length?`
+  <h3 style="color:var(--primary-dark);margin:4px 0 10px">Top recipients</h3>
+  <div class="card" style="padding:6px 12px">
+    <table><thead><tr><th>Name</th><th class="hide-sm">Category</th><th style="text-align:right">Total received</th></tr></thead><tbody>
+    ${top.map(x=>`<tr><td><span class="link" onclick="goDetail('${x.b.id}')">${esc(x.b.name)}</span></td><td class="hide-sm">${catBadge(x.b.category)}</td><td style="text-align:right" class="amt">${money(x.amt)}</td></tr>`).join("")}
+    </tbody></table>
+  </div>`:""}`}
+
+function viewSettings(){
+  const empty = !state.beneficiaries.length && !state.supports.length;
+  return `
+  <h2 class="view-title">Settings</h2>
+  <div class="card" style="margin-bottom:16px">
+    <h3 style="color:var(--primary-dark);margin-bottom:14px">Organisation</h3>
+    <div class="field"><label>Ministry / NGO name</label>
+      <input type="text" id="set_name" value="${esc(state.ngoName)}"></div>
+    <button class="btn" onclick="saveSettings()">Save</button>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <h3 style="color:var(--primary-dark);margin-bottom:14px">Categories</h3>
+    <p class="muted" style="margin-bottom:6px">Add or remove the groups you serve. You can also add a new category right while registering someone (choose “+ New category…” in the form). A category used by any beneficiary cannot be removed.</p>
+    <div id="catList" style="margin-bottom:14px">
+      ${state.categories.map((c,i)=>{
+        const n = state.beneficiaries.filter(b=>b.category===c).length;
+        return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+          <div>${catBadge(c)} <span class="muted">${n} ${n===1?"person":"people"}</span></div>
+          <button class="btn small secondary" onclick="deleteCategory(${i})">Remove</button>
+        </div>`;
+      }).join("")}
+    </div>
+    <div class="row">
+      <input type="text" id="newCat" placeholder="New category name" style="flex:1;min-width:160px" onkeydown="if(event.key==='Enter')addCategory()">
+      <button class="btn" onclick="addCategory()">Add category</button>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <h3 style="color:var(--primary-dark);margin-bottom:14px">Security</h3>
+    <p class="muted" style="margin-bottom:12px">The PIN is a simple privacy screen for this device's browser — it does not encrypt the data.</p>
+    <div class="row">
+      <input type="password" id="set_pin" placeholder="New PIN (4+ digits)" style="max-width:220px" inputmode="numeric" maxlength="8">
+      <button class="btn" onclick="changePin()">Update PIN</button>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <h3 style="color:var(--primary-dark);margin-bottom:14px">Backup & export</h3>
+    <p class="muted" style="margin-bottom:12px">Data is stored only in this browser on this device. Export a backup regularly, especially before changing phones or clearing browser data. When you export, you will be asked where to save the file (folder and name); on browsers without that support it goes to the Downloads folder.</p>
+    <div class="row">
+      <button class="btn" onclick="exportJSON()">Download full backup (JSON)</button>
+      <button class="btn secondary" onclick="exportCSV('beneficiaries')">Beneficiaries CSV</button>
+      <button class="btn secondary" onclick="exportCSV('supports')">Support given CSV</button>
+      <button class="btn secondary" onclick="exportCSV('receipts')">Funds received CSV</button>
+    </div>
+    <p class="muted" style="margin-top:12px">Last backup: ${state.lastBackupAt ? fmtDate(state.lastBackupAt.slice(0,10)) : "never"}</p>
+    <div style="margin-top:16px">
+      <label>Restore from backup</label>
+      <input type="file" id="importFile" accept=".json" onchange="importJSON(this)">
+    </div>
+  </div>
+  ${empty?`
+  <div class="card" style="margin-bottom:16px">
+    <h3 style="color:var(--primary-dark);margin-bottom:14px">Sample data</h3>
+    <p class="muted" style="margin-bottom:12px">Load a few example records to see how the app looks, then clear them anytime.</p>
+    <button class="btn secondary" onclick="loadSample()">Load sample data</button>
+  </div>`:""}
+  <div class="card" style="border-color:#fecaca">
+    <h3 style="color:var(--danger);margin-bottom:14px">Danger zone</h3>
+    <button class="btn danger" onclick="clearAll()">Delete ALL data</button>
+    <p class="muted" style="margin-top:10px">This permanently removes every beneficiary and support entry from this device.</p>
+  </div>`;
+}
+function saveSettings(){
+  state.ngoName = $("#set_name").value.trim() || "Hands of Hope";
+  persist(); renderCurrent(); alert("Saved.");
+}
+function addCategory(){
+  const el = document.getElementById("newCat");
+  if(!el) return;
+  const name = el.value.trim();
+  if(!name){ alert("Type a category name first."); return; }
+  if(state.categories.indexOf(name) !== -1){ alert("That category already exists."); return; }
+  state.categories.push(name); persist(); renderCurrent();
+}
+function deleteCategory(i){
+  const name = state.categories[i]; if(!name) return;
+  const n = state.beneficiaries.filter(b=>b.category===name).length;
+  if(n){ alert(name + " is used by " + n + (n===1?" person":" people") + ". Move them to another category first."); return; }
+  if(!confirm("Remove the category " + name + "?")) return;
+  state.categories.splice(i,1); persist(); renderCurrent();
+}
+function catOptionsHtml(sel){
+  return state.categories.map(c=>`<option ${c===sel?"selected":""}>${esc(c)}</option>`).join("");
+}
+function maybeNewCategory(sel){
+  if(sel.value !== "__new__") return;
+  const r = prompt("Name of the new category:");
+  if(!r || !r.trim()){ sel.selectedIndex = 0; return; }
+  const name = r.trim();
+  if(state.categories.indexOf(name) === -1){ state.categories.push(name); persist(); }
+  sel.innerHTML = catOptionsHtml(name) + '<option value="__new__">+ New category…</option>';
+  sel.value = name;
+}
+function changePin(){
+  const p = $("#set_pin").value;
+  if(p && p.length<4){ alert("PIN must be at least 4 digits."); return; }
+  state.pin = p; persist();
+  alert(p ? "PIN updated." : "PIN removed.");
+  $("#set_pin").value = "";
+}
+async function download(filename, text, type){
+  // Ask where to save when the browser supports it (Chrome/Edge desktop)
+  if(window.showSaveFilePicker){
+    try{
+      const handle = await window.showSaveFilePicker({ suggestedName: filename });
+      const w = await handle.createWritable();
+      await w.write(new Blob([text], {type: type||"text/plain"}));
+      await w.close();
+      return;
+    }catch(e){
+      if(e && e.name === "AbortError") return; // user cancelled the save dialog
+      // any other problem: fall back to a normal download below
+    }
+  }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], {type: type||"text/plain"}));
+  a.download = filename; a.click(); URL.revokeObjectURL(a.href);
+}
+function exportJSON(){
+  state.lastBackupAt = new Date().toISOString(); persist();
+  download("hands-of-hope-backup-"+todayISO()+".json", JSON.stringify(state,null,2), "application/json");
+}
+function csvCell(v){ v = String(v??""); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+function exportCSV(kind){
+  let head, rows;
+  if(kind==="beneficiaries"){
+    head = ["Name","Category","Status","Gender","Age","Phone","Location","Registered","Total Support","Notes"];
+    rows = state.beneficiaries.map(b=>[b.name,b.category,b.status,b.gender,b.age,b.phone,b.location,fmtDate(b.joinedDate),totalFor(b.id),b.notes]);
+  }else if(kind==="supports"){
+    head = ["Date","Beneficiary","Category","Amount","Purpose","Mode","Notes"];
+    rows = state.supports.map(s=>{const b=ben(s.beneficiaryId);return [fmtDate(s.date),benName(s.beneficiaryId),b?b.category:"",s.amount,s.purpose,s.mode,s.notes];});
+  }else{
+    head = ["Date","Source","Amount","Notes"];
+    rows = state.receipts.map(r=>[fmtDate(r.date),r.source,r.amount,r.notes]);
+  }
+  download(kind+"-"+todayISO()+".csv", "\uFEFF"+[head,...rows].map(r=>r.map(csvCell).join(",")).join("\n"), "text/csv");
+}
+function importJSON(input){
+  const f = input.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const d = JSON.parse(r.result);
+      if(!Array.isArray(d.beneficiaries) || !Array.isArray(d.supports)) throw new Error("bad format");
+      if(!confirm("Replace all current data with the backup?\n\nBackup contains "+d.beneficiaries.length+" beneficiaries and "+d.supports.length+" support entries.")) return;
+      state.beneficiaries = d.beneficiaries; state.supports = d.supports;
+      state.categories = (Array.isArray(d.categories) && d.categories.length) ? d.categories : DEFAULT_CATEGORIES.slice();
+      if(!Array.isArray(d.receipts)) d.receipts = [];
+      state.receipts = d.receipts;
+      if(typeof d.lastBackupAt === "string") state.lastBackupAt = d.lastBackupAt;
+      if(d.ngoName) state.ngoName = d.ngoName;
+      if(typeof d.pin === "string") state.pin = d.pin;
+      persist(); renderCurrent(); alert("Backup restored.");
+    }catch(e){ alert("That file is not a valid backup."); }
+  };
+  r.readAsText(f); input.value = "";
+}
+function loadSample(){
+  const mk = (name,cat,g,age,ph,loc,notes)=>({id:uid("b"),name,category:cat,status:"Active",gender:g,age,phone:ph,location:loc,joinedDate:todayISO(),notes,createdAt:new Date().toISOString()});
+  const b1=mk("Maria Thomas","Widow","Female",54,"98xxxxxx01","Kochi, Kerala","Husband passed in 2023. Two children in school.");
+  const b2=mk("Samuel & Sara (siblings)","Orphan","Other",8,"","Madurai, TN","Parents died in accident; living with grandmother.");
+  const b3=mk("Pr. Joseph Rao","Pastor","Male",47,"98xxxxxx03","Vizag, AP","Leads a small village church; needs travel support.");
+  const b4=mk("Lakshmi Devi","Poor / Needy","Female",38,"","Hyderabad","Daily-wage worker, unable to work after surgery.");
+  ["Widow","Orphan","Pastor","Poor / Needy"].forEach(c=>{ if(state.categories.indexOf(c)===-1) state.categories.push(c); });
+  b1.followUp = new Date(Date.now()+4*86400000).toISOString().slice(0,10);
+  state.receipts.push({id:uid("r"),date:todayISO(),amount:2000,source:"Sunday offering",notes:"Sample entry — delete anytime",createdAt:new Date().toISOString()});
+  state.beneficiaries.push(b1,b2,b3,b4);
+  state.supports.push(
+    {id:uid("s"),beneficiaryId:b1.id,date:todayISO(),amount:3000,purpose:"Food",mode:"UPI",notes:"Monthly ration",createdAt:new Date().toISOString()},
+    {id:uid("s"),beneficiaryId:b3.id,date:todayISO(),amount:5000,purpose:"Ministry / Evangelism",mode:"Bank Transfer",notes:"Village outreach travel",createdAt:new Date().toISOString()},
+    {id:uid("s"),beneficiaryId:b2.id,date:todayISO(),amount:4000,purpose:"Education",mode:"Cash",notes:"School fees & books",createdAt:new Date().toISOString()}
+  );
+  persist(); renderCurrent();
+}
+function clearAll(){
+  if(!confirm("Delete ALL beneficiaries and support entries?\n\nThis cannot be undone.")) return;
+  if(!confirm("Are you absolutely sure? Consider downloading a backup first.")) return;
+  state.beneficiaries = []; state.supports = []; persist(); renderCurrent();
+}
+
+/* ============================ Modal helpers ============================ */
+function openModal(html){
+  $("#modalOverlay").innerHTML = '<div class="modal">'+html+'</div>';
+  $("#modalOverlay").classList.remove("hidden");
+}
+function closeModal(){ $("#modalOverlay").classList.add("hidden"); $("#modalOverlay").innerHTML = ""; }
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") closeModal();
+  if(e.key==="Enter" && !$("#pinScreen").classList.contains("hidden") && !$("#pinEntry").classList.contains("hidden")) tryPin();
+});
+
+/* ============================ Boot ============================ */
+load();
+initPin();
+</script>
+</body>
+</html>
