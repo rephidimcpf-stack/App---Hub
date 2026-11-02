@@ -373,13 +373,87 @@
       color: var(--muted);
       margin-bottom: 0.25rem;
     }
+    .ctrl-actions { display: flex; gap: 0.6rem; align-items: end; }
+    .ctrl-actions button { white-space: nowrap; }
+    button.primary.btn-auto {
+      background: linear-gradient(135deg, #a78bfa, #f472b6);
+      color: #0f172a;
+    }
+    @media (max-width: 600px) {
+      .ctrl-actions { flex-direction: column; }
+    }
+    .portion-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 1rem;
+      align-items: end;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border);
+    }
+    .portion-row input[type="number"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    .portion-row input[type="number"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.25);
+    }
+    .portion-hint { grid-column: 1 / -1; font-size: 0.8rem; color: var(--muted); }
+    @media (max-width: 600px) {
+      .portion-row { grid-template-columns: 1fr 1fr; }
+    }
+    /* ---- editable Q&A form ---- */
+    .edit-banner {
+      display: flex; gap: 0.55rem; align-items: flex-start;
+      background: rgba(56,189,248,0.10);
+      border: 1px solid rgba(56,189,248,0.35);
+      border-radius: 12px;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .q-edit-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .q-edit-head .question-num { margin-bottom: 0; }
+    .q-clear {
+      width: auto; padding: 0.28rem 0.6rem; font-size: 0.76rem;
+      border-radius: 8px; background: #0f172a; color: var(--muted);
+      border: 1px solid var(--border); cursor: pointer;
+    }
+    .q-clear:hover { color: var(--wrong); border-color: var(--wrong); }
+    .fld-label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.3rem; font-weight: 500; }
+    .edit-opt-row {
+      display: flex; align-items: center; gap: 0.55rem;
+      margin-bottom: 0.45rem; padding: 0.3rem 0.5rem;
+      border: 1px solid var(--border); border-radius: 10px;
+      background: #0f172a; cursor: pointer;
+    }
+    .edit-opt-row.is-correct { border-color: var(--correct); background: rgba(34,197,94,0.10); }
+    .edit-opt-row input[type="radio"] { accent-color: var(--correct); width: 18px; height: 18px; flex-shrink: 0; }
+    #formQuestions .question .edit-opt-row input[type="text"] {
+      flex: 1; width: auto; border: none; background: transparent;
+      padding: 0.4rem 0.2rem; border-radius: 0; font-size: 0.95rem;
+    }
+    #formQuestions .question .edit-opt-row input[type="text"]:focus { outline: none; }
+    .opt-tag { flex: 0 0 auto; font-weight: 700; color: var(--accent); font-size: 0.9rem; width: 1rem; text-align: center; }
+    .opt-correct-tag { flex: 0 0 auto; font-size: 0.72rem; color: var(--correct); font-weight: 600; display: none; }
+    .edit-opt-row.is-correct .opt-correct-tag { display: inline; }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>📖 Rephidim బైబిల్ క్విజ్</h1>
-      <p>పుస్తకం & అధ్యాయం ఎంచుకోండి → మీరే 5 ప్రశ్నలు రాయండి</p>
+      <p>పుస్తకం & అధ్యాయం ఎంచుకోండి → మీరే 7 ప్రశ్నలు రాయండి</p>
       <button id="installAppBtn" class="secondary" style="width:auto;margin-top:0.75rem;display:none;">⬇ Install app</button>
     </header>
 
@@ -388,7 +462,10 @@
         <summary>ℹ️ How to use all buttons (click to expand)</summary>
         <ul>
           <li><strong>పుస్తకం / అధ్యాయం</strong> — Select the book and chapter this quiz is about (used as the quiz title/reference).</li>
-          <li><strong>ఖాళీ క్విజ్ ఫారం</strong> — Opens a blank form with 5 empty questions for you to write.</li>
+          <li><strong>ఖాళీ క్విజ్ ఫారం</strong> — Opens a blank form with 7 empty questions for you to write.</li>
+          <li><strong>✏️ సవరణ (edit Q&amp;A)</strong> — In the form you can type or change the question and the three options directly; tap a row (or its ○) to mark it as the correct answer, and press <strong>🗑 క్లియర్</strong> to empty a single question. Your changes are kept when you press <strong>క్విజ్ ప్రారంభించండి</strong>, and you can come back to this form any time with <strong>మళ్లీ ఎడిట్ చేయండి</strong>.</li>
+          <li><strong>వచనాల పరిధి (portion)</strong> — Pick a <em>from</em> and <em>to</em> verse so questions come <em>only</em> from that range. Leave "వరకు వచనం" empty to use the whole chapter from "నుండి". Press <strong>వచనాలు లోడ్</strong> to fetch the chapter: if a range is already set it is kept and only that range is reported; your range is never overwritten.</li>
+          <li><strong>🤖 ఆటో ప్రశ్నలు</strong> — Auto-generates 7 questions from the selected portion only (or the full chapter if no portion is set), in two shapes: <em>fill in the blank</em> (the missing word or phrase is replaced inline by __________(డాస్)) and <em>ఎవరు / ఎవరి</em> questions. Each question has three options with the correct one ticked, plus an "Answer:" line. The question itself comes from the chosen verses, while the two wrong options are closely-matched words from the same book (same ending, similar length, same kind) so the three choices are genuinely hard to tell apart. Verse numbers are not shown. Common Telugu encoding errors in the source text are corrected automatically. Needs internet the first time a book is used (then it is cached).</li>
           <li><strong>Question / Options</strong> — Type the question and three options. Select the radio next to the correct answer.</li>
           <li><strong>క్విజ్ ప్రారంభించండి</strong> — Locks the form and switches to answer mode so you (or someone else) can take the quiz.</li>
           <li><strong>సమాధానాలు తనిఖీ చేయి</strong> — Checks answers and shows the score (green = correct, red = wrong).</li>
@@ -416,8 +493,26 @@
         </div>
         <div>
           <label>&nbsp;</label>
-          <button id="generateBtn" class="primary">ఖాళీ క్విజ్ ఫారం</button>
+          <div class="ctrl-actions">
+            <button id="generateBtn" class="primary">ఖాళీ క్విజ్ ఫారం</button>
+            <button id="autoGenBtn" class="primary btn-auto">🤖 ఆటో ప్రశ్నలు</button>
+          </div>
         </div>
+      </div>
+      <div class="portion-row">
+        <div>
+          <label for="verseFrom">నుండి వచనం</label>
+          <input type="number" id="verseFrom" min="1" step="1" value="1" inputmode="numeric">
+        </div>
+        <div>
+          <label for="verseTo">వరకు వచనం</label>
+          <input type="number" id="verseTo" min="1" step="1" placeholder="అన్నీ" inputmode="numeric">
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button id="loadVersesBtn" class="secondary">వచనాలు లోడ్</button>
+        </div>
+        <div class="portion-hint" id="portionHint">మొత్తం అధ్యాయం (అన్ని వచనాలు)</div>
       </div>
     </div>
 
@@ -429,7 +524,10 @@
         <div class="quiz-header">
           <h2 id="formTitle">క్విజ్ ఫారం</h2>
         </div>
-        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;">Fill in 5 questions. For each question type the text, 3 options, and mark the correct answer (○).</p>
+        <div class="edit-banner">
+          <span>✏️</span>
+          <span><strong>ఎడిట్ ఫారం</strong> — ప్రశ్నలు &amp; జవాబులను ఇక్కడ నేరుగా సవరించండి. ప్రతి ప్రశ్నకు ఒక సరైన జవాబును (✓) ఎంచుకోండి, తరువాత <strong>క్విజ్ ప్రారంభించండి</strong> నొక్కండి. <span style="color:var(--muted)">Edit the question text and the three options directly; tap a row to mark the correct answer.</span></span>
+        </div>
         <div id="formQuestions"></div>
         <div class="btn-row" style="margin-top:1.25rem;">
           <button id="startQuizBtn" class="primary" style="width:auto;">క్విజ్ ప్రారంభించండి</button>
@@ -446,7 +544,7 @@
       <div class="card">
         <div class="quiz-header">
           <h2 id="quizTitle"></h2>
-          <span class="score-badge" id="scoreBadge">0 / 5</span>
+          <span class="score-badge" id="scoreBadge">0 / 7</span>
         </div>
         <div id="questions"></div>
         <div id="results" class="results hidden">
@@ -616,7 +714,7 @@
       lines.push(`Reference: ${meta.reference || quizTitle.textContent || ''}`);
       lines.push(`Date: ${formatDate()}`);
       if (score !== null && score !== undefined) {
-        lines.push(`Score: ${score} / 5`);
+        lines.push(`Score: ${score} / ${currentQuestions.length || 7}`);
       }
       lines.push('');
       currentQuestions.forEach((q, idx) => {
@@ -723,7 +821,7 @@
           <div class="lib-item" data-id="${item.id}">
             <div class="meta">
               <div class="title">${item.reference || 'Quiz'}</div>
-              <div class="date">${item.date}${item.score !== null && item.score !== undefined ? ' · Score ' + item.score + '/5' : ''}</div>
+              <div class="date">${item.date}${item.score !== null && item.score !== undefined ? ' · Score ' + item.score + '/' + ((item.questions && item.questions.length) || 7) : ''}</div>
             </div>
             <div class="lib-actions">
               <button class="secondary lib-export" data-id="${item.id}">📄 Text</button>
@@ -847,8 +945,12 @@
     function getSelectedReference() {
       const book = BOOKS[bookSelect.value];
       const chapter = chapterSelect.value;
+      const from = numFromInput('verseFrom');
+      const to = numFromInput('verseTo');
+      let portion = '';
+      if (from || to) portion = ':' + (from || 1) + (to ? '-' + to : '');
       return {
-        reference: `${book.te} ${chapter}`,
+        reference: `${book.te} ${chapter}${portion}`,
         bookTe: book.te,
         chapter: chapter,
         bookEn: book.en
@@ -856,7 +958,7 @@
     }
 
     function emptyQuestions() {
-      return Array.from({ length: 5 }, () => ({
+      return Array.from({ length: 7 }, () => ({
         question: '',
         options: [
           { text: '', correct: true },
@@ -867,7 +969,7 @@
     }
 
     function renderBlankForm(existing) {
-      const qs = existing && existing.length === 5 ? existing : emptyQuestions();
+      const qs = existing && existing.length ? existing : emptyQuestions();
       currentQuestions = qs.map(q => ({
         question: q.question || '',
         options: (q.options || []).map((o, i) => ({
@@ -892,18 +994,21 @@
         block.className = 'question';
         block.dataset.idx = idx;
         block.innerHTML = `
-          <div class="question-num">ప్రశ్న ${idx + 1} / 5</div>
-          <div style="margin-bottom:0.6rem;">
-            <label>Question</label>
-            <textarea data-role="form-q" rows="2" placeholder="Type your question here…">${q.question.replace(/</g, '&lt;')}</textarea>
+          <div class="q-edit-head">
+            <span class="question-num">ప్రశ్న ${idx + 1} / ${currentQuestions.length}</span>
+            <button type="button" class="q-clear" data-idx="${idx}" title="ఈ ప్రశ్నను ఖాళీ చేయి">🗑 క్లియర్</button>
           </div>
+          <label class="fld-label">ప్రశ్న (Question)</label>
+          <textarea data-role="form-q" rows="2" placeholder="ప్రశ్న ఇక్కడ రాయండి…">${q.question.replace(/</g, '&lt;')}</textarea>
+          <label class="fld-label" style="margin-top:0.7rem;">జవాబు ఎంపికలు (Answer options) — ✓ ఉన్నది సరైన జవాబు</label>
           ${[0, 1, 2].map(oi => `
-            <div class="edit-opt-row" style="margin-bottom:0.45rem;">
-              <input type="radio" name="formCorrect${idx}" value="${oi}" ${oi === correctIdx ? 'checked' : ''} title="Mark as correct">
-              <input type="text" data-role="form-opt" data-oi="${oi}" placeholder="Option ${String.fromCharCode(65 + oi)}" value="${(q.options[oi].text || '').replace(/"/g, '&quot;')}">
+            <div class="edit-opt-row ${oi === correctIdx ? 'is-correct' : ''}">
+              <input type="radio" name="formCorrect${idx}" value="${oi}" ${oi === correctIdx ? 'checked' : ''} title="సరైన జవాబుగా గుర్తించు">
+              <span class="opt-tag">${String.fromCharCode(65 + oi)}</span>
+              <input type="text" data-role="form-opt" data-oi="${oi}" placeholder="ఎంపిక ${String.fromCharCode(65 + oi)}" value="${(q.options[oi].text || '').replace(/"/g, '&quot;')}">
+              <span class="opt-correct-tag">✓ సరైనది</span>
             </div>
           `).join('')}
-          <p style="font-size:0.78rem;color:var(--muted);margin:0.2rem 0 0;">○ = correct answer</p>
         `;
         formQuestionsEl.appendChild(block);
       });
@@ -912,6 +1017,39 @@
       quizArea.classList.add('hidden');
       hideStatus();
     }
+
+    function updateCorrectRows(block) {
+      if (!block) return;
+      block.querySelectorAll('.edit-opt-row').forEach(function (row) {
+        const r = row.querySelector('input[type="radio"]');
+        row.classList.toggle('is-correct', !!(r && r.checked));
+      });
+    }
+
+    function clearFormQuestion(idx) {
+      const block = formQuestionsEl.querySelector('.question[data-idx="' + idx + '"]');
+      if (!block) return;
+      const ta = block.querySelector('[data-role="form-q"]');
+      if (ta) ta.value = '';
+      block.querySelectorAll('[data-role="form-opt"]').forEach(function (inp) { inp.value = ''; });
+      const first = block.querySelector('input[type="radio"][value="0"]');
+      if (first) first.checked = true;
+      updateCorrectRows(block);
+    }
+
+    // Tap anywhere on an option row to mark it as the correct answer.
+    formQuestionsEl.addEventListener('click', function (e) {
+      const clearBtn = e.target.closest ? e.target.closest('.q-clear') : null;
+      if (clearBtn) { clearFormQuestion(+clearBtn.dataset.idx); return; }
+      const row = e.target.closest ? e.target.closest('.edit-opt-row') : null;
+      if (!row) return;
+      if (e.target.tagName === 'INPUT' && e.target.type === 'text') return; // let them type
+      const r = row.querySelector('input[type="radio"]');
+      if (r) { r.checked = true; updateCorrectRows(row.closest('.question')); }
+    });
+    formQuestionsEl.addEventListener('change', function (e) {
+      if (e.target && e.target.type === 'radio') updateCorrectRows(e.target.closest('.question'));
+    });
 
     function collectFormQuestions() {
       const blocks = formQuestionsEl.querySelectorAll('.question');
@@ -948,7 +1086,7 @@
       answered = false;
       const meta = currentQuizMeta || getSelectedReference();
       quizTitle.textContent = meta.reference;
-      scoreBadge.textContent = '0 / 5';
+      scoreBadge.textContent = '0 / ' + questions.length;
       resultsEl.classList.add('hidden');
       submitBtn.classList.remove('hidden');
       submitBtn.disabled = false;
@@ -959,7 +1097,7 @@
         div.className = 'question';
         div.dataset.idx = idx;
         div.innerHTML = `
-          <div class="question-num">ప్రశ్న ${idx + 1} / 5</div>
+          <div class="question-num">ప్రశ్న ${idx + 1} / ${currentQuestions.length}</div>
           <div class="question-text">${q.question.replace(/\n/g, '<br>').replace(/</g, '&lt;')}</div>
           <div class="options">
             ${q.options.map((opt, oi) => `
@@ -989,6 +1127,473 @@
       quizArea.classList.remove('hidden');
     }
 
+
+    // ========== PORTION SELECTION + AUTO-GENERATE QUESTIONS ==========
+    const BIBLE_CDN = 'https://cdn.jsdelivr.net/gh/aruljohn/Bible-telugu@master/';
+    const BIBLE_CACHE_PREFIX = 'teluguBibleBook:';
+    const bookMemCache = {};
+    const BLANK = '__________(డాస్)';
+
+    function bookFilename(bookEn) {
+      return bookEn === 'Song of Solomon' ? 'Song of Songs' : bookEn;
+    }
+
+    async function loadBookData(bookEn) {
+      if (bookMemCache[bookEn]) return bookMemCache[bookEn];
+      const key = BIBLE_CACHE_PREFIX + bookEn;
+      try {
+        const cached = localStorage.getItem(key);
+        if (cached) { const d = JSON.parse(cached); bookMemCache[bookEn] = d; return d; }
+      } catch (e) {}
+      const url = BIBLE_CDN + encodeURIComponent(bookFilename(bookEn)) + '.json';
+      const res = await fetch(url, { cache: 'force-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      bookMemCache[bookEn] = data;
+      try { localStorage.setItem(key, JSON.stringify(data)); } catch (e) {}
+      return data;
+    }
+
+    // All distinct words of a book (cleaned). Used as the pool for the wrong
+    // options, so the three choices can be drawn from the same kind of word.
+    const bookBankCache = {};
+    function buildWordBank(bookData, bookEn) {
+      if (bookEn && bookBankCache[bookEn]) return bookBankCache[bookEn];
+      const freq = {};
+      (bookData.chapters || []).forEach(function (ch) {
+        (ch.verses || []).forEach(function (v) {
+          fixTeluguText(v.text).split(/\s+/).forEach(function (t) {
+            const c = stripPunct(t);
+            if (c && c.length >= 2) freq[c] = (freq[c] || 0) + 1;
+          });
+        });
+      });
+      const words = Object.keys(freq);
+      if (bookEn) bookBankCache[bookEn] = words;
+      return words;
+    }
+
+    // Fix common Telugu encoding errors in the source text.
+    function fixTeluguText(s) {
+      if (!s) return s;
+      let t = String(s);
+      // Remove zero-width spaces and stray footnote digits glued to words
+      // (e.g. "చేయు4" -> "చేయు", "యబ్బేజు1" -> "యబ్బేజు").
+      t = t.replace(/\u200B/g, '');
+      t = t.replace(/([\u0C00-\u0C7F])[0-9]+/g, '$1');
+      // Exception: in this dataset "మి్మక" always means "మ్మక" (నమి్మక → నమ్మక).
+      t = t.replace(/\u0C2E\u0C3F\u0C4D\u0C2E\u0C15/g, '\u0C2E\u0C4D\u0C2E\u0C15');
+      // General rule: a vowel sign written BEFORE the virama belongs AFTER the
+      // consonant cluster:  C1 M ్ C2  ->  C1 ్ C2 M  (నమి్మరి → నమ్మిరి).
+      t = t.replace(/([\u0C15-\u0C39\u0C58-\u0C5A])([\u0C3E-\u0C4C\u0C55\u0C56]+)\u0C4D([\u0C15-\u0C39\u0C58-\u0C5A])/g, function (m, c1, ms, c2) {
+        return c1 + '\u0C4D' + c2 + ms.slice(-1);
+      });
+      return t;
+    }
+
+    function getChapterVerses(bookData, chapter) {
+      const ch = (bookData.chapters || []).find(c => String(c.chapter) === String(chapter));
+      if (!ch) return [];
+      return (ch.verses || []).map(v => ({ verse: String(v.verse), text: fixTeluguText(v.text) }));
+    }
+
+    function numFromInput(id) {
+      const el = document.getElementById(id);
+      const n = el ? parseInt(el.value, 10) : NaN;
+      return Number.isFinite(n) && n > 0 ? n : null;
+    }
+
+    // Highest verse number for the currently selected chapter (null until loaded).
+    let chapterVerseMax = null;
+
+    // Set min/max on the verse inputs and clamp any out-of-range values.
+    // Never allows selecting a verse beyond this chapter's last verse.
+    function applyChapterVerseLimits(lastVerse) {
+      const last = Math.max(1, parseInt(lastVerse, 10) || 1);
+      chapterVerseMax = last;
+      const fEl = document.getElementById('verseFrom');
+      const tEl = document.getElementById('verseTo');
+      [fEl, tEl].forEach(function (el) {
+        if (!el) return;
+        el.min = 1;
+        el.max = last;
+      });
+      // Clamp "from"
+      if (fEl && fEl.value !== '') {
+        let v = parseInt(fEl.value, 10);
+        if (!Number.isFinite(v) || v < 1) v = 1;
+        if (v > last) v = last;
+        fEl.value = v;
+      }
+      // Clamp "to" only if the user typed something (empty = whole chapter)
+      if (tEl && tEl.value !== '') {
+        let v = parseInt(tEl.value, 10);
+        if (!Number.isFinite(v) || v < 1) v = 1;
+        if (v > last) v = last;
+        tEl.value = v;
+      }
+    }
+
+    // Clamp a single verse input as the user types / leaves the field.
+    function clampVerseInput(el) {
+      if (!el || el.value === '') return;
+      let v = parseInt(el.value, 10);
+      if (!Number.isFinite(v)) { el.value = ''; return; }
+      if (v < 1) v = 1;
+      if (chapterVerseMax != null && v > chapterVerseMax) v = chapterVerseMax;
+      el.value = v;
+    }
+
+    // Fetch the selected chapter and lock verse inputs to its real verse count.
+    async function refreshChapterVerseLimits(showHint) {
+      const meta = getSelectedReference();
+      try {
+        const bookData = await loadBookData(meta.bookEn);
+        const verses = getChapterVerses(bookData, meta.chapter);
+        if (!verses.length) throw new Error('No verses');
+        const first = +verses[0].verse;
+        const last = +verses[verses.length - 1].verse;
+        applyChapterVerseLimits(last);
+        if (showHint) {
+          setPortionHint('ఈ అధ్యాయంలో ' + verses.length + ' వచనాలు (1–' + last + '). దీని కంటే ఎక్కువ వచనం ఎంచుకోలేరు.');
+        }
+        return last;
+      } catch (e) {
+        chapterVerseMax = null;
+        if (showHint) setPortionHint('మొత్తం అధ్యాయం (అన్ని వచనాలు)');
+        return null;
+      }
+    }
+
+    function getPortion(verses, from, to) {
+      const maxV = verses.length
+        ? Math.max.apply(null, verses.map(function (v) { return parseInt(v.verse, 10) || 0; }))
+        : (chapterVerseMax || Infinity);
+      let a = from || 1;
+      let b = (to == null || to === '') ? maxV : to;
+      if (a < 1) a = 1;
+      if (b > maxV) b = maxV;
+      if (a > maxV) a = maxV;
+      if (a > b) { const t = a; a = b; b = t; }
+      return verses.filter(v => { const n = parseInt(v.verse, 10); return n >= a && n <= b; });
+    }
+
+    function referenceLabel(bookTe, chapter, portion, total) {
+      if (!portion.length) return bookTe + ' ' + chapter;
+      const a = portion[0].verse, b = portion[portion.length - 1].verse;
+      const whole = (+a === 1 && +b === total);
+      return bookTe + ' ' + chapter + (whole ? '' : ':' + a + '-' + b);
+    }
+
+    const NUM_WORDS = ['ఒకటి','ఒక','రెండు','మూడు','నాలుగు','ఐదు','ఆరు','ఏడు','ఎనిమిది','తొమ్మిది','పది','పదకొండు','పన్నెండు','నలుబది','యాభై','వంద'];
+    const STOP_WORDS = new Set(['అను','అనియు','ఆయన','అతడు','ఆమె','వారు','అది','ఇది','ఈ','ఆ','అని','కూడా','గాని','మరియు','లో','నుండి','కు','కి','యొద్ద','మీద','కొరకు','ఏమి','ఎవరు','ఎక్కడ','ఎప్పుడు','అన్ని','సమస్తము','గాను','ఏలాగు','యుండెను','ఉండెను']);
+    // Possessive pronouns — "X తమ/తన ..." marks X as a doer (who).
+    const POSS = new Set(['తమ','తన','తన్ను','తనదు','వారి','వారిని','మా','నా','మీ','దాని','దానిని','వాటి','వాటిని']);
+    // Pronouns are never the answer to "who" here.
+    const PRONOUNS = new Set(['ఆయన','అతడు','ఆమె','వారు','నేను','నీవు','మేము','మీరు','తాను','అది','ఇది','అతను','వాడు','మనము','ఆయనను','అతని','ఆమెను','వారిని','నన్ను','నిన్ను','మమ్మును','మిమ్మును','తాము','వాని','దాని','వీరు','ఆయనయొక్క','నీవు','అతనితో','ఆయనతో']);
+    const VERB_TAIL = ['ెను','ిరి','ుదురు','ెదరు','ును','ుచున్నాడు','ుచున్నది','ుచున్నారు','ాయి','ాడు','ింది','ుము','ండి','వలెను','లేదు','లేరు','కలదు','యుండెను','ఉండెను','గాక','ుతాడు','ుతుంది','ుతారు','డని','యని','గాని','నియు','కొని','చేసి','పోయి','వచ్చి','అని','నెను','లేడని','పడిరి','పడుదురు','చేయుదురు','చేయుచు','గడుపుచు','ఇచ్చుచు','వచ్చుచు','యున్నారు','యున్నాడు','యున్నది','చున్నారు','చున్నాడు','చున్నది','యుండెను','పొందుదురు','కొట్టిరి','చెప్పిరి','వచ్చిరి','పోయిరి'];
+    // Nouns that are commonly possessed by someone — "X <one of these>" makes X a "whose".
+    const RELATIONAL = new Set(['సంతానము','సంతానమును','సంతానమందు','కుమారుడు','కుమారుడు','కుమారుడను','కుమార్తె','కుమార్తెను','కుమారులు','కుమారులను','తండ్రి','తండ్రిని','తల్లి','తల్లిని','భార్య','భార్యను','భర్త','భర్తను','ప్రజలు','ప్రజలను','ప్రజల','దాసుడు','దాసి','సహోదరుడు','సహోదరి','సహోదరులు','హృదయము','హృదయ','ఆలోచన','ఆలోచనను','మాట','మాటలు','మాటలను','నామము','నామమును','ఇల్లు','ఇంటి','రాజ్యము','రాజ్యమును','దేశము','దేశమును','తరతరము','తరతరమందు','పక్షము','పక్ష','పక్షమున','వంశము','కుటుంబము','మందిరము','మందిరమును','సింహాసనము','కీర్తి','ఆత్మ','ఆత్మను','శరీరము','రక్తము','జీవము','జీవమును','మరణము','పాపము','పాపమును','న్యాయము','తీర్పు','రక్షణ','ఆశీర్వాదము','శాపము','నిబంధన','నిబంధనను','క్రియలు','క్రియలను','పనులు','పనులను','త్రోవ','దారి','మార్గము','వాక్యము','ధర్మశాస్త్రము','ఆజ్ఞ','ఆజ్ఞలను','కృప','నీతి','బలము','సేవ','ధనము','ఆస్తి','ద్రవ్యము','పంట','సంఘము','సమాజము','యెదుట','సన్నిధి','సన్నిధిని','కోపము','ప్రేమ','విశ్వాసము','నిరీక్షణ','సత్యము','శక్తి','ప్రభుత్వము','అధికారము','గౌరవము','మహిమ','ఆనందము','సంతోషము','దుఃఖము','భయము','నింద','స్తుతి','ప్రార్థన','ఆరాధన','బలి','కానుక','దానము','ఫలము','విత్తనము','నేల','భూమి','ఆకాశము','దినము','దినమును','మాసము','సంవత్సరము','చేయి','చేతులు','కాళ్లు','కండ్లు','ముఖము','నోరు','శబ్దము','స్వరము','గొంతు','బలము','సేన','సైన్యము','మంద','శిష్యులు','శిష్యులను','అపొస్తలులు','ప్రవక్తలు','యాజకులు','లేవీయులు','పెద్దలు','రాజు','రాజును','దూత','దూతలు','సేవకుడు','సేవకుడు','మందిర','బలిపీఠము','గుమ్మము','తలుపు','కొండ','లోయ','నది','ఊరు','పట్టణము','నగరము','స్థలము','చోటు','సముద్రము','జలము','నీరు','అగ్ని','వెలుగు','చీకటి']);
+
+    function stripPunct(w) {
+      return w.replace(/^[.,;:!?"'“”‘’()\[\]–—-]+/, '').replace(/[.,;:!?"'“”‘’()\[\]–—-]+$/, '');
+    }
+    function isNumWord(w) { return /^[0-9]+$/.test(w) || NUM_WORDS.indexOf(w) !== -1; }
+    function looksVerb(w) { return VERB_TAIL.some(e => w.length <= w.length && w.endsWith(e)); }
+    function nounlike(w) { return w.length >= 3 && !looksVerb(w) && !isNumWord(w) && !STOP_WORDS.has(w); }
+    const NAME_SET = new Set(['యేసు','యెహోవా','దేవుడు','మోషే','దావీదు','పౌలు','పేతురు','యోహాను','యాకోబు','అబ్రహాము','ఇస్సాకు','యోసేపు','సౌలు','ఎలీయా','ఎలిషా','సమూయేలు','ఆరోనుడు','యెహోషువ','కలేబు','గిద్యోను','సామ్సోను','రూతు','ఎస్తేరు','దానియేలు','యోబు','యెషయా','యిర్మీయా','ఎజ్రా','నెహెమ్యా','మత్తయి','మార్కు','లూకా','తిమోతి','తీతు','స్తెఫను','ఫిలిప్పు','అంద్రెయ','యూదా','అపొస్తలులు','శిష్యులు','ప్రవక్తలు','యాజకులు','లేవీయులు','పరిసయ్యులు','సద్దూకయ్యులు','లేఖనకారులు','ఫరిసీయులు','నీతిమంతులు','దుష్టులు','పాపులు','బుద్ధిహీనులు','యూదులు','అన్యజనులు','ఇశ్రాయేలీయులు','దూతలు','సేవకులు','మనుష్యులు','జనులు','ప్రజలు','రాజు','రాజులు','దేవదూతలు','పెద్దలు','సహోదరులు']);
+    function personish(w) {
+      if (NAME_SET.has(w)) return true;
+      if (w.endsWith('ట్లు') || w.endsWith('నట్లు') || w.endsWith('ాడు') || w.endsWith('ము') || w.endsWith('ని') || w.endsWith('ట') || w.endsWith('గా') || w.endsWith('కు') || w.endsWith('కి') || w.endsWith('లో') || w.endsWith('యొక్క') || w.endsWith('గల') || w.endsWith('లేని') || w.endsWith('కాని') || w.endsWith('ైన') || w.endsWith('ిన')) return false;
+      return w.endsWith('లు') || w.endsWith('ల') || w.endsWith('ుడు') || w.endsWith('వారు');
+    }
+    function commonSuffixLen(a, b) {
+      let i = 0;
+      const n = Math.min(a.length, b.length);
+      while (i < n && a.charAt(a.length - 1 - i) === b.charAt(b.length - 1 - i)) i++;
+      return i;
+    }
+    function wordClass(w) { if (personish(w)) return 'person'; if (looksVerb(w)) return 'verb'; return 'noun'; }
+    // Tokens that are almost always halves of a word the source split with a stray space
+    // ("పక్ష | మున", "పరి | శీలించెను"). Used only to avoid picking them as blank answers.
+    const FRAG_NEXT = new Set(['కు','కి','నకు','మున','ములో','లో','నుండి','తో','యొక్క','వలన','కొరకు','గూర్చి','విషయమై','యెడల','మూలముగా','ద్వారా','ప్రకారము','చొప్పున','కంటె','లోపల','వెలుపల','నడుమ','క్రింద','మీద','వెనుక','ముందు','తోడు','యందు','నందు','వరకు','కడ','వైపు','లోని','యుల','యులకు','డైన','వాత','వాకు','విచ్చెను','శీలించెను','చున్నాను','దించెను','చుడి','దొమ్మిది','మైనవి','యేలీయుల']);
+    const FRAG_PREV = new Set(['పరి','చెప్పు','ఆశీర్వ','స్తుతిం','నూటపం','దేవు','కుమారు','ఇశ్రా','యెహో','సెల','తరు','పక్ష','హృదయ','పరలోకము']);
+    function fragAt(toks, i) {
+      const c = stripPunct(toks[i]);
+      const nxt = i + 1 < toks.length ? stripPunct(toks[i + 1]) : '';
+      const prv = i - 1 >= 0 ? stripPunct(toks[i - 1]) : '';
+      return FRAG_NEXT.has(c) || FRAG_NEXT.has(nxt) || FRAG_PREV.has(prv);
+    }
+    // A token that starts with a bare consonant+virama, or is a known split half,
+    // is almost certainly a fragment of a word the source split.
+    function badShape(w) {
+      return /^[\u0C15-\u0C39\u0C58-\u0C5A]\u0C4D/.test(w) || FRAG_NEXT.has(w) || FRAG_PREV.has(w);
+    }
+    function shuffleArr(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+    const LEAD_CONNECTORS = new Set(['ఎందుకనగా','ఏలయనగా','కాబట్టి','అందుకు','అప్పుడు','మరియు']);
+
+    // Build questions ONLY from the verses passed in (the selected portion).
+    // Two shapes, mixed randomly, matching the requested pattern:
+    //   blank -> "<verse with the missing word/phrase replaced by __________(డాస్)>"
+    //   who   -> "<verse with a person replaced by ఎవరు/ఎవరి> ?"
+    function generateChapterQuestions(rawVerses, N, bank) {
+      N = N || 7;
+      const verses = (rawVerses || [])
+        .filter(v => v && v.text)
+        .map(v => ({ verse: String(v.verse), text: fixTeluguText(String(v.text)), tokens: fixTeluguText(String(v.text)).split(/\s+/).filter(Boolean) }))
+        .filter(v => v.tokens.length >= 2);
+      if (!verses.length) return [];
+
+      const freq = {};
+      verses.forEach(v => v.tokens.forEach(t => { const c = stripPunct(t); if (c) freq[c] = (freq[c] || 0) + 1; }));
+      const allWords = Object.keys(freq);
+      const bankWords = (bank && bank.length) ? bank : allWords;
+      const usedVerses = new Set();
+      const usedAnswers = new Set();
+      const questions = [];
+
+      // Pick wrong options that look as close as possible to the answer, so the
+      // three choices are genuinely confusing: same ending, similar length, same kind.
+      function pickWordDistractors(answer, verseText, count, mode) {
+        const cls = wordClass(answer);
+        const ok = function (w) {
+          if (w === answer || usedAnswers.has(w)) return false;
+          if (verseText.indexOf(w) !== -1) return false;
+          if (w.indexOf(answer) !== -1 || answer.indexOf(w) !== -1) return false;
+          if (isNumWord(w) || STOP_WORDS.has(w) || badShape(w)) return false;
+          if (mode === 'person' && !personish(w)) return false;
+          return true;
+        };
+        let pool = bankWords.filter(ok);
+        if (pool.length < count) pool = bankWords.filter(function (w) { return w !== answer && !usedAnswers.has(w) && !isNumWord(w) && !badShape(w); });
+        if (pool.length < count) return [];
+        const scored = pool.map(function (w) {
+          const cs = commonSuffixLen(w, answer);
+          const bonus = (wordClass(w) === cls) ? 1 : 0;
+          return { w: w, s: cs * 12 + bonus * 6 - Math.abs(w.length - answer.length) };
+        });
+        scored.sort(function (a, b) { return b.s - a.s; });
+        const topS = scored[0].s;
+        const band = shuffleArr(scored.filter(function (o) { return o.s >= topS - 8; }).slice(0, 14).map(function (o) { return o.w; }));
+        const picked = [];
+        for (const w of band) { if (picked.length >= count) break; if (picked.indexOf(w) === -1) picked.push(w); }
+        if (picked.length < count) {
+          for (const o of scored) { if (picked.length >= count) break; if (picked.indexOf(o.w) === -1) picked.push(o.w); }
+        }
+        return picked.slice(0, count);
+      }
+
+      // ---- Pattern 1: fill in the blank (inline __________(డాస్)) ----
+      // Question text = the verse words exactly, with only the chosen word replaced by the blank.
+      // No words are added, removed, or reordered.
+      function makeBlank(allowReuse) {
+        let cands = verses.filter(v => (allowReuse || !usedVerses.has(v.verse)) && v.tokens.length >= 3);
+        cands = shuffleArr(cands.slice());
+        for (const v of cands) {
+          const toks = v.tokens;
+          const vCount = {};
+          toks.forEach(t => { const c = stripPunct(t); if (c) vCount[c] = (vCount[c] || 0) + 1; });
+          const single = [];
+          for (let i = 1; i < toks.length; i++) {
+            const c = stripPunct(toks[i]);
+            if (c.length >= 4 && vCount[c] === 1 && !STOP_WORDS.has(c) && !isNumWord(c) && !usedAnswers.has(c) && !fragAt(toks, i) && !badShape(c)) single.push({ i: i, c: c, raw: toks[i] });
+          }
+          if (!single.length) continue;
+          single.sort((a, b) => (freq[a.c] - freq[b.c]) || (b.c.length - a.c.length));
+          const target = single[Math.floor(Math.random() * Math.min(4, single.length))];
+          const dist = pickWordDistractors(target.c, v.text, 2, 'word');
+          if (dist.length < 2) continue;
+          // Keep every other token exactly as in the verse; only swap the target slot.
+          // Preserve any trailing punctuation that was attached to the blanked word.
+          const trail = (target.raw.match(/[.,;:!?"'“”‘’)\]–—-]+$/) || [''])[0];
+          const out = toks.slice();
+          out[target.i] = BLANK + trail;
+          const options = shuffleArr([{ text: target.c, correct: true }].concat(dist.map(d => ({ text: d, correct: false }))));
+          usedVerses.add(v.verse); usedAnswers.add(target.c);
+          return { type: 'blank', question: out.join(' '), options: options };
+        }
+        return null;
+      }
+
+      // ---- Pattern 2: "who" question (ఎవరు / ఎవరి) ----
+      // Question text = the verse words exactly, with only the person-word replaced by ఎవరు/ఎవరి.
+      // No leading words are stripped; nothing else is rewritten.
+      function makeWho(allowReuse) {
+        let cands = verses.filter(v => (allowReuse || !usedVerses.has(v.verse)) && v.tokens.length >= 5);
+        cands = shuffleArr(cands.slice());
+        for (const v of cands) {
+          const toks = v.tokens;
+          const picks = [];
+          for (let i = 1; i < toks.length - 1; i++) {
+            const c = stripPunct(toks[i]);
+            const nx = stripPunct(toks[i + 1]);
+            if (c.length < 4 || STOP_WORDS.has(c) || isNumWord(c) || looksVerb(c) || PRONOUNS.has(c) || usedAnswers.has(c)) continue;
+            if (!personish(c) || fragAt(toks, i) || badShape(c)) continue;
+            if (POSS.has(nx)) picks.push({ i: i, c: c, q: 'ఎవరు', raw: toks[i] });
+            else if (c.endsWith('ల') && RELATIONAL.has(nx)) picks.push({ i: i, c: c, q: 'ఎవరి', raw: toks[i] });
+          }
+          if (!picks.length) continue;
+          const pick = shuffleArr(picks.slice())[0];
+          const dist = pickWordDistractors(pick.c, v.text, 2, 'person');
+          if (dist.length < 2) continue;
+          const trail = (pick.raw.match(/[.,;:!?"'“”‘’)\]–—-]+$/) || [''])[0];
+          const out = toks.slice();
+          out[pick.i] = pick.q + trail; // only this one word changes; rest of verse stays as-is
+          const options = shuffleArr([{ text: pick.c, correct: true }].concat(dist.map(d => ({ text: d, correct: false }))));
+          usedVerses.add(v.verse); usedAnswers.add(pick.c);
+          return { type: 'who', question: out.join(' ') + ' ?', options: options };
+        }
+        return null;
+      }
+
+      const bag = ['blank', 'blank', 'blank', 'blank', 'who', 'who', 'who'];
+      while (bag.length < N) bag.push('blank');
+      shuffleArr(bag);
+      for (const t of bag) {
+        if (questions.length >= N) break;
+        let q = (t === 'who') ? (makeWho(false) || makeWho(true)) : (makeBlank(false) || makeBlank(true));
+        if (!q) q = makeBlank(false) || makeBlank(true);
+        if (q) questions.push(q);
+      }
+      let guard = 0;
+      while (questions.length < N && guard++ < 40) {
+        const q = makeBlank(false) || makeBlank(true) || makeWho(true);
+        if (!q) break;
+        questions.push(q);
+      }
+      return questions.slice(0, N);
+    }
+
+    function setPortionHint(text) {
+      const el = document.getElementById('portionHint');
+      if (el) el.textContent = text;
+    }
+
+    // Load verses: fetch the chapter; if a range is already set, keep it and
+    // report how many verses are in that range only. Never overwrite a user range.
+    document.getElementById('loadVersesBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('loadVersesBtn');
+      const meta = getSelectedReference();
+      btn.disabled = true;
+      showStatus('వచనాలు లోడ్ అవుతున్నాయి…', true);
+      try {
+        const bookData = await loadBookData(meta.bookEn);
+        const verses = getChapterVerses(bookData, meta.chapter);
+        if (!verses.length) throw new Error('No verses');
+        const first = +verses[0].verse, last = +verses[verses.length - 1].verse;
+        // Lock inputs to this chapter's real verse count (clamps any overflow).
+        applyChapterVerseLimits(last);
+
+        const fEl = document.getElementById('verseFrom');
+        // Keep whatever the user already typed; only fill "from" when empty.
+        let from = numFromInput('verseFrom');
+        let to = numFromInput('verseTo');
+        if (from == null) {
+          from = first;
+          if (fEl) fEl.value = first;
+        }
+        // Re-read after clamp
+        from = numFromInput('verseFrom') || first;
+        to = numFromInput('verseTo');
+
+        const portion = getPortion(verses, from, to);
+        const pFirst = portion.length ? portion[0].verse : first;
+        const pLast = portion.length ? portion[portion.length - 1].verse : last;
+        const isWhole = portion.length === verses.length;
+        if (isWhole) {
+          setPortionHint('మొత్తం అధ్యాయం: ' + verses.length + ' వచనాలు (' + first + '–' + last + '). పరిధి ఇస్తే అందులోని వచనాలే వాడబడతాయి.');
+          toast('మొత్తం అధ్యాయం లోడ్ — ' + verses.length + ' వచనాలు');
+        } else {
+          setPortionHint('ఎంచుకున్న పరిధి: వచనం ' + pFirst + '–' + pLast + ' (' + portion.length + ' వచనాలు). ఆటో ప్రశ్నలు ఈ పరిధి నుంచే వస్తాయి.');
+          toast('పరిధి లోడ్ — వచనం ' + pFirst + '–' + pLast + ' (' + portion.length + ')');
+        }
+        hideStatus();
+      } catch (e) {
+        hideStatus();
+        showStatus('⚠️ వచనాలు లోడ్ కాలేదు. ఇంటర్నెట్ కనెక్షన్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // Auto-generate ONLY from the selected portion (or full chapter if no range).
+    document.getElementById('autoGenBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('autoGenBtn');
+      const meta = getSelectedReference();
+      btn.disabled = true;
+      showStatus('ఎంచుకున్న పరిధి వచనాలు లోడ్ అవుతున్నాయి…', true);
+      try {
+        const bookData = await loadBookData(meta.bookEn);
+        const allVerses = getChapterVerses(bookData, meta.chapter);
+        if (!allVerses.length) throw new Error('No verses for this chapter');
+        const lastV = +allVerses[allVerses.length - 1].verse;
+        applyChapterVerseLimits(lastV); // clamp any out-of-range selection first
+        const from = numFromInput('verseFrom');
+        const to = numFromInput('verseTo');
+        const portion = getPortion(allVerses, from, to);
+        if (!portion.length) throw new Error('Empty portion');
+        // Word bank still from the whole book (for hard distractors), but
+        // every question stem is built ONLY from `portion` verses.
+        const bank = buildWordBank(bookData, meta.bookEn);
+        const qs = generateChapterQuestions(portion, 7, bank);
+        if (!qs.length) throw new Error('Could not build questions');
+        currentQuizMeta = {
+          reference: referenceLabel(meta.bookTe, meta.chapter, portion, allVerses.length),
+          bookTe: meta.bookTe, chapter: meta.chapter, bookEn: meta.bookEn
+        };
+        currentQuestions = qs;
+        lastScore = null;
+        answered = false;
+        renderBlankForm(qs);
+        hideStatus();
+        const isWhole = portion.length === allVerses.length;
+        setPortionHint(
+          (isWhole ? 'మొత్తం అధ్యాయం' : ('పరిధి: వచనం ' + portion[0].verse + '–' + portion[portion.length - 1].verse)) +
+          ' (' + qs.length + ' ప్రశ్నలు — ఈ వచనాల నుంచే)'
+        );
+        toast(qs.length + ' ప్రశ్నలు · వచనం ' + portion[0].verse + '–' + portion[portion.length - 1].verse);
+        window.scrollTo({ top: formArea.offsetTop - 20, behavior: 'smooth' });
+      } catch (e) {
+        hideStatus();
+        showStatus('⚠️ ప్రశ్నలు సృష్టించలేకపోయాం. పరిధి / ఇంటర్నెట్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // When book/chapter changes: reset range defaults and lock max to that chapter's verse count.
+    ['book', 'chapter'].forEach(function (id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('change', function () {
+        const fEl = document.getElementById('verseFrom');
+        const tEl = document.getElementById('verseTo');
+        if (fEl) fEl.value = 1;
+        if (tEl) tEl.value = '';
+        chapterVerseMax = null;
+        setPortionHint('మొత్తం అధ్యాయం (అన్ని వచనాలు) — వచన సంఖ్య లోడ్ అవుతోంది…');
+        refreshChapterVerseLimits(true);
+      });
+    });
+
+    // Live clamp: user cannot type a verse number beyond this chapter.
+    ['verseFrom', 'verseTo'].forEach(function (id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('change', function () { clampVerseInput(el); });
+      el.addEventListener('blur', function () { clampVerseInput(el); });
+      el.addEventListener('input', function () {
+        // Soft clamp while typing only if we already know the chapter max.
+        if (chapterVerseMax == null || el.value === '') return;
+        const v = parseInt(el.value, 10);
+        if (Number.isFinite(v) && v > chapterVerseMax) el.value = chapterVerseMax;
+        if (Number.isFinite(v) && v < 1) el.value = 1;
+      });
+    });
+
+    // On first load, lock limits for the default book/chapter (John 3).
+    refreshChapterVerseLimits(true);
 
     // Open blank form for selected book + chapter
     generateBtn.addEventListener('click', () => {
@@ -1098,7 +1703,8 @@
         }
       });
 
-      scoreBadge.textContent = `${score} / 5`;
+      const totalQ = currentQuestions.length || 7;
+      scoreBadge.textContent = `${score} / ${totalQ}`;
       lastScore = score;
       submitBtn.classList.add('hidden');
       document.getElementById('preSubmitActions').style.display = 'none';
@@ -1112,8 +1718,9 @@
         'అద్భుతం! మీకు ఈ అధ్యాయం బాగా తెలుసు.',
         'పరిపూర్ణ స్కోరు! దేవుని వాక్యం మీకు బాగా తెలుసు.'
       ];
-      document.getElementById('resultTitle').textContent = score === 5 ? '🎉 పరిపూర్ణం!' : `మీ స్కోరు ${score}/5`;
-      document.getElementById('resultMsg').textContent = messages[score];
+      const msgIdx = Math.max(0, Math.min(5, Math.round((totalQ ? score / totalQ : 0) * 5)));
+      document.getElementById('resultTitle').textContent = score === totalQ ? '🎉 పరిపూర్ణం!' : `మీ స్కోరు ${score}/${totalQ}`;
+      document.getElementById('resultMsg').textContent = messages[msgIdx];
     });
 
     retryBtn.addEventListener('click', () => {

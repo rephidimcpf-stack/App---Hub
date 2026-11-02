@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>మీ ప్రార్థన విన్నపం</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Telugu:wght@400;500;600;700&family=Suranna&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<meta name="theme-color" content="#1a1c2e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="రెఫిదీమ్ సహవాసం">
+<style>
+
+  :root {
+    --bg: #0b0d18;
+    --surface: rgba(30, 33, 60, 0.72);
+    --surface-solid: #1e2133;
+    --ink: #f4f5ff;
+    --muted: #9aa3cf;
+    --brand: #8b7cf7;
+    --brand2: #a78bfa;
+    --gold: #f6c66b;
+    --gold2: #ffe0a3;
+    --stop: #ef5b5b;
+    --stop-soft: rgba(239, 91, 91, 0.22);
+    --ok: #34d399;
+    --line: rgba(255, 255, 255, 0.08);
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Serif Telugu', 'Suranna', system-ui, -apple-system, 'Segoe UI', Roboto, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    line-height: 1.5;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    overscroll-behavior-y: none;
+    background:
+      radial-gradient(ellipse 90% 55% at 50% -12%, rgba(139, 124, 247, 0.30) 0%, transparent 58%),
+      radial-gradient(ellipse 70% 45% at 88% 108%, rgba(246, 198, 107, 0.14) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 40% at 6% 92%, rgba(52, 211, 153, 0.10) 0%, transparent 55%),
+      linear-gradient(180deg, #0b0d18 0%, #0e1024 55%, #0a0c16 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+
+  /* drifting ambient orbs */
+  .bg-orbs { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.55; }
+  .orb-1 { width: 320px; height: 320px; top: -80px; left: -70px; background: rgba(139, 124, 247, 0.55); animation: drift1 16s ease-in-out infinite alternate; }
+  .orb-2 { width: 260px; height: 260px; bottom: -70px; right: -60px; background: rgba(246, 198, 107, 0.32); animation: drift2 19s ease-in-out infinite alternate; }
+  .orb-3 { width: 220px; height: 220px; top: 45%; right: -80px; background: rgba(52, 211, 153, 0.22); animation: drift3 22s ease-in-out infinite alternate; }
+  @keyframes drift1 { to { transform: translate(40px, 60px) scale(1.12); } }
+  @keyframes drift2 { to { transform: translate(-46px, -40px) scale(1.1); } }
+  @keyframes drift3 { to { transform: translate(-30px, 40px) scale(1.15); } }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    margin: 18px 14px;
+    padding: 34px 22px calc(44px + env(safe-area-inset-bottom));
+    text-align: center;
+    border-radius: 30px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+    border: 1px solid var(--line);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  header { margin-bottom: 30px; }
+
+  .logo-wrap { position: relative; width: 124px; height: 124px; margin: 0 auto 16px; }
+  .logo {
+    position: relative;
+    z-index: 2;
+    width: 124px;
+    height: 124px;
+    border-radius: 26px;
+    display: block;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(139, 124, 247, 0.22);
+    animation: bob 5s ease-in-out infinite;
+  }
+  .logo-halo {
+    position: absolute;
+    inset: -16px;
+    border-radius: 38px;
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.42) 0%, transparent 70%);
+    animation: haloPulse 3.4s ease-in-out infinite;
+    z-index: 1;
+  }
+  @keyframes haloPulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.18); opacity: 0.28; } }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+  h1 {
+    font-family: 'Suranna', 'Noto Serif Telugu', serif;
+    font-size: clamp(26px, 8.5vw, 42px);
+    font-weight: 400;
+    margin: 2px 0 4px;
+    letter-spacing: 0.03em;
+    background: linear-gradient(100deg, #ffffff 8%, var(--gold2) 38%, var(--brand2) 62%, #ffffff 92%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 7s linear infinite;
+  }
+  @keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 220% 50%; } }
+
+  .step { padding: 4px 0; }
+  .step:not(.hidden) { animation: stepIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  @keyframes stepIn { from { opacity: 0; transform: translateY(14px) scale(0.985); } to { opacity: 1; transform: none; } }
+  .hidden { display: none !important; }
+
+  /* BIG glowing mic button */
+  .mic-btn {
+    position: relative;
+    width: 198px;
+    height: 198px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 14px auto 18px;
+    background:
+      radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.38), transparent 46%),
+      linear-gradient(150deg, var(--brand2), var(--brand) 58%, #6d5ce0);
+    box-shadow:
+      0 20px 46px rgba(109, 92, 224, 0.5),
+      0 0 0 8px rgba(139, 124, 247, 0.10),
+      inset 0 -6px 18px rgba(0, 0, 0, 0.18);
+    transition: transform 0.18s ease, box-shadow 0.25s ease;
+  }
+  .mic-btn::before,
+  .mic-btn::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .mic-btn::before { inset: -14px; border: 2px solid rgba(167, 139, 250, 0.30); animation: ringPulse 2.6s ease-in-out infinite; }
+  .mic-btn::after { inset: -28px; border: 1px solid rgba(167, 139, 250, 0.14); animation: ringPulse 2.6s ease-in-out infinite 0.5s; }
+  .mic-btn:active { transform: scale(0.95); box-shadow: 0 8px 22px rgba(109, 92, 224, 0.4); }
+  .mic-icon { display: inline-flex; line-height: 0; filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25)); animation: bob 3s ease-in-out infinite; }
+  .circle-btn svg { display: block; }
+  .mic-label { font-size: 17px; font-weight: 600; letter-spacing: 0.03em; }
+  @keyframes ringPulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.09); opacity: 0.16; } }
+
+  .hint { color: var(--muted); font-size: 14px; margin: 0 auto; max-width: 270px; }
+
+  /* Recording */
+  .rec-ring {
+    position: relative;
+    width: 172px;
+    height: 172px;
+    border-radius: 50%;
+    margin: 8px auto 4px;
+    background: radial-gradient(circle, var(--stop-soft), transparent 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 1.7s ease-in-out infinite;
+  }
+  .rec-dot { width: 66px; height: 66px; border-radius: 50%; background: linear-gradient(150deg, #ff8a8a, var(--stop)); box-shadow: 0 6px 20px rgba(239, 91, 91, 0.55); }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(239, 91, 91, 0.45); } 50% { box-shadow: 0 0 0 26px rgba(239, 91, 91, 0); } }
+
+  .wave { display: flex; align-items: center; justify-content: center; gap: 6px; height: 54px; margin: 4px 0 2px; }
+  .wave span { width: 6px; border-radius: 6px; background: linear-gradient(180deg, var(--brand2), var(--gold)); transform-origin: center; animation: barDance 1s ease-in-out infinite; }
+  .wave span:nth-child(1) { height: 16px; animation-delay: 0s; }
+  .wave span:nth-child(2) { height: 30px; animation-delay: 0.12s; }
+  .wave span:nth-child(3) { height: 44px; animation-delay: 0.24s; }
+  .wave span:nth-child(4) { height: 24px; animation-delay: 0.36s; }
+  .wave span:nth-child(5) { height: 50px; animation-delay: 0.06s; }
+  .wave span:nth-child(6) { height: 28px; animation-delay: 0.3s; }
+  .wave span:nth-child(7) { height: 40px; animation-delay: 0.18s; }
+  .wave span:nth-child(8) { height: 22px; animation-delay: 0.42s; }
+  .wave span:nth-child(9) { height: 34px; animation-delay: 0.09s; }
+  @keyframes barDance { 0%, 100% { transform: scaleY(0.42); } 50% { transform: scaleY(1.15); } }
+
+  .timer {
+    font-size: 40px;
+    font-weight: 600;
+    margin: 8px 0 4px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 1px;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    text-shadow: 0 0 22px rgba(139, 124, 247, 0.5);
+  }
+  .timer.warn { color: #fbbf24; text-shadow: 0 0 22px rgba(251, 191, 36, 0.5); }
+
+  .review-title { margin: 6px 0 0; font-size: 16px; color: var(--muted); letter-spacing: 0.04em; }
+
+  /* Big circular action buttons */
+  .circle-btn {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    margin: 0 auto;
+    color: #fff;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+  }
+  .circle-btn:active { transform: scale(0.92); }
+
+  .circle-stop {
+    background: linear-gradient(150deg, #ff8a8a, var(--stop));
+    width: 100px;
+    height: 100px;
+    font-size: 30px;
+    margin-top: 18px;
+    box-shadow: 0 12px 30px rgba(239, 91, 91, 0.45);
+  }
+  .circle-send { background: linear-gradient(150deg, #6ee7b7, var(--ok)); box-shadow: 0 12px 30px rgba(52, 211, 153, 0.42); }
+  .circle-again { background: var(--surface); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); }
+
+  .action-row { display: flex; justify-content: center; gap: 38px; margin-top: 26px; }
+  .action-row .label { font-size: 14px; color: var(--muted); margin-top: 10px; font-weight: 500; }
+  .action-col { display: flex; flex-direction: column; align-items: center; }
+
+  audio { width: 100%; max-width: 100%; margin: 16px auto 6px; display: block; border-radius: 16px; filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.35)); }
+
+  /* Sending */
+  .spinner {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    margin: 52px auto 22px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.08);
+    border-top-color: var(--brand2);
+    animation: spin 0.9s linear infinite;
+  }
+  .spinner::after { content: ''; position: absolute; inset: 8px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.06); border-bottom-color: var(--gold); animation: spin 1.4s linear infinite reverse; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Done */
+  .emoji.big { font-size: 86px; margin: 26px 0 10px; animation: pop-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both, glow 2.4s ease-in-out infinite 0.5s; }
+  @keyframes pop-in { 0% { transform: scale(0.5); opacity: 0; } 70% { transform: scale(1.12); } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 0 rgba(246, 198, 107, 0)); } 50% { filter: drop-shadow(0 0 26px rgba(246, 198, 107, 0.55)); } }
+  .done-title { margin: 0; font-size: 20px; color: var(--gold2); letter-spacing: 0.05em; }
+
+  /* Optional type section */
+  .more { margin: 40px auto 0; max-width: 310px; text-align: left; border-top: 1px solid var(--line); padding-top: 4px; }
+  .more summary {
+    cursor: pointer;
+    padding: 16px 10px;
+    color: var(--muted);
+    font-size: 16px;
+    list-style: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 14px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .more summary:active { background: rgba(255, 255, 255, 0.04); }
+  .more summary::-webkit-details-marker { display: none; }
+  .more summary .write-icon { display: inline-flex; line-height: 0; }
+  .more[open] summary { color: var(--ink); }
+
+  .more label { display: block; font-size: 13px; color: var(--muted); margin: 12px 2px 5px; }
+  .more input,
+  .more textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    font-family: inherit;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--surface);
+    color: var(--ink);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .more input:focus,
+  .more textarea:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(139, 124, 247, 0.2); }
+  .more textarea { resize: vertical; min-height: 70px; }
+
+  .err {
+    max-width: 310px;
+    margin: 18px auto 0;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    color: #f5e6b8;
+    font-size: 14px;
+    text-align: left;
+    line-height: 1.45;
+    animation: stepIn 0.35s ease both;
+  }
+
+  .foot { margin-top: 34px; }
+  .blessing { margin: 0; font-size: 14.5px; line-height: 1.95; letter-spacing: 0.02em; color: var(--gold2); opacity: 0.92; }
+
+  .help-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; font-size: 13px; color: var(--muted); text-decoration: none; opacity: 0.75; transition: opacity 0.15s ease; }
+  .help-link:active { opacity: 1; }
+
+  /* ---- Mobile tuning ---- */
+  @media (max-width: 380px) {
+    .wrap { padding: 26px 16px calc(36px + env(safe-area-inset-bottom)); border-radius: 26px; }
+    .logo, .logo-wrap { width: 108px; height: 108px; }
+    .logo { border-radius: 22px; }
+    .mic-btn { width: 168px; height: 168px; }
+    .mic-icon svg { width: 56px; height: 56px; }
+    .rec-ring { width: 150px; height: 150px; }
+    .timer { font-size: 34px; }
+    .action-row { gap: 28px; }
+  }
+  @media (max-height: 700px) {
+    .wrap { padding-top: 22px; padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
+    header { margin-bottom: 18px; }
+    .mic-btn { width: 160px; height: 160px; }
+    .mic-icon svg { width: 52px; height: 52px; }
+    .rec-ring { width: 142px; height: 142px; }
+    .spinner { margin: 32px auto 16px; }
+    .emoji.big { font-size: 68px; margin: 16px 0 8px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bg-orbs" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+  </div>
+  <header>
+    <div class="logo-wrap">
+      <img class="logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAYGBgYHBgcICAcKCwoLCg8ODAwODxYQERAREBYiFRkVFRkVIh4kHhweJB42KiYmKjY+NDI0PkxERExfWl98fKcBBgYGBgcGBwgIBwoLCgsKDw4MDA4PFhAREBEQFiIVGRUVGRUiHiQeHB4kHjYqJiYqNj40MjQ+TERETF9aX3x8p//CABEIAWoBagMBIgACEQEDEQH/xAAyAAEAAgMBAQAAAAAAAAAAAAAABAUBAwYCBwEBAQEBAQEAAAAAAAAAAAAAAAECAwQF/9oADAMBAAIQAxAAAALlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADdGlnFAAAAAAAAAAAAAAAAAAAAAZ6Pne58++H8WdZ2wGgAAAAAAAAAAAAAAAAAAAEztOQ6/w9oXHd9RVzg9vEAAAAAAAAAAAAAAAAAAACX2nA9r4+snGHk7c3T91ynu4V49PMAAAAAAAAAAAAAAAzKIgAAFvUZze7xU2nzfTnRtS8XruKf6XlDcAAAAAAAAAAAAAA2fS/mP045yj+ij5fr+p6D5k+gVhySfAPXT8vs567LGjd871V3N9Fzvu8wd8AAAAAAAAAAAAAAOz4zefTkCeAAY53ox8s89txJadByd35O1dp2d96eXOupanzeF9O+eEQAAAAAAAAAAAAAG7ruLH1P1816c6NjIBjge/hHzrMjp4sbEoVRsoOc8nryAAAAAAAAAAAAACbC7k4Z0NAWvd/LeyOjABjIAOK7X5yQAAAAAAAAAAAAAAALeoH1SNznWFNZSAAAABG+a9ZyIAAAAAAAAAAAAAAAAu6W7OtmRJYAAAj++EIOgAAAAAAAAAAAAAAB7PE6+6Yq7cDFUWzmh0rmYp19Tx8EnQQAAAAAAAAAAAAAAAevI7Loflko+l6eGgFlTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnwLTF8e/fvnqP7zos9t2F07MbSLn3mz0k+cWjmRJvbOPPv1m6sbMmrdrkRD9686nr1s9S6PedpV4OmQAAAAAAAMlxm062k5vP59WmpUrHZFUuIZDX9OaE7XURbaCCzLshpfuWAn+iuS9xXpEgr07BBWUYjDUAAAAAAAzdUmc2Xbc8i22UqNlhVZ0t4sJHR0sYTomtqWuuuZsiXWqnII2yq9ZZRY6WxxAE7ELBZV2FgUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB//xAAC/9oADAMBAAIAAwAAACHzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzrTzzzzzzzzzzzzzzzzzzzzw3/wA88888888888888888888Xw888888888888888888888rIG8888888888888888w8888d5e888888888888888wQA40ha3888888888888888oIAAA0uOQ088888888888888sIAA0egEM888888888888884w4AAAAU888888888888888skwAAAAk8888888888888888kIAAAA88888888888888848gAAM088888888888888888YY88888888888888888888888888888888888888886eHgY17soCq+Qgc88888888EOkLHHK0BO4yKI488888888YBTojhNPgwt+g0t888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888//EAAL/2gAMAwEAAgADAAAAEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPvPPPPPPPPPPPPPPPPPPPPPB3fPPPPPPPPPPPPPPPPPPPPMZfPPPPPPPPPPPPPPPPPPPPEvafPPPPPPPPPPPPPPPNPPPKifH/PPPPPPPPPPPPPPPDKNPFNl/PPPPPPPPPPPPPPLGPPHPJfnEPPPPPPPPPPPPPPDONPKIvOJHPPPPPPPPPPPPPKNPNOJPOPPPPPPPPPPPPPPPPHHPLPPBPPPPPPPPPPPPPPPPLPPPPHPPPPPPPPPPPPPPPPNNOMNHPPPPPPPPPPPPPPPPLKPLPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPO8Vw4bs3ltn4fofPPPPPPPPDtZxBjAuThffBhuvPPPPPPPOgweoATfgsrXIVHfPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP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" width="122" height="122" alt="Rephidim Christian Prayer Fellowship">
+      <span class="logo-halo" aria-hidden="true"></span>
+    </div>
+    <h1>మీ ప్రార్థన విన్నపం</h1>
+  </header>
+
+  <!-- IDLE -->
+  <section id="step-idle" class="step">
+    <button id="btn-record" class="mic-btn" aria-label="మాట్లాడండి">
+      <span class="mic-icon"><svg viewBox="0 0 24 24" width="66" height="66" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5V21"/><path d="M8.5 21h7"/></svg></span>
+      <span class="mic-label">మాట్లాడండి</span>
+    </button>
+    <a href="#" id="mic-help" class="help-link" aria-label="సహాయం">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.3 9.4a2.9 2.9 0 0 1 5.6.9c0 1.9-2.8 2.2-2.8 3.6"/><path d="M12 17.1h.01"/></svg>
+      <span>సహాయం</span>
+    </a>
+  </section>
+
+  <!-- RECORDING -->
+  <section id="step-rec" class="step hidden">
+    <div class="rec-ring"><span class="rec-dot"></span></div>
+    <div class="wave" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div id="timer" class="timer">0:00</div>
+    <button id="btn-stop" class="circle-btn circle-stop" aria-label="ఆపు"><svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="3"/></svg></button>
+  </section>
+
+  <!-- REVIEW -->
+  <section id="step-review" class="step hidden">
+    <p class="review-title">వినండి</p>
+    <audio id="player" controls></audio>
+    <div class="action-row">
+      <div class="action-col">
+        <button id="btn-again" class="circle-btn circle-again" aria-label="మళ్ళీ"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg></button>
+        <span class="label">మళ్ళీ</span>
+      </div>
+      <div class="action-col">
+        <button id="btn-send" class="circle-btn circle-send" aria-label="పంపు"><svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button>
+        <span class="label">పంపు</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SENDING -->
+  <section id="step-sending" class="step hidden">
+    <div class="spinner"></div>
+    <p class="hint">పంపుతోంది…</p>
+  </section>
+
+  <!-- DONE -->
+  <section id="step-done" class="step hidden">
+    <div class="emoji big">🙏</div>
+    <p class="done-title">ధన్యవాదాలు</p>
+    <button id="btn-new" class="circle-btn circle-again" style="width:70px;height:70px;margin-top:18px;" aria-label="మరొకటి"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+  </section>
+
+  <!-- Optional type option -->
+  <details class="more">
+    <summary>
+      <span class="write-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L20 8l-4-4L4 16z"/><path d="M14 6l4 4"/></svg></span>
+      <span>టైప్ చేయండి</span>
+    </summary>
+    <label for="name">పేరు</label>
+    <input id="name" type="text" placeholder="పేరు" autocomplete="name">
+    <label for="message">రాయండి</label>
+    <textarea id="message" rows="3" placeholder="ప్రార్థన…"></textarea>
+    <button id="btn-send-text" type="button" class="circle-btn circle-send" style="width:64px;height:64px;margin:16px auto;" aria-label="పంపు"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button>
+  </details>
+
+  <p id="err" class="err hidden"></p>
+  <footer class="foot">
+    <p class="blessing">మీ విషయం కొరకు ప్రార్ధన చేస్తాము<br>దేవుడు మిమ్మును దీవించును గాక</p>
+  </footer>
+</div>
+
+<form id="postForm" method="POST" target="postFrame" action="" style="display:none"
+      enctype="application/x-www-form-urlencoded">
+  <input type="hidden" name="payload" id="postPayload" value="">
+</form>
+<iframe name="postFrame" id="postFrame" title="post" style="display:none"></iframe>
+
+<script>
+(function () {
+  'use strict';
+
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzkRtexK1o3qIZ4s5LLgp-1EPvniwuzLVmOMm9JIFJ3_vTpLVGvcfjtHf3LrqMe6KU/exec';
+
+  var MAX_SEC = 90;
+  var STEPS = ['step-idle','step-rec','step-review','step-sending','step-done'];
+
+  var mediaRecorder = null, stream = null, chunks = [];
+  var audioBlob = null, audioMime = '', startTs = 0, timerId = null, durSec = 0;
+  var awaitingPost = false, postTimer = null;
+  var lastPayload = null;
+  var alreadySent = false;
+  var hasSubmitted = false; // hard one-shot: only one POST per recording
+  var stepBeforeSend = 'step-idle';   // where to go back to if the server says no
+  var lastTextSig = null;             // so a refused text can be sent again
+
+  // Remembers the exact text already sent, so the SAME typed request cannot go twice.
+  var sentTexts = loadSentTexts();
+
+  function loadSentTexts(){
+    try {
+      var raw = localStorage.getItem('prarthanaSentTexts');
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+  function saveSentTexts(){
+    try { localStorage.setItem('prarthanaSentTexts', JSON.stringify(sentTexts)); } catch (e) {}
+  }
+  function textSignature(name, message){
+    return (name || '').replace(/\s+/g, ' ').trim() + '\u0001' +
+           (message || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function $(id){ return document.getElementById(id); }
+  function show(id){
+    STEPS.forEach(function(s){ $(s).classList.toggle('hidden', s !== id); });
+    window.scrollTo(0, 0);
+  }
+  function showErr(m){ var e = $('err'); e.textContent = m; e.classList.remove('hidden'); }
+  function hideErr(){ $('err').classList.add('hidden'); }
+  function fmt(s){ var m = Math.floor(s/60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+
+  function pickMime(){
+    var list = ['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus','audio/mpeg'];
+    if (!window.MediaRecorder) return '';
+    for (var i = 0; i < list.length; i++){
+      try { if (MediaRecorder.isTypeSupported(list[i])) return list[i]; } catch (e) {}
+    }
+    return '';
+  }
+
+  function isInAppBrowser(){
+    var ua = navigator.userAgent || '';
+    return /FBAN|FBAV|FB_IAB|Instagram|WhatsApp|Line\/|MicroMessenger|Twitter|; wv\)/i.test(ua);
+  }
+
+  function micHelp_(err){
+    var denied = err && (err.name === 'NotAllowedError' || err.name === 'SecurityError');
+    if (isInAppBrowser()){
+      showErr('WhatsApp / Instagram లోపల తెరిచారు. Chrome లేదా Safari లో తెరవండి.');
+      return;
+    }
+    if (denied){
+      showErr('మైక్రోఫోన్ అనుమతి లేదు. 🔒 → Microphone → Allow');
+      return;
+    }
+    showErr('మైక్రోఫోన్ పనిచేయడం లేదు. మళ్ళీ ప్రయత్నించండి.');
+  }
+
+  function startRecording(){
+    hideErr();
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder){
+      showErr('Chrome లేదా Safari వాడండి.');
+      return;
+    }
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function (s) {
+      stream = s;
+      audioMime = pickMime();
+      try {
+        mediaRecorder = audioMime ? new MediaRecorder(stream, { mimeType: audioMime })
+                                  : new MediaRecorder(stream);
+      } catch (e) {
+        mediaRecorder = new MediaRecorder(stream);
+        audioMime = '';
+      }
+      chunks = [];
+      mediaRecorder.ondataavailable = function (ev) {
+        if (ev.data && ev.data.size > 0) chunks.push(ev.data);
+      };
+      mediaRecorder.onstop = onRecStop;
+      mediaRecorder.start();
+      startTs = Date.now();
+      $('timer').textContent = '0:00';
+      $('timer').classList.remove('warn');
+      show('step-rec');
+      timerId = setInterval(tick, 250);
+    }).catch(function (e) {
+      micHelp_(e);
+    });
+  }
+
+  function tick(){
+    var s = Math.floor((Date.now() - startTs) / 1000);
+    var timerEl = $('timer');
+    timerEl.textContent = fmt(s);
+    if (s >= 75) timerEl.classList.add('warn');
+    else timerEl.classList.remove('warn');
+    if (s >= MAX_SEC) stopRecording();
+  }
+
+  function stopRecording(){
+    if (timerId){ clearInterval(timerId); timerId = null; }
+    durSec = Math.floor((Date.now() - startTs) / 1000);
+    try { if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop(); } catch (e) {}
+    if (stream){ stream.getTracks().forEach(function (t){ t.stop(); }); stream = null; }
+  }
+
+  function onRecStop(){
+    var type = (mediaRecorder && mediaRecorder.mimeType) ? mediaRecorder.mimeType
+                                                         : (audioMime || 'audio/webm');
+    audioBlob = new Blob(chunks, { type: type });
+    audioMime = type;
+    if (!audioBlob || audioBlob.size < 1500){
+      showErr('రికార్డ్ కాలేదు. మళ్ళీ నొక్కండి.');
+      resetAll();
+      return;
+    }
+    var player = $('player');
+    player.loop = false;
+    player.src = URL.createObjectURL(audioBlob);
+    show('step-review');
+  }
+
+  function setSendEnabled(on){
+    var b1 = $('btn-send');
+    var b2 = $('btn-send-text');
+    if (b1) { b1.disabled = !on; b1.style.opacity = on ? '1' : '0.5'; b1.style.pointerEvents = on ? 'auto' : 'none'; }
+    if (b2) { b2.disabled = !on; b2.style.opacity = on ? '1' : '0.5'; b2.style.pointerEvents = on ? 'auto' : 'none'; }
+  }
+
+  function resetAll(){
+    hideErr();
+    try { if (stream) stream.getTracks().forEach(function (t){ t.stop(); }); } catch (e) {}
+    stream = null; mediaRecorder = null; chunks = []; audioBlob = null; durSec = 0;
+    lastPayload = null;
+    alreadySent = false;
+    hasSubmitted = false;
+    awaitingPost = false;
+    if (postTimer) { clearTimeout(postTimer); postTimer = null; }
+    setSendEnabled(true);
+    try {
+      var p = $('player');
+      p.pause();
+      p.removeAttribute('src');
+      p.load();
+    } catch (e) {}
+    $('timer').textContent = '0:00';
+    $('timer').classList.remove('warn');
+    show('step-idle');
+  }
+
+  function blobToBase64(blob){
+    return new Promise(function (res, rej) {
+      var r = new FileReader();
+      r.onload = function () { var s = r.result; res(s.substring(s.indexOf(',') + 1)); };
+      r.onerror = rej;
+      r.readAsDataURL(blob);
+    });
+  }
+
+  function newRequestId(){
+    return 'r-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+  }
+
+  /* Send one payload and report what the server actually answered.
+     Apps Script replies with JSON and allows CORS, so the answer can be read.
+     Only if fetch itself is blocked do we fall back to the hidden form POST —
+     and that path is the only one where the outcome is unknown. */
+  function submit(payload){
+    if (hasSubmitted) {
+      showErr('పంపబడింది');
+      return false;
+    }
+    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('PASTE_') === 0){
+      showErr('సెటప్ పూర్తికాలేదు.');
+      return false;
+    }
+
+    for (var i = 0; i < STEPS.length; i++){
+      if (!$(STEPS[i]).classList.contains('hidden')) stepBeforeSend = STEPS[i];
+    }
+
+    hasSubmitted = true;
+    alreadySent = true;
+    payload.requestId = payload.requestId || newRequestId();
+    lastPayload = payload;
+    show('step-sending');
+    hideErr();
+    setSendEnabled(false);
+
+    try { $('player').pause(); } catch (e) {}
+
+    var body = 'payload=' + encodeURIComponent(JSON.stringify(payload));
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body
+    })
+      .then(function (r) { return r.text(); })
+      .then(function (t) {
+        var d = null;
+        try { d = JSON.parse(t); } catch (e) {}
+        if (d && d.ok) {
+          show('step-done');
+          setTimeout(resetAll, 2500);
+          return;
+        }
+        refused(d && d.error ? String(d.error) : 'UNKNOWN');
+      })
+      .catch(function () { postViaForm(payload); });
+
+    return true;
+  }
+
+  /* The server said no (or gave nothing usable): say why, allow a retry. */
+  function refused(code){
+    hasSubmitted = false;
+    alreadySent = false;
+    awaitingPost = false;
+    setSendEnabled(true);
+    if (lastTextSig){ delete sentTexts[lastTextSig]; saveSentTexts(); lastTextSig = null; }
+    show(stepBeforeSend);
+    var msg;
+    if (code === 'EMPTY'){
+      msg = 'ఏదైనా రాయండి.';
+    } else if (code === 'AUDIO_TOO_LARGE'){
+      msg = 'వాయిస్ చాలా పెద్దది — చిన్నగా రికార్డ్ చేసి మళ్ళీ పంపండి.';
+    } else if (code === 'NO_SPREADSHEET'){
+      msg = 'సర్వర్ కి షీట్ దొరకలేదు — SHEET_ID సరిచూడండి.';
+    } else {
+      msg = 'పంపలేకపోయాము (' + code + '). మళ్ళీ ప్రయత్నించండి.';
+    }
+    showErr(msg);
+  }
+
+  /* Old browsers that block fetch: hidden form POST. The answer cannot be
+     read this way, so this is the one path that reports success on faith. */
+  function postViaForm(payload){
+    var form = $('postForm');
+    form.action = APPS_SCRIPT_URL;
+    $('postPayload').value = JSON.stringify(payload);
+
+    awaitingPost = true;
+    if (postTimer) clearTimeout(postTimer);
+    postTimer = setTimeout(function () {
+      if (awaitingPost) {
+        awaitingPost = false;
+        show('step-done');
+        setTimeout(resetAll, 2500);
+      }
+    }, 8000);
+
+    form.submit();
+    setTimeout(function () { try { $('postPayload').value = ''; } catch (e) {} }, 300);
+  }
+
+  function send(){
+    if (alreadySent || hasSubmitted || awaitingPost) {
+      showErr('పంపబడింది');
+      return;
+    }
+    if (!audioBlob){ showErr('ముందు మాట్లాడండి.'); return; }
+
+    alreadySent = true;
+    setSendEnabled(false);
+    try { $('player').pause(); } catch (e) {}
+
+    var blob = audioBlob;
+    var reqId = newRequestId();
+    blobToBase64(blob).then(function (b64) {
+      if (hasSubmitted) {
+        showErr('పంపబడింది');
+        return;
+      }
+      submit({
+        name: ($('name').value || '').trim(),
+        message: ($('message').value || '').trim(),
+        audioBase64: b64,
+        audioMime: audioMime,
+        durationSec: durSec,
+        source: 'web',
+        requestId: reqId
+      });
+    }).catch(function () {
+      alreadySent = false;
+      hasSubmitted = false;
+      setSendEnabled(true);
+      show('step-review');
+      showErr('మళ్ళీ ప్రయత్నించండి.');
+    });
+  }
+
+  function sendText(){
+    if (alreadySent || hasSubmitted || awaitingPost) {
+      showErr('పంపబడింది');
+      return;
+    }
+    var name = ($('name').value || '').trim();
+    var message = ($('message').value || '').trim();
+    if (!name && !message){
+      showErr('ఏదైనా రాయండి.');
+      return;
+    }
+
+    // Block the SAME typed request from being sent twice.
+    var sig = textSignature(name, message);
+    if (sentTexts[sig]){
+      showErr('పంపబడింది');
+      return;
+    }
+
+    alreadySent = true;
+    setSendEnabled(false);
+    lastTextSig = sig;
+    var ok = submit({
+      name: name,
+      message: message,
+      audioBase64: '',
+      audioMime: '',
+      durationSec: 0,
+      source: 'web',
+      requestId: newRequestId()
+    });
+    if (ok){
+      sentTexts[sig] = true;
+      saveSentTexts();
+    } else {
+      alreadySent = false;
+      setSendEnabled(true);
+    }
+  }
+
+  $('postFrame').addEventListener('load', function () {
+    if (!awaitingPost) return;
+    awaitingPost = false;
+    if (postTimer) clearTimeout(postTimer);
+    show('step-done');
+    setTimeout(resetAll, 2500);
+  });
+
+  $('btn-record').addEventListener('click', startRecording);
+  $('btn-stop').addEventListener('click', stopRecording);
+  $('btn-again').addEventListener('click', resetAll);
+  $('btn-send').addEventListener('click', send);
+  $('btn-new').addEventListener('click', resetAll);
+  $('btn-send-text').addEventListener('click', sendText);
+  $('mic-help').addEventListener('click', function (ev) {
+    ev.preventDefault();
+    micHelp_({ name: 'NotAllowedError' });
+  });
+
+  if (navigator.permissions && navigator.permissions.query){
+    navigator.permissions.query({ name: 'microphone' }).then(function (st) {
+      if (st.state === 'denied' && !isInAppBrowser()){
+        showErr('మైక్రోఫోన్ బ్లాక్ అయింది. 🔒 → Allow');
+      }
+    }).catch(function () {});
+  }
+  // Gentle haptic tap on supported phones
+  document.addEventListener('click', function () {
+    if (navigator.vibrate) { try { navigator.vibrate(8); } catch (e) {} }
+  }, true);
+})();
+</script>
+</body>
+</html>

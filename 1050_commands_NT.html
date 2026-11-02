@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1,050 New Testament Commands</title>
+<style>
+:root{
+  --bg:#f6f2e9; --panel:#ffffff; --panel-2:#fdfbf6;
+  --ink:#1f1c17; --ink-2:#575045; --ink-3:#938c7f;
+  --line:#e8e1d2; --line-2:#efe9dc;
+  --gold:#9b7a38; --gold-2:#c9a352; --gold-soft:#f5ecd6;
+  --mark:#fde9a8; --green:#3f7d54; --green-soft:#e5f0e7;
+  --red:#a8452f;
+  --shadow-sm:0 1px 2px rgba(60,48,20,.04);
+  --shadow:0 1px 2px rgba(60,48,20,.05),0 12px 32px -16px rgba(60,48,20,.22);
+  --shadow-lg:0 20px 60px -20px rgba(40,30,10,.35);
+  --radius:14px;
+  --serif:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+  --sidebar-w:300px;
+}
+[data-theme="dark"]{
+  --bg:#0d0f13; --panel:#161a22; --panel-2:#1a1f28;
+  --ink:#ece9e1; --ink-2:#a29c90; --ink-3:#6a655b;
+  --line:#232833; --line-2:#1c212a;
+  --gold:#d8b26a; --gold-2:#e8c98a; --gold-soft:#2a2416;
+  --mark:#5c4a1a; --green:#78c193; --green-soft:#16251c;
+  --red:#e0836a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px -16px rgba(0,0,0,.6);
+  --shadow-lg:0 20px 60px -20px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased;
+  transition:background .3s,color .3s; min-height:100vh;
+}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:none}
+::selection{background:var(--mark);color:var(--ink)}
+mark{background:var(--mark);color:inherit;padding:1px 3px;border-radius:3px;font-weight:600}
+
+.read-progress{
+  position:fixed;top:0;left:0;height:2px;width:0;z-index:100;
+  background:linear-gradient(90deg,var(--gold),var(--gold-2));
+  transition:width .1s linear;pointer-events:none;
+}
+
+/* === Topbar === */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  background:color-mix(in srgb,var(--bg) 90%,transparent);
+  backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{display:flex;align-items:center;gap:16px;padding:12px 22px;max-width:1740px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.brand-mark{
+  width:40px;height:40px;border-radius:12px;flex-shrink:0;
+  background:linear-gradient(145deg,var(--gold-2),var(--gold));
+  display:grid;place-items:center;color:#fff;font-weight:800;
+  font-family:var(--serif);font-size:18px;letter-spacing:-.5px;
+  box-shadow:0 4px 12px -4px rgba(155,122,56,.55),inset 0 1px 0 rgba(255,255,255,.3);
+}
+.brand-text h1{font-size:15px;font-weight:700;letter-spacing:-.2px;line-height:1.1}
+.brand-text p{font-size:11px;color:var(--ink-3);letter-spacing:.2px;margin-top:2px}
+.search-wrap{flex:1;position:relative;max-width:560px;margin:0 auto}
+.search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink-3);pointer-events:none}
+.search-wrap:focus-within svg{color:var(--gold)}
+#search{
+  width:100%;padding:11px 44px 11px 42px;border-radius:12px;
+  border:1px solid var(--line);background:var(--panel);font-size:14px;
+  outline:none;transition:border-color .15s,box-shadow .15s;
+}
+#search:focus{border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
+#search::placeholder{color:var(--ink-3)}
+.kbd{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  font-size:10.5px;font-weight:600;color:var(--ink-3);
+  background:var(--line-2);padding:3px 6px;border-radius:5px;
+  border:1px solid var(--line);pointer-events:none;transition:opacity .2s;
+}
+#search:focus+.kbd,#search:not(:placeholder-shown)+.kbd{opacity:0}
+.top-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.icon-btn{
+  width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+  color:var(--ink-2);border:1px solid transparent;transition:.15s;
+}
+.icon-btn:hover{background:var(--panel);border-color:var(--line);color:var(--ink);transform:translateY(-1px)}
+.menu-btn{display:none}
+
+/* === Layout === */
+.layout{display:flex;max-width:1740px;margin:0 auto;align-items:flex-start}
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  position:sticky;top:65px;height:calc(100vh - 65px);
+  overflow-y:auto;overscroll-behavior:contain;
+  padding:22px 14px 80px;border-right:1px solid var(--line);
+}
+.sidebar::-webkit-scrollbar{width:8px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px;border:2px solid var(--bg)}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 13px;box-shadow:var(--shadow-sm)}
+.stat-num{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1;font-family:var(--serif)}
+.stat-num.gold{color:var(--gold)}
+.stat-num.green{color:var(--green)}
+.stat-lbl{font-size:10.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-3);margin-top:5px}
+
+.offline-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:22px;box-shadow:var(--shadow-sm)}
+.offline-card .oc-head{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.offline-card .oc-head svg{color:var(--green);flex-shrink:0}
+.offline-card .oc-title{font-size:12.5px;font-weight:700}
+.offline-card .oc-sub{font-size:11px;color:var(--ink-3);margin-bottom:11px;line-height:1.5}
+.offline-progress{height:6px;background:var(--line-2);border-radius:99px;overflow:hidden;margin-bottom:9px}
+.offline-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--green),#5da977);transition:width .4s}
+.offline-status{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-3);margin-bottom:10px;font-variant-numeric:tabular-nums}
+.offline-btn{
+  width:100%;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:650;
+  border:1px solid var(--line);background:var(--bg);color:var(--ink-2);
+  transition:.15s;display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.offline-btn:hover{border-color:var(--green);color:var(--green)}
+.offline-btn:disabled{opacity:.55;cursor:not-allowed}
+.offline-btn.primary{background:var(--green);border-color:var(--green);color:#fff}
+.offline-btn.primary:hover{filter:brightness(1.08);color:#fff}
+
+.side-label{
+  font-size:10.5px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;
+  color:var(--ink-3);padding:16px 10px 8px;
+}
+.cat-btn{
+  display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+  padding:9px 11px;border-radius:10px;font-size:13.5px;color:var(--ink-2);
+  transition:background .13s,color .13s;line-height:1.35;
+}
+.cat-btn:hover{background:var(--line-2);color:var(--ink)}
+.cat-btn.active{background:var(--gold-soft);color:var(--gold);font-weight:650}
+[data-theme="dark"] .cat-btn.active{color:var(--gold-2)}
+.cat-btn .ico{font-size:14px;flex-shrink:0;width:20px;text-align:center}
+.cat-btn .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cat-btn .cnt{
+  font-size:10.5px;font-weight:600;color:var(--ink-3);
+  background:var(--line-2);padding:2px 7px;border-radius:99px;flex-shrink:0;
+  font-variant-numeric:tabular-nums;
+}
+.cat-btn.active .cnt{background:color-mix(in srgb,var(--gold) 20%,transparent);color:var(--gold)}
+
+.content{flex:1;min-width:0;padding:30px 36px 140px}
+.page-head{margin-bottom:26px;max-width:900px}
+.page-head .eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.page-head .eyebrow::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent);max-width:80px}
+.page-head h2{
+  font-family:var(--serif);font-size:34px;font-weight:600;letter-spacing:-.6px;
+  line-height:1.15;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.page-head h2 .ico{font-size:28px}
+.page-head .sub{margin-top:12px;color:var(--ink-2);font-size:15px;line-height:1.65;max-width:740px}
+.page-head .meta{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{
+  font-size:11.5px;font-weight:600;padding:5px 12px;border-radius:99px;
+  background:var(--panel);border:1px solid var(--line);color:var(--ink-2);
+  display:inline-flex;align-items:center;gap:6px;
+}
+.chip.gold{background:var(--gold-soft);border-color:transparent;color:var(--gold)}
+[data-theme="dark"] .chip.gold{color:var(--gold-2)}
+.chip.green{background:var(--green-soft);border-color:transparent;color:var(--green)}
+.chip.solid{background:var(--gold);border-color:var(--gold);color:#fff}
+
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin:20px 0 26px}
+.filter-btn{
+  padding:7px 15px;border-radius:99px;font-size:12.5px;font-weight:600;
+  border:1px solid var(--line);background:var(--panel);color:var(--ink-2);transition:.15s;
+}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:var(--gold);border-color:var(--gold);color:#fff}
+[data-theme="dark"] .filter-btn.active{color:#16181d}
+
+.items{display:grid;gap:10px;max-width:1000px}
+.items.grid{grid-template-columns:repeat(auto-fill,minmax(340px,1fr));max-width:none;gap:14px}
+
+.item{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 18px 16px 22px;
+  transition:border-color .2s,transform .15s,box-shadow .2s;
+  position:relative;overflow:hidden;display:flex;gap:14px;align-items:flex-start;
+}
+.item::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--cat-color,var(--gold));opacity:.65;transition:opacity .2s,width .2s;
+}
+.item:hover{
+  border-color:color-mix(in srgb,var(--cat-color,var(--gold)) 50%,var(--line));
+  transform:translateY(-2px);box-shadow:var(--shadow);
+}
+.item:hover::before{opacity:1;width:4px}
+.item.fav{background:linear-gradient(180deg,var(--gold-soft) 0%,var(--panel) 70%)}
+.item.fav::before{opacity:1}
+.item-num-badge{
+  flex-shrink:0;width:34px;height:34px;border-radius:10px;
+  background:color-mix(in srgb,var(--cat-color,var(--gold)) 12%,var(--panel));
+  color:var(--cat-color,var(--gold));display:grid;place-items:center;
+  font-family:var(--serif);font-size:14px;font-weight:700;
+  font-variant-numeric:tabular-nums;
+  border:1px solid color-mix(in srgb,var(--cat-color,var(--gold)) 20%,transparent);
+}
+.item-body{flex:1;min-width:0}
+.item-cat-tag{
+  font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--cat-color,var(--gold));margin-bottom:6px;display:flex;align-items:center;gap:5px;
+}
+.item-text{font-family:var(--serif);font-size:16.5px;line-height:1.5;font-weight:500;color:var(--ink)}
+.item-foot{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ref-link{
+  display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:650;
+  color:var(--gold);background:var(--gold-soft);padding:4px 10px;border-radius:7px;
+  transition:.15s;border:1px solid transparent;
+}
+[data-theme="dark"] .ref-link{color:var(--gold-2)}
+.ref-link:hover{background:var(--gold);color:#fff;transform:translateY(-1px)}
+.ref-link.ready{background:var(--green-soft);color:var(--green)}
+.ref-link.ready:hover{background:var(--green);color:#fff}
+.item-actions{display:flex;gap:2px;flex-shrink:0;align-items:flex-start}
+.act-btn{
+  width:32px;height:32px;border-radius:8px;display:grid;place-items:center;
+  color:var(--ink-3);transition:.15s;
+}
+.act-btn:hover{background:var(--line-2);color:var(--ink)}
+.act-btn.on{color:var(--gold)}
+.act-btn.on svg{fill:currentColor}
+.act-btn.copied{color:var(--green)}
+
+.featured{
+  background:linear-gradient(135deg,var(--panel) 0%,var(--panel-2) 100%);
+  border:1px solid var(--line);border-radius:18px;padding:30px 34px;
+  margin-bottom:34px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm);
+}
+.featured::before{
+  content:"";position:absolute;top:-60px;right:-60px;width:220px;height:220px;
+  background:radial-gradient(circle,var(--gold-soft) 0%,transparent 70%);opacity:.7;pointer-events:none;
+}
+.featured-eyebrow{
+  font-size:10.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.featured-eyebrow::after{content:"";height:1px;width:30px;background:var(--gold);opacity:.4}
+.featured-text{font-family:var(--serif);font-size:23px;line-height:1.45;font-weight:500;max-width:640px;margin-bottom:16px}
+.featured-foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.featured-cat{font-size:12px;color:var(--ink-3)}
+.featured-actions{margin-left:auto;display:flex;gap:6px}
+
+.empty{text-align:center;padding:80px 20px;color:var(--ink-3)}
+.empty .big{font-size:48px;margin-bottom:16px;opacity:.55}
+.empty h3{font-size:18px;color:var(--ink-2);margin-bottom:8px;font-weight:600;font-family:var(--serif)}
+.empty p{font-size:14px;max-width:360px;margin:0 auto;line-height:1.65}
+
+/* === Modals === */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(20,16,10,.6);backdrop-filter:blur(6px);
+  z-index:100;display:none;place-items:center;padding:20px;
+}
+.modal-bg.show{display:grid;animation:fade .22s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{
+  background:var(--panel);border-radius:20px;max-width:580px;width:100%;
+  padding:36px;box-shadow:var(--shadow-lg);border:1px solid var(--line);
+  animation:pop .28s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;
+}
+.modal::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-2),transparent);
+}
+@keyframes pop{from{transform:scale(.94) translateY(12px);opacity:0}}
+.modal .eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+}
+.modal blockquote{font-family:var(--serif);font-size:24px;line-height:1.42;font-weight:500;margin-bottom:18px}
+.modal .ref{font-size:13.5px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.modal .from{font-size:12.5px;color:var(--ink-3);margin-bottom:28px}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{
+  padding:11px 20px;border-radius:11px;font-size:13.5px;font-weight:650;
+  border:1px solid var(--line);background:var(--bg);color:var(--ink-2);
+  transition:.15s;display:inline-flex;align-items:center;gap:7px;
+}
+.btn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px)}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn.primary:hover{background:var(--gold-2);border-color:var(--gold-2);color:#16181d}
+
+/* === Verse Reader === */
+.verse-bg{
+  position:fixed;inset:0;background:rgba(20,16,10,.6);backdrop-filter:blur(6px);
+  z-index:110;display:none;place-items:center;padding:20px;
+}
+.verse-bg.show{display:grid;animation:fade .22s}
+.verse-modal{
+  background:var(--panel);border-radius:20px;max-width:680px;width:100%;
+  max-height:85vh;box-shadow:var(--shadow-lg);border:1px solid var(--line);
+  animation:pop .28s cubic-bezier(.22,1,.36,1);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.verse-modal::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-2),transparent);
+}
+.verse-head{
+  padding:22px 26px 16px;border-bottom:1px solid var(--line);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+}
+.verse-head-left{flex:1;min-width:0}
+.verse-ref{
+  font-family:var(--serif);font-size:22px;font-weight:600;
+  letter-spacing:-.4px;line-height:1.2;margin-bottom:5px;
+}
+.verse-trans{
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.verse-status{color:var(--ink-3);font-weight:600}
+.verse-close{
+  width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+  color:var(--ink-3);flex-shrink:0;transition:.15s;
+}
+.verse-close:hover{background:var(--line-2);color:var(--ink)}
+.verse-body{
+  padding:24px 26px;overflow-y:auto;flex:1;
+  font-family:var(--serif);font-size:19px;line-height:1.7;
+}
+.verse-body::-webkit-scrollbar{width:8px}
+.verse-body::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+.verse-part{margin-bottom:14px}
+.verse-part-label{
+  font-family:-apple-system,sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;
+}
+.verse-num{
+  font-family:inherit;font-size:11px;font-weight:700;color:var(--gold);
+  vertical-align:super;margin-right:4px;font-feature-settings:"tnum";
+}
+.verse-loading{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:40px 20px;color:var(--ink-3);font-size:14px;
+  font-family:-apple-system,sans-serif;
+}
+.spinner{
+  width:18px;height:18px;border:2px solid var(--line);
+  border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.verse-error{
+  padding:40px 20px;text-align:center;color:var(--ink-3);
+  font-family:-apple-system,sans-serif;font-size:13.5px;line-height:1.6;
+}
+.verse-error .icon{font-size:32px;margin-bottom:12px;opacity:.6}
+.verse-error h4{font-size:15px;color:var(--ink-2);margin-bottom:8px;font-weight:600}
+.verse-error p{max-width:360px;margin:0 auto}
+.verse-foot{
+  padding:14px 26px;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.verse-trans-tabs{display:flex;gap:2px;background:var(--line-2);border-radius:9px;padding:3px}
+.verse-trans-tab{
+  padding:6px 12px;border-radius:7px;font-size:11.5px;font-weight:700;
+  color:var(--ink-2);transition:.15s;letter-spacing:.2px;
+}
+.verse-trans-tab:hover:not(.disabled){color:var(--ink)}
+.verse-trans-tab.active{background:var(--panel);color:var(--gold);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.verse-trans-tab.disabled{opacity:.45;cursor:not-allowed}
+.verse-foot-actions{display:flex;gap:6px}
+.verse-foot .act-btn{width:34px;height:34px;border:1px solid var(--line)}
+
+.toast{
+  position:fixed;bottom:28px;left:50%;transform:translate(-50%,100px);
+  background:var(--ink);color:var(--bg);padding:12px 22px;border-radius:12px;
+  font-size:13px;font-weight:600;z-index:200;opacity:0;
+  transition:.32s cubic-bezier(.22,1,.36,1);pointer-events:none;
+  box-shadow:0 16px 40px -12px rgba(0,0,0,.5);white-space:nowrap;
+  display:flex;align-items:center;gap:8px;
+}
+.toast.show{transform:translate(-50%,0);opacity:1}
+
+.backdrop{
+  position:fixed;inset:0;background:rgba(20,16,10,.55);z-index:69;
+  display:none;backdrop-filter:blur(3px);opacity:0;transition:opacity .25s;
+}
+.backdrop.show{display:block;opacity:1}
+
+@media(max-width:980px){
+  .menu-btn{display:grid}
+  .brand-text p{display:none}
+  .sidebar{
+    position:fixed;left:0;top:0;height:100vh;z-index:70;background:var(--bg);
+    transform:translateX(-100%);transition:transform .3s cubic-bezier(.22,1,.36,1);
+    width:290px;padding-top:22px;box-shadow:0 0 60px rgba(0,0,0,.35);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:22px 18px 100px}
+  .page-head h2{font-size:26px}
+  .featured{padding:24px 22px}
+  .featured-text{font-size:19px}
+  .topbar-inner{padding:10px 14px;gap:10px}
+  .search-wrap{max-width:none}
+  .item{padding:14px 14px 14px 18px;gap:12px}
+  .item-text{font-size:15.5px}
+  .item-num-badge{width:30px;height:30px;font-size:12.5px}
+  .items.grid{grid-template-columns:1fr}
+  .verse-modal{max-height:92vh;border-radius:16px}
+  .verse-head{padding:18px 20px 14px}
+  .verse-body{padding:20px;font-size:17.5px}
+  .verse-foot{padding:12px 20px}
+  .verse-ref{font-size:19px}
+}
+@media(max-width:600px){
+  .brand-text h1{font-size:13px}
+  .brand-mark{width:36px;height:36px;font-size:16px}
+  #search{padding:10px 38px;font-size:13px}
+  .kbd{display:none}
+  .page-head h2{font-size:22px}
+  .modal{padding:26px 22px}
+  .modal blockquote{font-size:20px}
+  .stat-num{font-size:19px}
+}
+</style>
+</head>
+<body>
+
+<div class="read-progress" id="readProgress"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <div class="brand">
+      <div class="brand-mark">1050</div>
+      <div class="brand-text">
+        <h1>New Testament Commands</h1>
+        <p>Offline verse reader</p>
+      </div>
+    </div>
+    <div class="search-wrap">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="search" type="search" placeholder="Search commands, topics, or references…" autocomplete="off" spellcheck="false">
+      <span class="kbd">/</span>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="viewBtn" title="Toggle view">
+        <svg id="viewIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      </button>
+      <button class="icon-btn" id="randomBtn" title="Random command (Alt+R)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+      </button>
+      <button class="icon-btn" id="themeBtn" title="Toggle theme">
+        <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="backdrop" id="backdrop"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="stat-grid">
+      <div class="stat"><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">Commands</div></div>
+      <div class="stat"><div class="stat-num gold" id="statFav">0</div><div class="stat-lbl">Favorites</div></div>
+    </div>
+
+    <div class="offline-card">
+      <div class="oc-head">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+        <span class="oc-title">Offline Verses</span>
+      </div>
+      <div class="oc-sub" id="offlineSub">Download Bible verses to read without internet.</div>
+      <div class="offline-progress"><div class="offline-fill" id="offlineFill"></div></div>
+      <div class="offline-status">
+        <span id="offlineCount">0 / 0 verses</span>
+        <span id="offlinePct">0%</span>
+      </div>
+      <button class="offline-btn primary" id="offlineBtn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span id="offlineBtnLabel">Download for Offline</span>
+      </button>
+    </div>
+
+    <div class="side-label">Categories</div>
+    <div id="catList"></div>
+  </aside>
+
+  <main class="content" id="content"></main>
+</div>
+
+<!-- Random modal -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="eyebrow" id="mEyebrow">A Command to Consider</div>
+    <blockquote id="mText"></blockquote>
+    <div class="ref" id="mRef"></div>
+    <div class="from" id="mFrom"></div>
+    <div class="modal-actions">
+      <button class="btn primary" id="mAnother">Show Another</button>
+      <button class="btn" id="mGo">Go to Category</button>
+      <button class="btn" id="mClose">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Verse reader -->
+<div class="verse-bg" id="verseBg">
+  <div class="verse-modal">
+    <div class="verse-head">
+      <div class="verse-head-left">
+        <div class="verse-ref" id="vRef">—</div>
+        <div class="verse-trans">
+          <span id="vTransLabel">King James Version</span>
+          <span class="verse-status" id="vStatus"></span>
+        </div>
+      </div>
+      <button class="verse-close" id="vClose" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="verse-body" id="vBody"></div>
+    <div class="verse-foot">
+      <div class="verse-trans-tabs" id="vTabs">
+        <button class="verse-trans-tab active" data-t="kjv">KJV</button>
+        <button class="verse-trans-tab" data-t="web">WEB</button>
+        <button class="verse-trans-tab disabled" data-t="nkjv" title="NKJV is copyrighted by Thomas Nelson and cannot be bundled offline">NKJV</button>
+      </div>
+      <div class="verse-foot-actions">
+        <button class="act-btn" id="vCopy" title="Copy verse">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+        <button class="act-btn" id="vFav" title="Favorite">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 2.6 2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.45 6.2 20.5l1.1-6.45-4.7-4.6 6.5-.95z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==========================================================================
+   DATA — 1,050 New Testament Commands (Dake's Study Notes)
+   Format: [id, icon, title, subtitle|null, [ "text|reference", ... ] ]
+   ========================================================================== */
+const RAW = [
+["abstain","🚫",'Seven "Abstains"',"Abstain from:",[
+"Idols|Acts 15:20","Fornication|Acts 15:20,29; 1 Thess 4:2-3","Strangled meats|Acts 15:20",
+"Eating blood|Acts 15:20","Meats offered to idols|Acts 15:29","All appearance of evil|1 Thess 5:22",
+"Fleshly lusts|1 Pet 2:11"]],
+["avoid","⚠️","Seven Things to Avoid",null,[
+"Troublemakers|Rom 16:17","Profane and vain babblings|1 Tim 6:20","False science|1 Tim 6:20",
+"Unlearned questions|2 Tim 2:23","Foolish questions|Tit 3:9","Genealogies|Tit 3:9",
+"Arguments about the law|Tit 3:9"]],
+["asks","🙏",'Three "Asks"',null,[
+"Ask and ye shall receive|Matt 7:7","Ask no return of goods|Luke 6:30","Ask life for backsliders|1 John 5:16"]],
+["awake","🌅","Two Things to Awake To",null,[
+"Awake to righteousness|1 Cor 15:34","Awake to life|Eph 5:14"]],
+["bes","✨",'Seventy-Four "Be\'s"',null,[
+"Be exceeding glad|Matt 5:12","Be reconciled to a brother|Matt 5:24","Be perfect|Matt 5:48; 2 Cor 13:11",
+"Be wise as serpents|Matt 10:16","Be harmless as doves|Matt 10:16","Be ready for Christ's coming|Matt 24:44; Luke 12:40",
+"Be content with your wages|Luke 3:14","Be merciful as God|Luke 6:36","Be like faithful servants|Luke 12:36",
+"Be thankful|Col 3:15","Be at peace among selves|1 Thess 5:13","Be patient toward all people|1 Thess 5:14; 2 Tim 2:24",
+"Be no partaker of sin|1 Tim 5:22","Be sober and hope|1 Pet 1:13","Be sober and pray|1 Pet 4:7",
+"Be sober, grave, temperate, sound in faith, charity, and patience (aged men)|Tit 2:2",
+"Be sober, love husbands and children (young women)|Tit 2:4","Be sober minded (young men)|Tit 2:6",
+"Be in behaviour as becoming to saints (aged women)|Tit 2:3",
+"Be discreet, chaste, keepers at home, good, obedient (young women)|Tit 2:5",
+"Be ready to give an answer of the hope that is in you|1 Pet 3:15","Be of good cheer|John 16:33",
+"Be baptized|Acts 2:38","Be converted|Acts 3:19","Be transformed|Rom 12:2",
+"Be kind of brotherly love one to another|Rom 12:10; Eph 4:32","Be fervent in spirit|Rom 12:11",
+"Be patient in tribulation|Rom 12:12","Be given to hospitality|Rom 12:13","Be afraid, if lawless|Rom 13:4",
+"Be no idolater|1 Cor 10:7","Be followers of Paul as he followed Christ|1 Cor 11:1; Phil 3:17",
+"Be followers of God|Eph 5:1","Be followers of the faithful and patient|Heb 6:12",
+"Be not children in understanding|1 Cor 14:20","Be men in understanding|1 Cor 14:20",
+"Be steadfast|1 Cor 15:58","Be unmoveable|1 Cor 15:58","Be always abounding in God's work|1 Cor 15:58",
+"Be strong in the Lord|1 Cor 16:13; Eph 6:10; 2 Tim 2:1","Be of good comfort|2 Cor 13:11",
+"Be of one mind|Rom 12:16; 2 Cor 13:11; Phil 2:2; 1 Pet 3:8","Be separate from the unclean|2 Cor 6:17",
+"Be renewed in spirit|Eph 4:23","Be angry and sin not|Eph 4:26","Be tender-hearted one to another|Eph 4:32",
+"Be filled with the Spirit|Eph 5:18","Be likeminded|Phil 2:2","Be one of accord|Phil 2:2",
+"Be anxious for nothing|Phil 4:6",
+"Be an example to believers in word, conversation, charity, spirit, faith, and purity|1 Tim 4:12",
+"Be a partaker of Christian sufferings|2 Tim 1:8","Be gentle to all people|2 Tim 2:24",
+"Be apt to teach|2 Tim 2:24","Be instant in season, out of season|2 Tim 4:2",
+"Be careful to maintain good works|Tit 3:8,14","Be content with what you have|Heb 13:5",
+"Be doers of the Word|James 1:22","Be afflicted and mourn|James 4:9","Be patient till Christ comes|James 5:7-8",
+"Be holy in conversation (behaviour)|1 Pet 1:15-16","Be pitiful|1 Pet 3:8","Be courteous|1 Pet 3:8",
+"Be examples of the flock of God, not lord over it|1 Pet 5:3","Be subject one to another|1 Pet 5:5",
+"Be clothed with humility|1 Pet 5:5","Be sober|1 Pet 5:8","Be vigilant|1 Pet 5:8",
+"Be mindful of prophecies and commandments|2 Pet 3:2","Be diligent to be found in peace|2 Pet 3:14",
+"Be diligent to be without spot, and blameless|2 Pet 3:14","Be faithful to death|Rev 2:10",
+"Be watchful, strengthen self|Rev 3:2","Be zealous and repent|Rev 3:19"]],
+["benots","⛔",'Thirty "Be Not\'s"',null,[
+"Be not like the hypocrites in prayer|Matt 6:5","Be not like the heathen in prayer|Matt 6:8",
+"Be not as hypocrites in fasting|Matt 6:16",'Be not called "Rabbi"|Matt 23:8',
+'Be not called "Master"|Matt 23:9',"Be not afraid of man|Luke 12:4","Be not of doubtful mind|Luke 12:29",
+"Be not many teachers|James 3:1","Be not afraid of terror|1 Pet 3:14","Be not troubled|1 Pet 3:14",
+"Be not ignorant of time with God|2 Pet 3:8","Be not deceived: 10 classes not to inherit the kingdom|1 Cor 6:9-10",
+"Be not conformed to world|Rom 12:2","Be not slothful in business|Rom 12:11","Be not conceited|Rom 12:16",
+"Be not overcome of evil|Rom 12:21","Be not mere servants of men|1 Cor 7:23",
+"Be not children in understanding|1 Cor 14:20","Be not deceived by evil companions|1 Cor 15:33",
+"Be not unequally yoked together with unbelievers|2 Cor 6:14-15",
+"Be not entangled again with keeping the law|Gal 5:1","Be not deceived: man will reap what he sows|Gal 6:7-8",
+"Be not partakers with sinners|Eph 5:7","Be not unwise about God's will|Eph 5:17",
+"Be not drunk with wine|Eph 5:18","Be not weary in well doing|2 Thess 3:13",
+"Be not ashamed of God|2 Tim 1:8","Be not slothful|Heb 6:12","Be not forgetful of strangers|Heb 13:2",
+"Be not carried about with different strange doctrines|Heb 13:9"]],
+["beware","👁️",'Fourteen "Beware\'s"',null,[
+"Beware of false prophets|Matt 7:15","Beware of people|Matt 10:17",
+"Beware of leaven (doctrine) of Pharisees|Matt 16:6-12","Beware of leaven (doctrine) of Herod|Mark 8:15",
+"Beware of hypocrisy|Luke 12:1","Beware of covetousness|Luke 12:15",
+"Beware of scribes|Mark 12:38; Luke 20:46","Beware lest you despise God and perish|Acts 13:40-41",
+"Beware of dogs (false teachers)|Phil 3:2","Beware of evil workers|Phil 3:2",
+"Beware of the concision (Jews)|Phil 3:2","Beware of being spoiled through philosophy|Col 2:8",
+"Beware of being spoiled through vain deceit|Col 2:8","Beware of backsliding|2 Pet 3:17"]],
+["believe","💛","Things to Believe",null,[
+"Believe the gospel|Mark 1:15","Believe God's existence|Heb 11:6","Believe on Jesus Christ|1 John 3:23",
+"Believe God rewards diligent seeking|Heb 11:6","Believe not every spirit|1 John 4:1"]],
+["bless","🙌","Two Classes to Bless",null,[
+"Those who curse you|Matt 5:44; Luke 6:28","Persecutors|Rom 12:14"]],
+["castout","🗑️","Three Things to Cast Out or Away",null,[
+"The beam out of own eyes|Matt 7:5; Luke 6:42","Devils|Matt 10:8","All your cares upon God|1 Pet 5:7"]],
+["comfort","🤝","Two Classes to Comfort",null,[
+"One another — fellow Christians|1 Thess 4:18; 1 Thess 5:11","The feeble-minded|1 Thess 5:14"]],
+["honour","👑","Six Classes to Honour",null,[
+"Fathers|Matt 19:19; Eph 6:2","Mothers|Matt 19:19; Eph 6:2","Others|Rom 12:10",
+"Widows indeed|1 Tim 5:3","All people|1 Pet 2:17","Kings — rulers|1 Pet 2:17"]],
+["charge","📜","Five Things to Charge",null,[
+"Men to be blameless|1 Tim 5:7","The rich to be humble|1 Tim 6:17","The rich to trust in God|1 Tim 6:17",
+"The rich to do good works|1 Tim 6:18","The rich to lay hold on eternal life|1 Tim 6:19"]],
+["consider","🤔","Five Things to Consider",null,[
+"The ravens|Luke 12:24","The lilies|Luke 12:27-28","Truth|2 Tim 2:7",
+"That you are capable of falling|Gal 6:1","Christ|Heb 3:1; Heb 12:3"]],
+["continue","🔄","Three Things to Continue In",null,[
+"Love|John 15:9","Prayer|Rom 12:12; Col 4:2","Truth|2 Tim 3:14"]],
+["covet","🎯","Two Things to Covet",null,[
+"The best gifts|1 Cor 12:31","To prophesy|1 Cor 14:39"]],
+["notcast","🛡️","One Thing Not to Cast Away",null,[
+"Your confidence in God|Heb 10:35"]],
+["endure","💪","Two Things to Endure",null,[
+"Hardness|2 Tim 2:3","Sufferings|2 Tim 4:5"]],
+["fear","😨","Whom to Fear",null,[
+"God|Matt 10:28; Luke 12:5; 1 Pet 2:17; Rev 14:7"]],
+["notfear","🕊️","Three Things Not to Fear",null,[
+"Man|Matt 10:28; Luke 12:5","Persecutors|Matt 10:26","No lack of provision|Matt 10:31; Luke 12:7"]],
+["feed","🍞","Five Things to Feed",null,[
+"Enemies|Rom 12:20","Lambs|John 21:15","Sheep|John 21:16,17","Flock of God|1 Pet 5:2","The church|Acts 20:28"]],
+["flee","🏃","Four Things to Flee From",null,[
+"Fornication|1 Cor 6:18","Idolatry|1 Cor 10:14","Hurtful lusts|1 Tim 6:9-11","Youthful lusts|2 Tim 2:22"]],
+["dos","✅",'Ten "Do\'s"',null,[
+"Do good to them that hate you|Matt 5:44; Luke 6:27","Do to others what you expect of them|Matt 7:12; Luke 6:31",
+"Do violence to no man|Luke 3:14","Do good|Luke 6:35; Rom 13:3","Do this (put God first) and live|Luke 10:28",
+"Do all to God's glory|1 Cor 10:31; Col 3:17,23","Do all things without murmuring and disputing|Phil 2:14",
+"Do those things which were seen and heard in me (Paul)|Phil 4:9","Do your own business|1 Thess 4:11",
+"Do the work of an evangelist|2 Tim 4:5"]],
+["donots","🚷",'Ten "Do Not\'s"',null,[
+"Do not alms before people|Matt 6:1","Do not sound trumpet before you when giving alms|Matt 6:2",
+"Do not do works of Pharisees|Matt 23:3-33","Do not love in word only|1 John 3:18",
+"Do not give heed to fables|1 Tim 1:4","Do not give heed to genealogies|1 Tim 1:4","Do not err|James 1:16",
+"Do not commit adultery|James 2:11","Do not kill|James 2:11","Do not fashion self according to former lusts|1 Pet 1:14"]],
+["follow","👣","Ten Things to Follow",null,[
+"Christ|Matt 4:19","Love|1 Cor 14:1; 1 Tim 6:11","Good|1 Thess 5:15; 3 John 1:11",
+"Righteousness|1 Tim 6:11; 2 Tim 2:22","Godliness|1 Tim 6:11","Faith|1 Tim 6:11; 2 Tim 2:22",
+"Patience|1 Tim 6:11","Meekness|1 Tim 6:11","Peace|2 Tim 2:22; Heb 12:14","Holiness|Heb 12:14"]],
+["giving","🎁","Seven Things About Giving",null,[
+"Commanded: give|Luke 6:38","Whom to give to — Him that asks|Matt 5:42; Luke 6:30",
+"Whom to give to — Needy saints|Rom 12:13","Whom to give to — God|Col 3:17; Rev 14:7",
+"Whom NOT to give to — Give not holy things to rebels|Matt 7:6",
+"Whom NOT to give to — Give no place to Satan|Eph 4:27",
+"What to give — Holy things|Matt 7:6; Matt 10:8",
+"What to give — Give thanks|Eph 5:20; Phil 4:6",
+"What to give — Give time to reading, exhortation, doctrine|1 Tim 4:13",
+"What to give — Give self wholly|1 Tim 4:15","What to give — Give glory to God|Rev 14:7",
+"What NOT to give — Give no offence|1 Cor 10:32",
+"What NOT to give — Give no heed to fables and commandments of human beings|Tit 1:14",
+"How to give — Freely|Matt 10:8; 2 Cor 9:6","How to give — Good measure|Luke 6:38",
+"How to give — As God has prospered|1 Cor 16:2","How to give — Willingly|2 Cor 8:12",
+"How to give — With purpose|2 Cor 9:7","How to give — Cheerfully|2 Cor 9:7",
+"Blessing — Returns on the basis of giving|Luke 6:38; 2 Cor 9:6","Blessing — Reward|Matt 10:42",
+"Blessing — All grace abounding|2 Cor 9:8","Blessing — All sufficiency|2 Cor 9:8",
+"Blessing — Eternal righteousness|2 Cor 9:9","Blessing — Increased fruits|2 Cor 9:10",
+"Blessing — Enrichment in all things|2 Cor 9:11"]],
+["layaside","🧹","Six Things to Lay Aside",null,[
+"Wickedness|James 1:21","All malice|1 Pet 2:1","All guile|1 Pet 2:1",
+"All hypocrisies|1 Pet 2:1","All envies|1 Pet 2:1","All evil speakings|1 Pet 2:1"]],
+["keep","🔒","Seven Things to Keep",null,[
+"Keep commandments|Matt 19:17; John 14:15",
+"Keep no company with the 6 classes of professed Christians of 1 Cor 5:11|1 Cor 5:11",
+"Keep yourself pure|1 Tim 5:22","Keep the gospel commandments until Christ comes|1 Tim 6:14",
+"Keep the good entrusted you|2 Tim 1:14","Keep yourself from idols|1 John 5:21",
+"Keep yourself in God's love|Jude 1:21"]],
+["gos","🚶",'Five "Go\'s"',null,[
+"Go two miles|Matt 5:41","Go teach|Matt 28:19-20","Go preach|Mark 16:15",
+"Go not from house to house|Luke 10:7","Go and do likewise|Luke 10:37"]],
+["haves","🫱",'Seven "Have\'s"',null,[
+"Have faith|Mark 11:22; Rom 14:22-23","Have no fellowship with darkness|Eph 5:11",
+"Have no respect of persons|1 Tim 5:21; James 2:1-10","Have honest conversation|1 Pet 2:12",
+"Have compassion|1 Pet 3:8; Jude 1:22","Have a good conscience|1 Pet 3:16","Have fervent love|1 Pet 4:8"]],
+["holds","🤲",'Fourteen "Hold\'s"',null,[
+"Hold forth Word of life|Phil 2:16","Hold fast to the good|1 Thess 5:21",
+"Hold Christian traditions|1 Tim 1:19; 1 Tim 3:9","Hold faith|1 Tim 1:19",
+"Hold a good conscience|1 Tim 1:19","Hold fast sound doctrine|2 Tim 1:13",
+"Hold fast till Christ comes|Rev 2:25","Hold fast what you have|Rev 3:11","Hold your crown|Rev 3:11",
+"Hold reputation of ministers|Phil 2:29","Hold eternal life|1 Tim 6:12,19","Hold hope|Heb 6:18",
+"Hold confidence|Heb 3:6,14","Hold what is heard and received|Rev 3:3"]],
+["lets","💬",'One Hundred "Let\'s"',null,[
+"Let your light shine|Matt 5:16; Luke 12:35","Let your conversation be yea, nay|Matt 5:37; James 5:12",
+"Let your enemy have your cloak|Matt 5:40; Luke 6:29","Let blind leaders alone|Matt 15:14",
+"Let everyone deny themselves|Matt 16:24; Mark 8:34; Luke 9:23",
+"Let him take up cross|Matt 16:24; Mark 8:34","Let him hear|Mark 4:23; Luke 14:35",
+"Let him share with the needy|Luke 3:11","Let your loins be girded|Luke 12:35",
+"Let everyone take your purse and script|Luke 22:36","Let him sell his garment, buy sword|Luke 22:36",
+"Let your love be genuine|Rom 12:9","Let everyone obey the civil laws|Rom 13:1",
+"Let everyone choose his own sabbath day|Rom 14:5-7","Let everyone take heed how he builds upon Christ|1 Cor 3:10",
+"Let no man deceive himself|1 Cor 3:18","Let every man have his own wife|1 Cor 7:2",
+"Let every woman her own husband|1 Cor 7:2","Let spouses satisfy each other in sexual relations|1 Cor 7:4-5",
+"Let them who cannot restrain marry|1 Cor 7:9",
+"Let husbands and wives remain unmarried if they separate, or be reconciled|1 Cor 7:11",
+"Let the unbelieving ones depart who refuse to remain|1 Cor 7:15","Let every man abide in his calling|1 Cor 7:17-24",
+"Let no one seek to erase circumcision|1 Cor 7:18","Let no one be circumcised (as a religious rite)|1 Cor 7:18",
+"Let a father give his daughter in marriage if she desires it|1 Cor 7:36-38",
+"Let him who thinks he stands take heed lest he fall|1 Cor 10:12",
+"Let no man seek wealth selfishly|1 Cor 10:24",
+"Let the woman cut her hair if her head is uncovered|1 Cor 11:6",
+"Let the woman wear a covering if cutting and shaving the hair be a shame|1 Cor 11:6",
+"Let everyone examine self when taking the Lord's Supper|1 Cor 11:28",
+"Let the hungry eat at home, not at the Lord's Supper|1 Cor 11:34",
+"Let the speaker in tongues pray for the interpretation|1 Cor 14:13",
+"Let all things be done to edifying|1 Cor 14:26",
+"Let no more than 3 messages in tongues be given in one service|1 Cor 14:27",
+"Let one interpret|1 Cor 14:27","Let the mind of Christ be in you|Phil 2:5",
+"Let your moderation be known|Phil 4:5","Let your requests be known to God|Phil 4:6",
+"Let no one judge you with regard to meats, drinks, holy days, new moons, and sabbath days|Col 2:14-17",
+"Let no one rob you of your reward by some vain religion|Col 2:18","Let peace rule the heart|Col 3:15",
+"Let the Word dwell in you|Col 3:16","Let speech be with grace|Col 4:6",
+"Let no one deceive you about the day of Christ being at hand|2 Thess 2:3",
+"Let no man despise youth|1 Tim 4:12",
+"Let the speaker in tongues keep silent in church if no interpreter present|1 Cor 14:28",
+"Let the prophets speak two or three messages and let others judge|1 Cor 14:29",
+"Let times be shared in revelation|1 Cor 14:30","Let women learn quietly in church or at home|1 Cor 14:34-35",
+"Let everyone acknowledge regulation of spiritual gifts to be commandments of God|1 Cor 14:37",
+"Let rebels to truth remain ignorant|1 Cor 14:38","Let all things be done in decent order|1 Cor 16:2",
+"Let everyone give as God prospers|1 Cor 16:2","Let all things be done in love|1 Cor 16:14",
+"Let everyone give cheerfully|2 Cor 9:7","Let rebels to truth be accursed|1 Cor 16:22; Gal 1:8-9",
+"Let everyone prove their own work|Gal 6:4","Let those taught support the teacher|Gal 6:6",
+"Let the thief steal no more|Eph 4:28","Let the thief labour instead of stealing|Eph 4:28",
+"Let no corrupt conversation come from your mouth|Eph 4:29",
+"Let bitterness, wrath, anger, clamour, evil speaking, and malice be put away|Eph 4:31",
+"Let no man deceive you with vain words|Eph 5:6",
+"Let the wives be subject to their husbands|Eph 5:22,24; Col 3:18; 1 Pet 3:1-6",
+"Let the husbands love their wives|Eph 5:25,28,33; Col 3:19; 1 Pet 3:7",
+"Let the wives reverence their husbands|Eph 5:33",
+"Let your conversation (behaviour) be becoming of the gospel|Phil 1:27",
+"Let nothing be done through strife or vain glory|Phil 2:3","Let each esteem other better than himself|Phil 2:3",
+"Let worthy elders be doubly honoured (paid)|1 Tim 5:17","Let servants honour masters|1 Tim 6:1",
+"Let masters respect servants|1 Tim 6:2","Let every Christian depart from iniquity|2 Tim 2:19",
+"Let no man despise you|Tit 2:15","Let brotherly love continue|Heb 13:1",
+"Let conversation be without covetousness|Heb 13:5","Let patience work perfectly|James 1:4",
+"Let one who lacks, ask for wisdom|James 1:5","Let him ask in faith|James 1:6",
+"Let the exalted rejoice|James 1:9","Let the humble rejoice|James 1:10",
+"Let no man lay temptation to God|James 1:13",
+"Let everyone be swift to hear, slow to speak, slow to wrath|James 1:19",
+"Let the wise demonstrate wisdom and knowledge|James 3:13",
+"Let the light-hearted sinners become remorseful|James 4:9","Let the afflicted pray|James 5:13",
+"Let the merry sing psalms|James 5:13","Let the sick call elders|James 5:14",
+"Let elders pray for sick, anointing with oil|James 5:14-15",
+"Let adorning be more inward than outward|1 Pet 3:3-4",
+"Let everyone refrain tongue from evil, and lips from guile|1 Pet 3:10",
+"Let everyone shun evil, do good, seek peace and pursue it|1 Pet 3:11",
+"Let ministers speak for God|1 Pet 4:11",
+"Let no one suffer as a murderer, thief, evildoer, or busybody|1 Pet 4:15",
+"Let no one be ashamed to suffer as a Christian, but be thankful|1 Pet 4:16",
+"Let Christian sufferers commit their souls to God|1 Pet 4:19",
+"Let eternal life abide in you|1 John 2:24-25",
+"Let no man deceive you about being righteous|1 John 3:7",
+"Let him that hath an ear, hear|Rev 2:7,11,17,29; Rev 3:6,13,22"]],
+["letnots","🚧",'Twelve "Let Not\'s"',null,[
+"Let not your left hand know what the right hand does|Matt 6:3",
+"Let not man sever those who are married|Matt 19:6","Let not good be evil spoken of|Rom 14:16",
+"Let not sin reign in the body|Rom 6:12",
+"Let not him that eateth despise him that does not|Rom 14:3",
+"Let not him that eateth not judge him that does|Rom 14:3",
+"Let not the wife depart from her husband|1 Cor 7:10","Let not the husband put away his wife|1 Cor 7:11",
+"Let not the Christian put away the unsaved companion who wishes to remain|1 Cor 7:12-13",
+"Let not the sun go down on wrath|Eph 4:26",
+"Let not fornication, uncleanness, covetousness, filthiness, foolish talking, and jesting be mentioned among you|Eph 5:3-4",
+"Let not unworthy widows be supported by the church|1 Tim 5:9-16"]],
+["letus","🕯️",'Forty-Two "Let Us\'s"',null,[
+"Let us walk honestly|Rom 13:12","Let us cast off works of darkness|Rom 13:12",
+"Let us put on armour of light|Rom 13:12","Let us follow things of peace|Rom 14:19",
+"Let us follow things that edify|Rom 14:19","Let us please neighbour for good|Rom 15:2-3",
+"Let us be sincere|1 Cor 5:8","Let us not commit fornication|1 Cor 10:2-3",
+"Let us not tempt Christ|1 Cor 10:9","Let us not murmur|1 Cor 10:10",
+"Let us cleanse ourselves from the filthiness of body and spirit|2 Cor 7:1",
+"Let us perfect holiness|2 Cor 7:1","Let us walk in the Spirit|Gal 5:25",
+"Let us not desire vain glory|Gal 5:26","Let us not provoke one another|Gal 5:26",
+"Let us not envy one another|Gal 5:26","Let us not be weary in well doing|Gal 6:9",
+"Let us do good to all people|Gal 6:10","Let us do good especially to fellow Christians|Gal 6:10",
+"Let us who are mature press forward toward the mark|Phil 3:14-15",
+"Let us walk by the same rule|Phil 3:16","Let us mind the same thing|Phil 3:16",
+"Let us not sleep spiritually|1 Thess 5:6","Let us watch and be sober|1 Thess 5:6,8",
+"Let us be content with food and raiment|1 Tim 6:8","Let us fear losing the soul|Heb 4:1-2",
+"Let us labour to be saved|Heb 4:11","Let us hold fast our profession|Heb 10:23",
+"Let us come boldly to the throne of grace|Heb 4:16","Let us go on to perfection|Heb 6:1",
+"Let us draw near to God|Heb 10:22","Let us provoke to love and good works|Heb 10:24",
+"Let us not forsake assembling together in worship|Heb 10:25","Let us exhort one another|Heb 10:25",
+"Let us lay aside every weight|Heb 12:1","Let us lay aside besetting sin|Heb 12:1",
+"Let us run race with patience|Heb 12:1","Let us look to Jesus|Heb 12:2",
+"Let us have grace to serve God|Heb 12:28","Let us bear Christ's reproach|Heb 13:13",
+"Let us offer our sacrifice of praise to God continually|Heb 13:15",
+"Let us love one another|1 John 4:7,11"]],
+["letusnot","🚫",'Eight "Let Us Not\'s"',null,[
+"Let us not walk in rioting|Rom 13:13","Let us not walk in drunkenness|Rom 13:13",
+"Let us not walk in chambering|Rom 13:13","Let us not walk in wantonness|Rom 13:13",
+"Let us not walk in strife|Rom 13:13","Let us not walk in envying|Rom 13:13",
+"Let us not judge one another in doubtful things|Rom 14:13","Let us not cause others to stumble|Rom 14:13"]],
+["live","🌿",'Three Commands to "Live"',null,[
+"Live peacefully|Rom 12:18; 2 Cor 13:11","Live free from anxiety and undue care|1 Cor 7:28-35",
+"Live no longer in lusts of sin|1 Pet 4:2"]],
+["love","❤️",'Four Commands to "Love"',null,[
+"Love your enemies|Matt 5:44; Luke 6:27,35",
+"Love your fellow Christians|John 13:34; John 15:12,17",
+"Love the brotherhood|1 Pet 2:17","Love your brother|1 John 4:21",
+"Do NOT love the world|1 John 2:15","Do NOT love the things in the world|1 John 2:15",
+"Love fervently|1 Pet 2:22","Love with a pure heart|1 Pet 2:22","Love as brethren|1 Pet 3:8"]],
+["prayer","🙇","Prayer: To Whom, For What, How",null,[
+"Pray to thy Father|Matt 6:6-9","Pray for your persecutors|Matt 5:44; Luke 6:28",
+"Pray for labourers|Matt 9:38; Luke 10:2","Pray for one another|James 5:16",
+"Do NOT use vain repetitions like the heathen|Matt 6:7","Do NOT pray as hypocrites|Matt 6:5",
+"Pray after this manner|Matt 6:9-13","Ask, seek, knock|Matt 7:7-11","Pray in the Spirit|Jude 1:20"]],
+["prove","🔍","Four Things to Prove",null,[
+"Prove yourself|2 Cor 13:5","Prove what is acceptable to God|Eph 5:10",
+"Prove all things|1 Thess 5:21","Prove accusations against elders|1 Tim 5:19"]],
+["rejoice","🎉","Commands to Rejoice",null,[
+"Rejoice|Matt 5:12; Rom 15:10","Rejoice evermore|1 Thess 5:16",
+"Rejoice in hope|Rom 12:12","Rejoice in blessings of others|Rom 12:15",
+"Rejoice in the Lord|Phil 3:1; Phil 4:4","Rejoice in suffering for Christ|1 Pet 4:13"]],
+["putaway","🗑️",'Eight "Put Away\'s"',null,[
+"Put away wicked people from the congregation|1 Cor 5:13","Put away lying|Eph 4:25",
+"Put away all bitterness|Eph 4:31","Put away wrath|Eph 4:31","Put away anger|Eph 4:31",
+"Put away clamour|Eph 4:31","Put away evil speaking|Eph 4:31","Put away all malice|Eph 4:31"]],
+["putoff","👕",'Six "Put Off\'s"',null,[
+"Put off the old man|Eph 4:22; Col 3:9","Put off anger|Col 3:8","Put off wrath|Col 3:8",
+"Put off malice|Col 3:8","Put off blasphemy|Col 3:8","Put off filthy conversation|Col 3:8"]],
+["puton","🧥",'Twelve "Put On\'s"',null,[
+"Put on Christ|Rom 13:14","Put on the armour of light|Rom 13:12",
+"Put on the new man|Eph 4:24; Col 3:10","Put on the whole armour of God|Eph 6:11,13",
+"Put on the bowels of mercy|Col 3:12","Put on kindness|Col 3:12","Put on humility|Col 3:12",
+"Put on meekness|Col 3:12","Put on longsuffering|Col 3:13","Put on love|Col 3:14",
+"Put on the breastplate of faith and love|1 Thess 5:8","Put on the hope of salvation|1 Thess 5:8"]],
+["rebuke","📢","Rebuke: Who, What, How",null,[
+"Do NOT rebuke elders|1 Tim 5:1","Rebuke certain sinners|1 Tim 5:20","Rebuke rebels|Tit 1:13",
+"Rebuke works of darkness|Eph 5:11","Rebuke with all authority|Tit 2:15",
+"Rebuke with all longsuffering|2 Tim 4:2"]],
+["remember","🧠","Five Things to Remember",null,[
+"What you are saved from|Eph 2:11-12","Those who suffer|Heb 13:3","Those who lead you|Heb 13:7",
+"Truth|Jude 1:17-18; Rev 3:3","Backsliding, and repent|Rev 2:5"]],
+["seek","🔎","Four Things to Seek",null,[
+"God's kingdom first|Matt 6:33; Luke 12:31","God in prayer|Matt 7:7",
+"To edify the church|1 Cor 14:12","Things above|Col 3:1"]],
+["stand","🪨","Stand Fast",null,[
+"Stand fast, and hold Christian traditions|2 Thess 2:15",
+"Stand fast with loins girt about with truth|Eph 6:14",
+"Stand fast with the breastplate of righteousness|Eph 6:14",
+"Stand fast with feet shod with the preparation of the gospel of peace|Eph 6:15",
+"Stand in faith|1 Cor 16:13","Stand in liberty|Gal 5:1","Stand in one spirit|Phil 1:27",
+"Stand in one mind|Phil 1:27","Stand in the Lord|Phil 4:1"]],
+["think","💭","Things to Think On",null,[
+"Think on things about your true self|Rom 12:3; 1 Cor 3:18","Think on things true|Phil 4:8",
+"Think on things honest|Phil 4:8","Think on things just|Phil 4:8","Think on things pure|Phil 4:8",
+"Think on things lovely|Phil 4:8","Think on things of good report|Phil 4:8",
+"Think on things of virtue|Phil 4:8","Think soberly|Rom 12:3"]],
+["submit","🙇‍♂️",'Five Commands to "Submit"',null,[
+"Submit one to another|Eph 5:21","Submit to God|James 4:7",
+"Submit to every ordinance of man|1 Pet 2:13-14","Younger ones are to submit to their elders|1 Pet 5:5",
+"Wives must submit to their husbands|Eph 5:22; Col 3:18; 1 Pet 3:1-6"]],
+["takes","🤝",'Twelve "Take\'s"',null,[
+"Take no anxious thought for necessities of life|Matt 6:25,31",
+"Take no anxious thought of tomorrow|Matt 6:34",
+"Take no anxious thought of defence|Matt 10:19; Luke 12:11-12",
+"Take my yoke upon you|Matt 11:29","Take advantage of freedom|1 Cor 7:21",
+"Take the Lord's Supper in remembrance of Christ|1 Cor 11:24-26","Take the shield of faith|Eph 6:16",
+"Take the helmet of salvation|Eph 6:17","Take the sword of the Spirit|Eph 6:17",
+"Take oversight of the flock willingly|1 Pet 5:2",
+"Take oversight of the flock without thought of personal gain|1 Pet 5:2","Take a humble seat|Luke 14:8"]],
+["takeheed","⚡",'Eighteen "Take Heed\'s"',null,[
+"Take heed that you do not alms to be seen by people|Matt 6:1",
+"Take heed not to despise little ones|Matt 18:10",
+"Take heed not to be deceived|Matt 24:4; Mark 13:5",
+"Take heed what you hear|Mark 4:24","Take heed how you hear|Luke 8:18",
+"Take heed to walk in the light|Luke 11:35","Take heed to rebuke and forgive|Luke 17:3",
+"Take heed not to get drunk|Luke 21:34","Take heed not to surfeit|Luke 21:34",
+"Take heed not to be overcome with cares|Luke 21:34",
+"Take heed to yourselves|Matt 13:9; Luke 17:3; Acts 20:28",
+"Take heed to the flock of God|Acts 20:28","Take heed lest you misuse your liberty|1 Cor 8:9",
+"Take heed lest you fall|1 Cor 10:12; Rom 11:21","Take heed to your ministry|Col 4:17",
+"Take heed that you destroy not one another|Gal 5:15","Take heed to yourself and your doctrine|1 Tim 4:16",
+"Take heed not to backslide|Heb 3:12"]],
+["walknot","🌊","Two Ways Not to Walk",null,[
+"Not as sinners|Eph 4:17","Not as fools|Eph 5:15"]],
+["worship","✝️","Worship, Serve, and Love",null,[
+"Thou shalt worship God only|Matt 4:10; Luke 4:8","Thou shalt serve God only|Matt 4:10; Luke 4:8",
+"Thou shalt love neighbours as yourself|Matt 22:39; Rom 13:9; Gal 5:14",
+"Thou shalt love God wholeheartedly|Matt 22:37; Mark 12:30; Luke 10:27"]],
+["walkin","🛤️","Seven Things to Walk In",null,[
+"The Spirit|Gal 5:16","Love|Eph 5:2","The light|Eph 5:8-9; 1 John 1:7",
+"Watchfulness|Eph 6:18","Christ|Col 2:6-7","Wisdom|Col 4:5","Honesty|1 Thess 4:12"]],
+["thoushaltnot","📋",'Eight "Thou Shalt Not\'s"',null,[
+"Thou shalt not tempt the Lord|Matt 4:7; Luke 4:12",
+"Thou shalt not kill|Matt 5:21; Rom 13:9",
+"Thou shalt not commit adultery|Matt 5:27-28; Rom 13:9",
+"Thou shalt not pray to be seen by people|Matt 6:5",
+"Thou shalt not steal|Matt 19:18; Rom 13:9",
+"Thou shalt not bear false witness|Matt 19:18; Rom 13:9",
+"Thou shalt not covet|Rom 13:9",
+"Thou shalt not muzzle the ox treading corn|1 Cor 9:9; 1 Tim 5:18"]],
+["rights","🌳","Two Eternal Rights of the Redeemed",null,[
+"Right to the tree of life|Rev 22:14","Right to enter the New Jerusalem|Rev 21:24-27"]],
+["misc","📖","200 Miscellaneous Commands",null,[
+"Abhor what is evil|Rom 12:9","A bishop must be (see 1 Tim 3:2-7; Tit 1:6-9)|1 Tim 3:2-7",
+"Abide in Christ|John 15:4","Abide with worthy ones|Matt 10:11-13",
+"Accuse none falsely|Luke 3:14","Add to Christian graces|2 Pet 1:5-7",
+"Admit your own unprofitableness|Luke 17:10","Admonish one another|Col 3:16",
+"Admonish the unruly|2 Thess 3:15","Agree with your adversary|Matt 5:25",
+"Allow no liberty to ensnare you to commit sin|1 Cor 10:25-30",
+"Allow no lust of evil in your body|1 Thess 4:5",
+"Allow no cursing and blessing from the same mouth|James 3:10",
+"Anoint your head and wash face when fasting|Matt 6:17",
+"Arm yourself with a mind to suffer for Christ|1 Pet 4:1","Avenge not yourself|Rom 12:19",
+"Awake from death to light|Eph 5:14","Bear one another's burdens|Gal 6:2",
+"Behave like men|1 Cor 16:13","Bid no false teacher Godspeed|2 John 1:10-11",
+"Bring proof of your repentance|Matt 3:8; Luke 3:8","Bring your children up in the Lord|Eph 6:4",
+"Build up your faith|Jude 1:20","Call the poor to your feast|Luke 14:13",
+"Children, obey your parents|Eph 6:1; Col 3:20","Cleanse the lepers|Matt 10:8",
+"Cleanse your hands you sinners|James 4:8","Cleave to good|Rom 12:9","Collect just dues only|Luke 3:13",
+"Come out from among them|2 Cor 6:17","Command and teach these things|1 Tim 4:11",
+"Commit the truth to faithful teachers|2 Tim 2:2","Confess your faults one to another|James 5:16",
+"Count it joy when you are tempted|James 1:2","Cut off offending members|Matt 5:29-30",
+"Deacons must be (see 1 Tim 3:8-12)|1 Tim 3:8-12","Defraud not|Mark 10:19",
+"Desire spiritual gifts|1 Cor 14:1","Desire the milk of the Word|1 Pet 2:2",
+"Despise not prophesying|1 Thess 5:20","Destroy none with non-essentials|Rom 14:15",
+"Draw near to God|James 4:8","Eat your own bread in quietness|2 Thess 3:12",
+"Earnestly contend for faith|Jude 1:3","Edify yourselves with singing|Eph 5:19",
+"Edify one another|1 Thess 5:11","Enter the straight (narrow) gate|Matt 7:13; Luke 13:24",
+"Examine yourself as to faith|2 Cor 13:5","Exercise in godliness|1 Tim 4:7-8",
+"Exhort servants to obey|Tit 2:9-10","Exhort one another daily|Heb 3:13","Fear not|Luke 12:32",
+"Fight the good fight of faith|1 Tim 6:12","Follow peace and holiness|Heb 12:14",
+"Forbear one another|Col 3:13","Forbid not children|Matt 19:14; Mark 10:14",
+"Forbid not tongues|1 Cor 14:39","Forget not to share|Heb 13:16","Forgive 490 times|Matt 18:22",
+"Forgive|Matt 11:25-26; Luke 6:37; Eph 4:32","Fret not in servitude|2 Cor 7:21",
+"Gird up loins of mind|1 Pet 1:13","Give place to wrath|Rom 12:19",
+"Give your enemy a drink of water|Rom 12:20","Give no occasion to the adversary|1 Tim 5:14",
+"Glorify God in your body and spirit|2 Cor 6:20","Grieve not the Holy Spirit|Eph 4:30",
+"Grow in grace and knowledge|2 Pet 3:18","Grudge not against another|James 5:9",
+"Harden not your hearts|Heb 3:8-15","Hate flesh-spotted garments|Jude 1:23",
+"Have no respect of persons|1 Tim 5:21","Have the same love|Phil 2:2",
+"Have no fellowship with works of darkness|Eph 5:11","Heal the sick|Matt 10:8; Luke 10:9",
+"Help propagate truth|3 John 1:8","Humble yourselves|James 4:10; 1 Pet 5:6",
+"Husbands, love your wives|Eph 5:25,28; Col 3:19; 1 Pet 3:7",
+"Husbands, be not bitter against your wives|Col 3:19","Instruct rebels in meekness|2 Tim 2:25",
+"Intreat others according to 1 Tim 5:1-2|1 Tim 5:1-2","Judge not|Matt 7:1; Luke 6:37",
+"Have faith before God for things not condemned in Scripture|Rom 14:22-23",
+"Know how to control your body|1 Thess 4:4","Lay not up your treasures on earth|Matt 6:19",
+"Lay up your treasures in heaven|Matt 6:20; Luke 12:33-34","Lay hold on eternal life|1 Tim 6:12",
+"Leave your parents and cleave to your wife|Matt 19:5; Eph 5:31",
+"Lend, hoping for nothing back|Luke 6:35","Lie not|Col 3:9","Lift up hands that hang down|Heb 12:12",
+"Look not everyone on your own things only|Phil 2:4","Look diligently not to fail of grace|Heb 12:15",
+"Look diligently lest any root of bitterness defile|Heb 12:15",
+"Look diligently lest any be a fornicator|Heb 12:16-17",
+"Look to yourselves not to lose reward|2 John 1:8","Look for mercy unto eternal life|Jude 1:21",
+"Lust not after evil things|1 Cor 10:6","Make a tree good or corrupt|Matt 12:33",
+"Make no provision for lusts|Rom 13:14","Make full proof of ministry|2 Tim 4:5",
+"Make straight paths|Heb 12:13","Mark troublemakers|Rom 16:17; Phil 3:17",
+"Mark the unruly|2 Thess 3:14","Marvel not if you are hated by the world|1 John 3:13",
+"Masters, be good to servants|Eph 5:9; Col 4:1","Meditate upon these things|1 Tim 4:15",
+"Mind not the high things|Rom 12:16","Minister as good stewards|1 Pet 4:10",
+"Mortify offending physical members|Col 3:5; Rom 8:12-13","Neither be of doubtful mind|Luke 12:29",
+"No man is to defraud his brother|1 Thess 4:6","Neglect not spiritual gifts|1 Tim 4:14",
+"Obey your leaders|Heb 13:17","Offer the other cheek|Matt 5:39; Luke 6:29",
+"Ordain no one in a hurry|1 Tim 5:22","Owe nothing but love|Rom 13:8",
+"Overcome evil with good|Rom 12:21","Pass the time in fear|1 Pet 1:17","Pay your taxes|Rom 13:6",
+"Pay just dues|Rom 13:7","Praise the Lord|Rom 15:11",
+"Preach|Matt 10:7; Mark 16:15; 2 Tim 4:2","Present your body to God|Rom 12:1",
+"Provide things honestly|Rom 12:17","Provoke not your children to wrath|Eph 6:4; Col 3:21",
+"Purge out the old leaven (evil influence)|1 Cor 5:7","Purify your hearts of doubt|James 4:8",
+"Put others in remembrance of the essentials|2 Tim 2:14","Quench not the Spirit|1 Thess 5:19",
+"Raise the dead|Matt 10:8","Receive (accept) weak brethren|Rom 14:1",
+"Receive one another|Rom 15:7","Receive the Word with meekness|James 1:21",
+"Reckon yourself as dead to sin|Rom 6:11","Reckon yourself as alive to God|Rom 6:11",
+"Recognize the truth|1 Cor 10:15","Redeem the time|Eph 5:16; Col 4:5",
+"Reject heretics|Tit 3:10","Refuse to support young widows from church funds|1 Tim 5:11",
+"Remind people of the seven things of Titus 3:1-2|Tit 3:1-2",
+"Render no evil for evil|1 Pet 3:9; Rom 12:17",
+"Repent|Matt 3:2; Mark 1:15; Acts 2:38; Acts 3:19; Rev 2:16; Rev 3:19",
+"Resist not evil|Matt 5:38-39","Resist the devil|James 4:7; 1 Pet 5:9",
+"Restore backslider in meekness, considering your own life|Gal 6:1",
+"Run to obtain|1 Cor 9:24","Salute none by the way|Luke 10:4","Salute your leaders|Heb 13:24",
+"Sanctify God in your heart|1 Pet 3:15","Save some with fear|Jude 1:23",
+"Search the Scriptures|John 5:39","Seek not eats and drinks|Luke 12:29",
+"Sell to help the needy|Luke 12:33","Serve the Lord|Rom 12:1",
+"Servants, obey masters|Eph 6:5-8; Col 3:22-25; 1 Pet 2:18","Set the least to judge|1 Cor 6:4",
+"Set your affections above|Col 3:2",
+"Shake off the dust of your feet|Matt 10:14; Mark 6:11; Luke 9:5",
+"Show charity to other ministers|Luke 9:49-50","Show yourself as a pattern|Tit 2:7",
+"Show four things of Titus 2:7-8|Tit 2:7-8","Sin not|1 Cor 15:34","Sing with grace in heart|Col 3:16",
+"Shun vain babblings|2 Tim 2:16","Speak and do things in view of the judgment day|James 2:12",
+"Speak truth|Eph 4:25","Speak sound doctrine|Tit 2:1","Speak no evil of your brethren|James 4:11",
+"Stablish your hearts|James 5:8","Strengthen your feeble knees|Heb 12:12",
+"Strive together for the gospel faith|Phil 1:27","Study to be quiet|1 Thess 4:11",
+"Study (be diligent) to show yourself approved|2 Tim 2:15","Support the weak|1 Thess 5:14",
+"See that no one renders evil for evil|1 Thess 5:15","Swear not|James 5:12; Matt 5:33-36",
+"Tarry one for another|1 Cor 11:33","Tarry for power|Luke 24:49; Acts 1:4-8",
+"Teach one another|Col 3:16","Teach no other doctrine than the truth|1 Tim 1:3",
+"Tell your brother his fault alone first|Matt 18:15-17",
+"Trust God for your needs as you work|Matt 10:9; Luke 9:3",
+"Understand the will of God|Eph 5:17","Use not your liberty as an occasion to sin|Gal 5:13",
+"Use hospitality without grudging|1 Pet 4:9","Warn the unruly|1 Thess 5:14",
+"Watch and pray|Matt 24:42; Matt 25:13; Mark 13:33; Luke 21:36; Eph 6:18; Col 4:2",
+"Watch in all things|2 Tim 4:5; 1 Cor 16:13","Weep with others|Rom 12:15",
+"Withdraw from disorderly brethren|2 Thess 3:6,14","Withdraw from evil people|1 Tim 6:3-6",
+"Wives of deacons must be (see 1 Tim 3:11)|1 Tim 3:11",
+"Wives, submit to your husbands|Eph 5:22; Col 3:18; 1 Pet 3:1-6",
+"Work with your own hands|1 Thess 4:11","Work, or do not eat|2 Thess 3:10-11",
+"Work out own salvation|Phil 2:12","Yield not your members to sin|Rom 6:13",
+"Yield yourself to God|Rom 6:13","Yield your members to righteousness|Rom 6:13"]]
+];
+
+/* ==========================================================================
+   BUILD INDEX
+   ========================================================================== */
+const DATA = RAW.map(([id, icon, title, sub, items]) => ({
+  id, icon, title, sub,
+  items: items.map(s => {
+    const i = s.indexOf('|');
+    return [s.slice(0, i), s.slice(i + 1)];
+  })
+}));
+
+const ALL = [];
+DATA.forEach((cat, ci) => {
+  const hue = Math.round((ci * 137.508) % 360);
+  cat.hue = hue;
+  cat.color = `hsl(${hue}, 48%, 42%)`;
+  cat.items = cat.items.map((it, ii) => ({
+    id: `${cat.id}:${ii}`,
+    catId: cat.id, catTitle: cat.title, catIcon: cat.icon,
+    catColor: cat.color, catHue: hue,
+    text: it[0], ref: it[1] || '',
+    n: ii + 1, total: cat.items.length
+  }));
+  ALL.push(...cat.items);
+});
+const TOTAL = ALL.length;
+
+/* ==========================================================================
+   BIBLE BOOK NORMALIZATION
+   ========================================================================== */
+const BOOKS = {
+  gen:'genesis', ex:'exodus', exod:'exodus', lev:'leviticus', num:'numbers',
+  deut:'deuteronomy', josh:'joshua', judg:'judges', ruth:'ruth',
+  '1sam':'1samuel', '2sam':'2samuel', '1kgs':'1kings', '2kgs':'2kings',
+  '1chr':'1chronicles', '2chr':'2chronicles', ezra:'ezra', neh:'nehemiah',
+  esth:'esther', job:'job', ps:'psalms', psa:'psalms', psalm:'psalms',
+  prov:'proverbs', eccl:'ecclesiastes', song:'songofsolomon', sos:'songofsolomon',
+  isa:'isaiah', jer:'jeremiah', lam:'lamentations', ezek:'ezekiel', dan:'daniel',
+  hos:'hosea', joel:'joel', amos:'amos', obad:'obadiah', jonah:'jonah',
+  mic:'micah', nah:'nahum', hab:'habakkuk', zeph:'zephaniah', hag:'haggai',
+  zech:'zechariah', mal:'malachi',
+  matt:'matthew', mt:'matthew', mark:'mark', mk:'mark', luke:'luke', lk:'luke',
+  john:'john', jn:'john', acts:'acts',
+  rom:'romans', '1cor':'1corinthians', '2cor':'2corinthians',
+  gal:'galatians', eph:'ephesians', phil:'philippians', php:'philippians',
+  col:'colossians',
+  '1thess':'1thessalonians', '1th':'1thessalonians',
+  '2thess':'2thessalonians', '2th':'2thessalonians',
+  '1tim':'1timothy', '1ti':'1timothy', '2tim':'2timothy', '2ti':'2timothy',
+  tit:'titus', phlm:'philemon', phm:'philemon',
+  heb:'hebrews', jas:'james',
+  '1pet':'1peter', '1pe':'1peter', '2pet':'2peter', '2pe':'2peter',
+  '1jn':'1john', '1john':'1john', '2jn':'2john', '2john':'2john',
+  '3jn':'3john', '3john':'3john', jude:'jude', rev:'revelation',
+  // Full names
+  genesis:'genesis', exodus:'exodus', leviticus:'leviticus', numbers:'numbers',
+  deuteronomy:'deuteronomy', joshua:'joshua', judges:'judges',
+  '1kings':'1kings', '2kings':'2kings', '1chronicles':'1chronicles',
+  '2chronicles':'2chronicles', nehemiah:'nehemiah', esther:'esther',
+  psalms:'psalms', proverbs:'proverbs', ecclesiastes:'ecclesiastes',
+  songofsolomon:'songofsolomon', isaiah:'isaiah', jeremiah:'jeremiah',
+  lamentations:'lamentations', ezekiel:'ezekiel', daniel:'daniel',
+  hosea:'hosea', obadiah:'obadiah', micah:'micah', nahum:'nahum',
+  habakkuk:'habakkuk', zephaniah:'zephaniah', haggai:'haggai',
+  zechariah:'zechariah', malachi:'malachi',
+  matthew:'matthew', luke:'luke', john:'john', romans:'romans',
+  '1corinthians':'1corinthians', '2corinthians':'2corinthians',
+  galatians:'galatians', ephesians:'ephesians', philippians:'philippians',
+  colossians:'colossians', '1thessalonians':'1thessalonians',
+  '2thessalonians':'2thessalonians', '1timothy':'1timothy', '2timothy':'2timothy',
+  titus:'titus', philemon:'philemon', hebrews:'hebrews', james:'james',
+  '1peter':'1peter', '2peter':'2peter', revelation:'revelation'
+};
+
+function normalizeBook(raw) {
+  if (!raw) return null;
+  const key = String(raw).toLowerCase().replace(/[\s.]/g, '').trim();
+  return BOOKS[key] || null;
+}
+
+/* ==========================================================================
+   REFERENCE PARSING
+   Handles: "Matt 5:12", "Rom 12:10; Eph 4:32", "Rev 2:7,11,17", "Matt 28:19-20"
+   ========================================================================== */
+function parseRefs(ref) {
+  if (!ref) return [];
+  return String(ref)
+    .split(';')
+    .map(part => {
+      part = part.trim().replace(/^cp\.\s*/i, '');
+      const m = part.match(/^([1-3]?\s*[A-Za-z]+)\.?\s+(\d+)\s*:\s*(.+)$/);
+      if (!m) return null;
+      const book = normalizeBook(m[1]);
+      if (!book) return null;
+      return {
+        book,
+        chapter: m[2],
+        verses: m[3].trim().replace(/\s+/g, ''),
+        display: part
+      };
+    })
+    .filter(Boolean);
+}
+
+function refKey(p) {
+  return `${p.book}.${p.chapter}.${p.verses}`;
+}
+
+function apiQuery(p) {
+  // "1corinthians" → "1 corinthians"
+  const book = p.book.replace(/^([1-3])([a-z])/, '$1 $2');
+  return `${book} ${p.chapter}:${p.verses}`;
+}
+
+/* ==========================================================================
+   VERSE CACHE
+   Structure in localStorage: { "kjv::john.3.16": { data: {...}, ts: 12345 } }
+   getCached() returns the RAW data (not the wrapper) — this was the bug.
+   ========================================================================== */
+const CK = 'ntc_verses_v1';
+const MK = 'ntc_meta_v1';
+let verseCache = {};
+let cacheMeta = { lastSync: 0 };
+try { verseCache = JSON.parse(localStorage.getItem(CK) || '{}'); } catch (e) {}
+try { cacheMeta = JSON.parse(localStorage.getItem(MK) || '{"lastSync":0}'); } catch (e) {}
+
+function persistCache() {
+  try {
+    localStorage.setItem(CK, JSON.stringify(verseCache));
+    localStorage.setItem(MK, JSON.stringify(cacheMeta));
+  } catch (e) {
+    console.warn('Cache persist failed (likely quota)', e);
+  }
+}
+
+function getCached(parsed, translation) {
+  const entry = verseCache[`${translation}::${refKey(parsed)}`];
+  return entry ? entry.data : null;   // <-- returns raw data
+}
+
+function putCached(parsed, translation, data) {
+  verseCache[`${translation}::${refKey(parsed)}`] = { data, ts: Date.now() };
+  cacheMeta.lastSync = Date.now();
+}
+
+/* ==========================================================================
+   UNIQUE REFERENCE LIST (for bulk download)
+   ========================================================================== */
+const UNIQUE_REFS = (() => {
+  const seen = new Set();
+  const list = [];
+  ALL.forEach(item => {
+    parseRefs(item.ref).forEach(p => {
+      const k = refKey(p);
+      if (!seen.has(k)) { seen.add(k); list.push(p); }
+    });
+  });
+  return list;
+})();
+const TOTAL_REFS = UNIQUE_REFS.length;
+
+/* ==========================================================================
+   FETCH
+   ========================================================================== */
+const TRANS_NAMES = { kjv: 'King James Version', web: 'World English Bible', nkjv: 'New King James Version' };
+
+async function fetchVerse(parsed, translation = 'kjv') {
+  const cached = getCached(parsed, translation);
+  if (cached) return cached;
+
+  if (translation === 'nkjv') {
+    throw new Error('NKJV is copyrighted by Thomas Nelson and cannot be bundled offline. Please use KJV or WEB.');
+  }
+
+  const url = `https://bible-api.com/${encodeURIComponent(apiQuery(parsed))}?translation=${translation}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Request failed (${res.status})`);
+  const json = await res.json();
+
+  let verses = json.verses;
+  if (!verses || !verses.length) {
+    if (json.text) verses = [{ verse: parsed.verses, text: json.text }];
+    else throw new Error('No verses returned');
+  }
+
+  const data = {
+    reference: json.reference || apiQuery(parsed),
+    translation,
+    translationName: TRANS_NAMES[translation] || translation.toUpperCase(),
+    verses: verses.map(v => ({ v: v.verse, t: (v.text || '').trim() }))
+  };
+  putCached(parsed, translation, data);
+  persistCache();
+  return data;
+}
+
+/* ==========================================================================
+   APP STATE
+   ========================================================================== */
+const LS = { favs: 'ntc_favs_v1', theme: 'ntc_theme_v1', view: 'ntc_view_v1', trans: 'ntc_trans_v1', feat: 'ntc_feat_v1' };
+
+let favs = new Set(JSON.parse(localStorage.getItem(LS.favs) || '[]'));
+let view = localStorage.getItem(LS.view) || 'list';
+let currentTrans = localStorage.getItem(LS.trans) || 'kjv';
+const state = { cat: 'all', filter: 'all', q: '' };
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+function saveFavs() { localStorage.setItem(LS.favs, JSON.stringify([...favs])); }
+function esc(s) { return String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
+
+function highlight(text, q) {
+  if (!q) return esc(text);
+  const lower = text.toLowerCase();
+  const lq = q.toLowerCase();
+  let out = '', i = 0;
+  while (true) {
+    const idx = lower.indexOf(lq, i);
+    if (idx === -1) { out += esc(text.slice(i)); break; }
+    out += esc(text.slice(i, idx)) + '<mark>' + esc(text.slice(idx, idx + q.length)) + '</mark>';
+    i = idx + q.length;
+  }
+  return out;
+}
+
+/* ==========================================================================
+   TOAST
+   ========================================================================== */
+let toastT;
+function toast(msg, icon) {
+  const t = $('#toast');
+  t.innerHTML = (icon ? `<span>${icon}</span>` : '') + `<span>${esc(msg)}</span>`;
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ==========================================================================
+   THEME
+   ========================================================================== */
+function setTheme(mode) {
+  document.documentElement.dataset.theme = mode;
+  localStorage.setItem(LS.theme, mode);
+  $('#themeIcon').innerHTML = mode === 'dark'
+    ? '<circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>'
+    : '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+}
+setTheme(localStorage.getItem(LS.theme) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+$('#themeBtn').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+
+/* ==========================================================================
+   VIEW TOGGLE
+   ========================================================================== */
+function applyViewIcon() {
+  $('#viewIcon').innerHTML = view === 'grid'
+    ? '<path d="M3 6h18M3 12h18M3 18h18"/>'
+    : '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>';
+}
+applyViewIcon();
+$('#viewBtn').onclick = () => {
+  view = view === 'list' ? 'grid' : 'list';
+  localStorage.setItem(LS.view, view);
+  applyViewIcon();
+  renderMain();
+};
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+function renderSidebar() {
+  const favCatIds = new Set();
+  DATA.forEach(c => { if (c.items.some(i => favs.has(i.id))) favCatIds.add(c.id); });
+
+  let html = `
+    <button class="cat-btn ${state.cat === 'all' ? 'active' : ''}" data-cat="all">
+      <span class="ico">📚</span><span class="nm">All Commands</span>
+      <span class="cnt">${TOTAL}</span>
+    </button>
+    <button class="cat-btn ${state.cat === 'fav' ? 'active' : ''}" data-cat="fav">
+      <span class="ico" style="color:var(--gold)">★</span><span class="nm">Favorites</span>
+      <span class="cnt">${favs.size}</span>
+    </button>`;
+
+  DATA.forEach(c => {
+    const isFav = favCatIds.has(c.id);
+    html += `<button class="cat-btn ${state.cat === c.id ? 'active' : ''} ${isFav ? 'has-fav' : ''}" data-cat="${c.id}">
+      <span class="ico">${c.icon}</span>
+      <span class="nm" title="${esc(c.title)}">${esc(c.title)}</span>
+      <span class="cnt">${c.items.length}</span>
+    </button>`;
+  });
+  $('#catList').innerHTML = html;
+
+  $$('#catList .cat-btn').forEach(b => {
+    b.onclick = () => {
+      state.cat = b.dataset.cat;
+      state.filter = 'all';
+      state.q = '';
+      $('#search').value = '';
+      closeSidebar();
+      renderSidebar();
+      renderMain();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  });
+
+  $('#statTotal').textContent = TOTAL;
+  $('#statFav').textContent = favs.size;
+  updateOfflineUI();
+}
+
+/* ==========================================================================
+   OFFLINE CACHE UI
+   ========================================================================== */
+let isDownloading = false;
+
+function cachedCount() {
+  let n = 0;
+  for (const r of UNIQUE_REFS) if (getCached(r, 'kjv')) n++;
+  return n;
+}
+
+function updateOfflineUI() {
+  const cached = cachedCount();
+  const pct = TOTAL_REFS ? Math.round(cached / TOTAL_REFS * 100) : 0;
+  $('#offlineFill').style.width = pct + '%';
+  $('#offlineCount').textContent = `${cached} / ${TOTAL_REFS} verses`;
+  $('#offlinePct').textContent = pct + '%';
+
+  const btn = $('#offlineBtn');
+  const label = $('#offlineBtnLabel');
+  const sub = $('#offlineSub');
+
+  if (cached >= TOTAL_REFS && TOTAL_REFS > 0) {
+    sub.textContent = 'All verses cached. Fully available offline.';
+    btn.classList.remove('primary');
+    btn.disabled = false;
+    label.textContent = 'Clear Cache';
+    btn.onclick = clearCache;
+  } else {
+    sub.textContent = 'Download Bible verses to read without internet.';
+    btn.classList.add('primary');
+    btn.disabled = false;
+    label.textContent = isDownloading ? 'Downloading…' : 'Download for Offline';
+    btn.onclick = startDownload;
+  }
+}
+
+function clearCache() {
+  verseCache = {};
+  cacheMeta = { lastSync: 0 };
+  persistCache();
+  updateOfflineUI();
+  renderMain();
+  toast('Verse cache cleared');
+}
+
+async function startDownload() {
+  if (isDownloading) return;
+  isDownloading = true;
+  updateOfflineUI();
+
+  const queue = UNIQUE_REFS.filter(r => !getCached(r, 'kjv'));
+  let done = 0, failed = 0;
+
+  async function worker() {
+    while (queue.length) {
+      const ref = queue.shift();
+      try { await fetchVerse(ref, 'kjv'); done++; }
+      catch (e) { failed++; }
+      if ((done + failed) % 5 === 0) {
+        const cached = cachedCount();
+        $('#offlineFill').style.width = Math.round(cached / TOTAL_REFS * 100) + '%';
+        $('#offlineCount').textContent = `${cached} / ${TOTAL_REFS} verses`;
+      }
+      await new Promise(r => setTimeout(r, 100));
+    }
+  }
+
+  await Promise.all([worker(), worker(), worker()]);
+  isDownloading = false;
+  updateOfflineUI();
+  renderMain();
+  toast(failed ? `Done — ${done} saved, ${failed} failed` : `All ${done} verses saved offline`, '✓');
+}
+
+/* ==========================================================================
+   FEATURED COMMAND
+   ========================================================================== */
+function featuredHTML() {
+  const today = new Date().toDateString();
+  let item = null;
+  const seed = localStorage.getItem(LS.feat);
+  if (seed) {
+    try {
+      const parsed = JSON.parse(seed);
+      if (parsed.date === today) item = ALL.find(i => i.id === parsed.id);
+    } catch (e) {}
+  }
+  if (!item) {
+    item = ALL[Math.floor(Math.random() * ALL.length)];
+    localStorage.setItem(LS.feat, JSON.stringify({ date: today, id: item.id }));
+  }
+  const isFav = favs.has(item.id);
+  const catColor = document.documentElement.dataset.theme === 'dark'
+    ? `hsl(${item.catHue}, 60%, 68%)` : item.catColor;
+
+  return `<div class="featured" data-feat-id="${item.id}">
+    <div class="featured-eyebrow">✦ Command of the Day</div>
+    <div class="featured-text">${esc(item.text)}</div>
+    <div class="featured-foot">
+      <button class="ref-link" data-act="verse" data-ref="${esc(item.ref)}" style="font-size:12px;padding:5px 11px">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        ${esc(item.ref)}
+      </button>
+      <span class="featured-cat">· ${item.catIcon} ${esc(item.catTitle)}</span>
+      <div class="featured-actions">
+        <button class="act-btn" data-act="feat-copy" style="width:34px;height:34px" title="Copy">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+        <button class="act-btn ${isFav ? 'on' : ''}" data-act="feat-fav" style="width:34px;height:34px;color:${isFav ? 'var(--gold)' : 'var(--ink-3)'}" title="Favorite">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 2.6 2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.45 6.2 20.5l1.1-6.45-4.7-4.6 6.5-.95z"/></svg>
+        </button>
+        <button class="act-btn" data-act="feat-shuffle" style="width:34px;height:34px" title="Shuffle">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ==========================================================================
+   ITEM RENDER
+   ========================================================================== */
+function itemHTML(it, q, showCat) {
+  const isFav = favs.has(it.id);
+  const catColor = document.documentElement.dataset.theme === 'dark'
+    ? `hsl(${it.catHue}, 60%, 68%)` : it.catColor;
+
+  const parsed = parseRefs(it.ref);
+  const isReady = parsed.length > 0 && getCached(parsed[0], currentTrans);
+
+  return `<div class="item ${isFav ? 'fav' : ''}" data-id="${it.id}" id="i-${it.id.replace(/[:]/g, '_')}" style="--cat-color:${catColor}">
+    <div class="item-num-badge">${it.n}</div>
+    <div class="item-body">
+      ${showCat ? `<div class="item-cat-tag">${it.catIcon} ${esc(it.catTitle)}</div>` : ''}
+      <div class="item-text">${highlight(it.text, q)}</div>
+      ${it.ref ? `<div class="item-foot">
+        <button class="ref-link ${isReady ? 'ready' : ''}" data-act="verse" data-ref="${esc(it.ref)}" title="${isReady ? 'Open offline verse' : 'Open verse reader'}">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          ${highlight(it.ref, q)}
+        </button>
+      </div>` : ''}
+    </div>
+    <div class="item-actions">
+      <button class="act-btn" data-act="copy" title="Copy command">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </button>
+      <button class="act-btn ${isFav ? 'on' : ''}" data-act="fav" title="${isFav ? 'Remove favorite' : 'Add favorite'}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 2.6 2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.45 6.2 20.5l1.1-6.45-4.7-4.6 6.5-.95z"/></svg>
+      </button>
+    </div>
+  </div>`;
+}
+
+function filtersHTML(n) {
+  return `<div class="filters">
+    <button class="filter-btn ${state.filter === 'all' ? 'active' : ''}" data-f="all">All${n ? ` (${n})` : ''}</button>
+    <button class="filter-btn ${state.filter === 'fav' ? 'active' : ''}" data-f="fav">★ Favorites</button>
+  </div>`;
+}
+
+function emptyHTML(title, msg) {
+  return `<div class="empty"><div class="big">🕊️</div><h3>${esc(title)}</h3><p>${esc(msg)}</p></div>`;
+}
+
+/* ==========================================================================
+   MAIN RENDER
+   ========================================================================== */
+function renderMain() {
+  const c = $('#content');
+  const q = state.q.trim().toLowerCase();
+
+  /* --- Search --- */
+  if (q) {
+    let results = ALL.filter(it =>
+      it.text.toLowerCase().includes(q) ||
+      it.ref.toLowerCase().includes(q) ||
+      it.catTitle.toLowerCase().includes(q)
+    );
+    if (state.filter === 'fav') results = results.filter(i => favs.has(i.id));
+
+    c.innerHTML = `
+      <div class="page-head">
+        <div class="eyebrow">Search</div>
+        <h2>Results for “${esc(state.q)}”</h2>
+        <div class="sub">${results.length} command${results.length === 1 ? '' : 's'} found.</div>
+      </div>
+      ${filtersHTML(results.length)}
+      ${results.length
+        ? `<div class="items ${view === 'grid' ? 'grid' : ''}">${results.map(i => itemHTML(i, state.q, true)).join('')}</div>`
+        : emptyHTML('No matches found', 'Try a different word, or search a reference like “Romans 12”.')}`;
+    wireItems();
+    wireFilters();
+    return;
+  }
+
+  /* --- Favorites --- */
+  if (state.cat === 'fav') {
+    const items = ALL.filter(i => favs.has(i.id));
+    c.innerHTML = `
+      <div class="page-head">
+        <div class="eyebrow">Saved</div>
+        <h2><span class="ico">★</span> Your Favorites</h2>
+        <div class="sub">Commands you've starred for quick reference and reflection.</div>
+        <div class="meta"><span class="chip gold">${items.length} saved</span></div>
+      </div>
+      ${filtersHTML(items.length)}
+      ${items.length
+        ? `<div class="items ${view === 'grid' ? 'grid' : ''}">${items.map(i => itemHTML(i, '', true)).join('')}</div>`
+        : emptyHTML('No favorites yet', 'Tap the star on any command to save it here for quick access.')}`;
+    wireItems();
+    wireFilters();
+    return;
+  }
+
+  /* --- All commands --- */
+  if (state.cat === 'all') {
+    let html = `
+      <div class="page-head">
+        <div class="eyebrow">Complete Reference</div>
+        <h2>📚 All Commands</h2>
+        <div class="sub">Every command in the New Testament for Christians to obey — grouped under ${DATA.length} headings, covering every phase of man's life in his relationship to God and his fellowmen.</div>
+        <div class="meta">
+          <span class="chip solid">${TOTAL} commands</span>
+          <span class="chip">${DATA.length} categories</span>
+          <span class="chip green">${cachedCount()} verses offline</span>
+        </div>
+      </div>
+      ${featuredHTML()}`;
+
+    DATA.forEach(cat => {
+      const items = state.filter === 'fav' ? cat.items.filter(i => favs.has(i.id)) : cat.items;
+      if (!items.length) return;
+      html += `<section style="margin-bottom:40px" id="cat-${cat.id}">
+        <div class="page-head" style="margin-bottom:16px">
+          <h2 style="font-size:22px"><span class="ico" style="font-size:20px">${cat.icon}</span> ${esc(cat.title)}</h2>
+          <div class="meta"><span class="chip">${cat.items.length} item${cat.items.length === 1 ? '' : 's'}</span></div>
+        </div>
+        <div class="items ${view === 'grid' ? 'grid' : ''}">${items.map(i => itemHTML(i, '', false)).join('')}</div>
+      </section>`;
+    });
+
+    c.innerHTML = html;
+    wireItems();
+    wireFeatured();
+    wireFilters();
+    return;
+  }
+
+  /* --- Single category --- */
+  const cat = DATA.find(x => x.id === state.cat);
+  if (!cat) { state.cat = 'all'; return renderMain(); }
+
+  const items = state.filter === 'fav' ? cat.items.filter(i => favs.has(i.id)) : cat.items;
+
+  c.innerHTML = `
+    <div class="page-head">
+      <div class="eyebrow">Category</div>
+      <h2><span class="ico">${cat.icon}</span> ${esc(cat.title)}</h2>
+      ${cat.sub ? `<div class="sub">${esc(cat.sub)}</div>` : ''}
+      <div class="meta">
+        <span class="chip">${cat.items.length} item${cat.items.length === 1 ? '' : 's'}</span>
+        ${cat.items.filter(i => favs.has(i.id)).length ? `<span class="chip gold">${cat.items.filter(i => favs.has(i.id)).length} ★ favorited</span>` : ''}
+      </div>
+    </div>
+    ${filtersHTML(items.length)}
+    ${items.length
+      ? `<div class="items ${view === 'grid' ? 'grid' : ''}">${items.map(i => itemHTML(i, '', false)).join('')}</div>`
+      : emptyHTML('Nothing to show here', 'Tap the star on any command to save it to your favorites.')}`;
+  wireItems();
+  wireFilters();
+}
+
+/* ==========================================================================
+   WIRING
+   ========================================================================== */
+function wireFilters() {
+  $$('.filter-btn').forEach(b => {
+    b.onclick = () => { state.filter = b.dataset.f; renderMain(); };
+  });
+}
+
+function wireItems() {
+  $$('.item').forEach(el => {
+    const id = el.dataset.id;
+    const item = ALL.find(i => i.id === id);
+    if (!item) return;
+
+    el.querySelector('[data-act="fav"]').onclick = e => {
+      e.stopPropagation();
+      if (favs.has(id)) { favs.delete(id); toast('Removed from favorites'); }
+      else { favs.add(id); toast('Added to favorites', '★'); }
+      saveFavs();
+      renderSidebar();
+      const isFav = favs.has(id);
+      el.classList.toggle('fav', isFav);
+      const btn = el.querySelector('[data-act="fav"]');
+      btn.classList.toggle('on', isFav);
+      btn.querySelector('svg').setAttribute('fill', isFav ? 'currentColor' : 'none');
+    };
+
+    el.querySelector('[data-act="copy"]').onclick = async e => {
+      e.stopPropagation();
+      const btn = e.currentTarget;
+      const text = item.text + (item.ref ? ' — ' + item.ref : '');
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.classList.add('copied');
+        toast('Copied to clipboard', '✓');
+        setTimeout(() => btn.classList.remove('copied'), 1400);
+      } catch (err) { toast('Could not copy'); }
+    };
+
+    const verseBtn = el.querySelector('[data-act="verse"]');
+    if (verseBtn) verseBtn.onclick = e => { e.stopPropagation(); openVerseReader(item.ref, item.id); };
+  });
+}
+
+function wireFeatured() {
+  const feat = $('.featured');
+  if (!feat) return;
+  const item = ALL.find(i => i.id === feat.dataset.featId);
+  if (!item) return;
+
+  feat.querySelector('[data-act="feat-fav"]').onclick = () => {
+    if (favs.has(item.id)) { favs.delete(item.id); toast('Removed from favorites'); }
+    else { favs.add(item.id); toast('Added to favorites', '★'); }
+    saveFavs();
+    renderSidebar();
+    renderMain();
+  };
+  feat.querySelector('[data-act="feat-copy"]').onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(item.text + ' — ' + item.ref);
+      toast('Copied to clipboard', '✓');
+    } catch (e) { toast('Could not copy'); }
+  };
+  feat.querySelector('[data-act="feat-shuffle"]').onclick = () => {
+    const fresh = ALL[Math.floor(Math.random() * ALL.length)];
+    localStorage.setItem(LS.feat, JSON.stringify({ date: new Date().toDateString(), id: fresh.id }));
+    renderMain();
+  };
+  const vb = feat.querySelector('[data-act="verse"]');
+  if (vb) vb.onclick = () => openVerseReader(item.ref, item.id);
+}
+
+/* ==========================================================================
+   VERSE READER
+   ========================================================================== */
+let verseCtx = null;
+
+async function openVerseReader(ref, commandId) {
+  const parsed = parseRefs(ref);
+
+  verseCtx = { ref, parsed, commandId };
+
+  // Header
+  $('#vRef').textContent = ref;
+  $('#vTransLabel').textContent = TRANS_NAMES[currentTrans] || currentTrans.toUpperCase();
+  $$('.verse-trans-tab').forEach(t => t.classList.toggle('active', t.dataset.t === currentTrans));
+
+  // Favorite button
+  const favBtn = $('#vFav');
+  if (commandId) {
+    const isFav = favs.has(commandId);
+    favBtn.classList.toggle('on', isFav);
+    favBtn.querySelector('svg').setAttribute('fill', isFav ? 'currentColor' : 'none');
+  }
+
+  // Open immediately — always give instant feedback
+  $('#verseBg').classList.add('show');
+
+  // Handle unparseable
+  if (!parsed.length) {
+    $('#vStatus').textContent = 'Unavailable';
+    $('#vBody').innerHTML = `<div class="verse-error"><div class="icon">📖</div><h4>Could not parse this reference</h4><p>“${esc(ref)}” isn't in a format this reader recognizes.</p></div>`;
+    return;
+  }
+
+  await loadVerse();
+}
+
+async function loadVerse() {
+  const body = $('#vBody');
+  const status = $('#vStatus');
+  const parsed = verseCtx.parsed;
+
+  // Cache hit path
+  const cached = getCached(parsed[0], currentTrans);
+  if (cached) {
+    renderVerses([cached]);
+    status.innerHTML = '✓ Cached offline';
+    status.style.color = 'var(--green)';
+    return;
+  }
+
+  // Fetch path
+  body.innerHTML = `<div class="verse-loading"><div class="spinner"></div><span>Loading ${esc(TRANS_NAMES[currentTrans] || currentTrans.toUpperCase())}…</span></div>`;
+  status.textContent = 'Fetching…';
+  status.style.color = '';
+
+  try {
+    const results = [];
+    for (const p of parsed) {
+      results.push(await fetchVerse(p, currentTrans));
+    }
+    renderVerses(results);
+    status.innerHTML = '✓ Just downloaded';
+    status.style.color = 'var(--green)';
+    updateOfflineUI();
+  } catch (e) {
+    body.innerHTML = `<div class="verse-error">
+      <div class="icon">📡</div>
+      <h4>Verse not available</h4>
+      <p>${esc(e.message || 'Connect to the internet to fetch this verse, or use “Download for Offline” in the sidebar for permanent offline access.')}</p>
+    </div>`;
+    status.textContent = '✗ Unavailable';
+    status.style.color = 'var(--red)';
+  }
+}
+
+function renderVerses(results) {
+  const body = $('#vBody');
+  if (results.length === 1) {
+    body.innerHTML = results[0].verses
+      .map(v => `<div class="verse-part"><span class="verse-num">${v.v}</span>${esc(v.t)}</div>`)
+      .join('');
+  } else {
+    body.innerHTML = results.map(data =>
+      `<div style="margin-bottom:20px">
+        <div class="verse-part-label">${esc(data.reference)}</div>
+        ${data.verses.map(v => `<div class="verse-part"><span class="verse-num">${v.v}</span>${esc(v.t)}</div>`).join('')}
+      </div>`
+    ).join('');
+  }
+}
+
+// Translation tabs
+$$('.verse-trans-tab').forEach(tab => {
+  tab.onclick = () => {
+    if (tab.classList.contains('disabled')) {
+      toast('NKJV is copyrighted — try KJV or WEB');
+      return;
+    }
+    const t = tab.dataset.t;
+    if (t === currentTrans) return;
+    currentTrans = t;
+    localStorage.setItem(LS.trans, t);
+    $('#vTransLabel').textContent = TRANS_NAMES[t] || t.toUpperCase();
+    $$('.verse-trans-tab').forEach(x => x.classList.toggle('active', x.dataset.t === t));
+    loadVerse();
+  };
+});
+
+$('#vClose').onclick = () => $('#verseBg').classList.remove('show');
+$('#verseBg').onclick = e => { if (e.target === $('#verseBg')) $('#verseBg').classList.remove('show'); };
+
+$('#vCopy').onclick = async () => {
+  if (!verseCtx) return;
+  const data = getCached(verseCtx.parsed[0], currentTrans);
+  if (!data) return toast('Nothing to copy yet');
+  const text = data.verses.map(v => v.t).join(' ') + ' — ' + data.reference + ' (' + (TRANS_NAMES[currentTrans] || currentTrans.toUpperCase()) + ')';
+  try {
+    await navigator.clipboard.writeText(text);
+    toast('Verse copied', '✓');
+  } catch (e) { toast('Could not copy'); }
+};
+
+$('#vFav').onclick = () => {
+  if (!verseCtx || !verseCtx.commandId) return;
+  const id = verseCtx.commandId;
+  if (favs.has(id)) { favs.delete(id); toast('Removed from favorites'); }
+  else { favs.add(id); toast('Added to favorites', '★'); }
+  saveFavs();
+  renderSidebar();
+  const isFav = favs.has(id);
+  const btn = $('#vFav');
+  btn.classList.toggle('on', isFav);
+  btn.querySelector('svg').setAttribute('fill', isFav ? 'currentColor' : 'none');
+};
+
+/* ==========================================================================
+   SEARCH
+   ========================================================================== */
+let searchT;
+$('#search').addEventListener('input', e => {
+  clearTimeout(searchT);
+  searchT = setTimeout(() => {
+    state.q = e.target.value;
+    renderMain();
+  }, 120);
+});
+
+/* ==========================================================================
+   RANDOM MODAL
+   ========================================================================== */
+let currentRandom = null;
+function showRandom() {
+  currentRandom = ALL[Math.floor(Math.random() * ALL.length)];
+  $('#mEyebrow').innerHTML = currentRandom.catIcon + '  ' + esc(currentRandom.catTitle);
+  $('#mText').textContent = currentRandom.text;
+  $('#mRef').textContent = currentRandom.ref;
+  $('#mFrom').textContent = `Command ${currentRandom.n} of ${currentRandom.total} in this category`;
+  $('#modalBg').classList.add('show');
+}
+$('#randomBtn').onclick = showRandom;
+$('#mAnother').onclick = showRandom;
+$('#mClose').onclick = () => $('#modalBg').classList.remove('show');
+$('#modalBg').onclick = e => { if (e.target === $('#modalBg')) $('#modalBg').classList.remove('show'); };
+$('#mGo').onclick = () => {
+  if (!currentRandom) return;
+  state.cat = currentRandom.catId;
+  state.filter = 'all';
+  state.q = '';
+  $('#search').value = '';
+  $('#modalBg').classList.remove('show');
+  renderSidebar();
+  renderMain();
+  setTimeout(() => {
+    const el = document.getElementById('i-' + currentRandom.id.replace(/[:]/g, '_'));
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.style.transition = 'box-shadow .4s';
+      el.style.boxShadow = '0 0 0 4px var(--gold-soft), 0 12px 32px -16px rgba(60,48,20,.3)';
+      setTimeout(() => { el.style.boxShadow = ''; }, 2000);
+    }
+  }, 140);
+};
+
+/* ==========================================================================
+   SIDEBAR MOBILE
+   ========================================================================== */
+function openSidebar() { $('#sidebar').classList.add('open'); $('#backdrop').classList.add('show'); }
+function closeSidebar() { $('#sidebar').classList.remove('open'); $('#backdrop').classList.remove('show'); }
+$('#menuBtn').onclick = () => $('#sidebar').classList.contains('open') ? closeSidebar() : openSidebar();
+$('#backdrop').onclick = closeSidebar;
+
+/* ==========================================================================
+   READING PROGRESS
+   ========================================================================== */
+function updateReadProgress() {
+  const h = document.documentElement;
+  const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+  $('#readProgress').style.width = Math.min(100, scrolled * 100) + '%';
+}
+window.addEventListener('scroll', updateReadProgress, { passive: true });
+window.addEventListener('resize', updateReadProgress);
+
+/* ==========================================================================
+   KEYBOARD
+   ========================================================================== */
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement !== $('#search')) {
+    e.preventDefault();
+    $('#search').focus();
+  }
+  if (e.key === 'Escape') {
+    if ($('#verseBg').classList.contains('show')) $('#verseBg').classList.remove('show');
+    else if ($('#modalBg').classList.contains('show')) $('#modalBg').classList.remove('show');
+    else if (document.activeElement === $('#search')) $('#search').blur();
+    closeSidebar();
+  }
+  if (e.altKey && e.key.toLowerCase() === 'r') { e.preventDefault(); showRandom(); }
+});
+
+/* ==========================================================================
+   BOOT
+   ========================================================================== */
+renderSidebar();
+renderMain();
+updateReadProgress();
+updateOfflineUI();
+
+// Silent warmup — fetch first 15 unique refs to give instant offline access to popular verses
+(async function warmup() {
+  const refs = UNIQUE_REFS.slice(0, 15).filter(r => !getCached(r, 'kjv'));
+  for (const r of refs) {
+    try { await fetchVerse(r, 'kjv'); } catch (e) {}
+  }
+  updateOfflineUI();
+})();
+</script>
+</body>
+</html>
